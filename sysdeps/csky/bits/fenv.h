@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2000, 2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@
 #ifndef _FENV_H
 # error "Never use <bits/fenv.h> directly; include <fenv.h> instead."
 #endif
-
 
 /* Define bits representing the exception.  We use the bit positions
    of the appropriate bits in the FPU control word.  */
@@ -40,14 +39,15 @@ enum
 #define FE_INEXACT	0x10
       FE_INEXACT,
     FE_DENORMAL =
-#define FE_DENORMAL 0x20
+#define FE_DENORMAL	0x20
       FE_DENORMAL,
   };
 
 #define FE_ALL_EXCEPT \
-	(FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID | FE_DENORMAL)
+	(FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW |\
+         FE_INVALID | FE_DENORMAL)
 
-/* The MIPS FPU supports all of the four defined rounding modes.  We
+/* The C-SKY FPU supports all of the four defined rounding modes.  We
    use again the bit positions in the FPU control word as the values
    for the appropriate macros.  */
 enum
@@ -63,16 +63,16 @@ enum
       FE_UPWARD,
     FE_DOWNWARD =
 #define FE_DOWNWARD	(0x3 << 24)
-      FE_DOWNWARD
+      FE_DOWNWARD,
+    FE_ROUND_MASK =
+#define FE_ROUND_MASK	(0x3 << 24)
+      FE_ROUND_MASK
   };
-
 
 /* Type representing exception flags.  */
 typedef unsigned int fexcept_t;
 
-
-/* Type representing floating-point environment.  This function corresponds
-   to the layout of the block written by the `fstenv'.  */
+/* Type representing floating-point environment. */
 typedef struct
   {
     unsigned int __fpcr;
@@ -84,7 +84,7 @@ fenv_t;
 #define FE_DFL_ENV	((const fenv_t *) -1)
 
 #ifdef __USE_GNU
-/* Floating-point environment where none of the exception is masked.  */
+/* Floating-point environment where none of the exceptions are masked.  */
 # define FE_NOMASK_ENV  ((const fenv_t *) -2)
 #endif
 

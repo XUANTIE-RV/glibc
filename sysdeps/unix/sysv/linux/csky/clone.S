@@ -1,6 +1,5 @@
-/* Copyright (C) 1996-2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Pat Beirne <patb@corelcomputer.com>
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -20,16 +19,16 @@
    and invokes a function in the right context after its all over.  */
 
 #ifdef	__CSKYABIV2__
-#include "abiv2_clone.S"
+# include "abiv2_clone.S"
 #else
 
-#include <sysdep.h>
-#define _ERRNO_H	1
-#include <bits/errno.h>
-#include <csky_readtp.h>
+# include <sysdep.h>
+# define _ERRNO_H	1
+# include <bits/errno.h>
+# include <csky_readtp.h>
 
-#define CLONE_VM      8  /* 11 makes btsti easier, 0x00000100 in real */
-#define CLONE_THREAD  16  /* 0x00010000 in real */
+# define CLONE_VM      8  /* 11 makes btsti easier, 0x00000100 in real */
+# define CLONE_THREAD  16  /* 0x00010000 in real */
 
 /* int clone(int (*fn)(void *arg), void *child_stack, int flags, void *arg,
 	     pid_t *ptid, struct user_desc *tls, pid_t *ctid); */
@@ -47,12 +46,10 @@ ENTRY(__clone)
 	stw	r5, (r3, 4)	/* insert the args onto the new stack */
 
 	ldw	r5, (sp, 0)	/* arg4 = ctid */
-#ifdef RESET_PID
+# ifdef RESET_PID
 	subi	r3, 8
 	stw	r4, (r3, 0x0)	/* save r4(flags) */
-//	cfi_adjust_cfa_offset(8)
-//	cfi_rel_offset(r4, 0)
-#endif
+# endif
 
 	mov	r2, r4		/* arg1 = flags */
 	mov	r4, r6		/* arg3 = ptid */
@@ -68,7 +65,7 @@ ENTRY(__clone)
 PSEUDO_END (__clone)
 
 1:
-#ifdef RESET_PID
+# ifdef RESET_PID
 	ld.w    r4, (sp, 0x0)
 	btsti	r4, CLONE_THREAD	/* judge flags */
 	bt	3f
@@ -76,7 +73,7 @@ PSEUDO_END (__clone)
 	mov	r6, r2
 
 	btsti	r4, CLONE_VM		/* judge flags */
-	bmaski	r2, 0			/* if not set CLONE_VM, set pid=tid=-1*/
+	bmaski	r2, 0			/* if CLONE_VM not set, pid=tid=-1 */
 	bt	2f
 	lrw	r1, __NR_getpid		/* else get pid via getpid syscall */
 	trap	0
@@ -89,7 +86,7 @@ PSEUDO_END (__clone)
 	stw	r2, (r7)	/* save tid */
 3:
 	addi	sp, 8
-#endif
+# endif /* RESET_PID */
 	ldw	r2, (sp, 4)	/* restore args from new sp */
 	ldw	r3, (sp, 0)	/* restore args from new sp */
 	addi	sp, 8
@@ -102,7 +99,7 @@ __error_arg:
 	lrw	r2, -EINVAL
 
 do_syscall_error:
-#ifdef __PIC__
+# ifdef __PIC__
 	subi	sp, 8
 	stw	gb, (sp, 0)
 	stw	r15, (sp, 4)
@@ -117,9 +114,9 @@ do_syscall_error:
 	ldw	gb, (sp, 0)
 	ldw	r15, (sp, 4)
 	addi	sp, 8
-#else
+# else
 	jmpi	 __syscall_error
-#endif
+# endif /* __PIC__ */
 	rts
 
 libc_hidden_def (__clone)

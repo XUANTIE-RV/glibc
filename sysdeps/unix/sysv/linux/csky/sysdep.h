@@ -1,4 +1,4 @@
-/* Copyright (C) 1992-2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -24,13 +24,12 @@
 
 /* Defines RTLD_PRIVATE_ERRNO and USE_DL_SYSINFO.  */
 #include <dl-sysdep.h>
-///#include <asm/unistd.h>
 
 #include <tls.h>
 
 /* In order to get __set_errno() definition in INLINE_SYSCALL.  */
 #ifndef __ASSEMBLER__
-#include <errno.h>
+# include <errno.h>
 #endif
 
 #undef SYS_ify
@@ -48,178 +47,166 @@
    returns a value in -1 .. -4095 as a valid result so we can safely
    test with -4095.  */
 
-#undef	PSEUDO
-#define	PSEUDO(name, syscall_name, args)				      \
-  .text;								      \
-  ENTRY (name);								      \
+# undef	PSEUDO
+# define	PSEUDO(name, syscall_name, args)	\
+  .text;						\
+  ENTRY (name);						\
     DO_CALL (syscall_name, args);
 
 
-#if defined (__PIC__)
+# if defined (__PIC__)
+#  define __GET_GB1  \
+	bsr getgb; getgb: lrw gb, getgb@GOTPC; addu gb, lr;
+# else
+#  define __GET_GB1
+# endif /* !__PIC__ */
 
-#define __GET_GB1  \
-           bsr getgb; getgb: lrw gb, getgb@GOTPC; addu gb, lr;
-#else
-#define __GET_GB1
-#endif
-
-#undef  PSEUDO_RET
-#ifdef __PIC__
-#if !IS_IN (libc)
-  #define PSEUDO_RET                                                       \
-    btsti  a0, 31;	\
-    bf	   1f;								\
-    subi sp, 8; st.w lr, (sp); st.w gb, (sp, 4);         \
-    __GET_GB1    \
-    bsr    SYSCALL_ERROR;   \
-    ld.w lr, (sp); ld.w gb, (sp, 4); addi sp, 8;         \
-1:				\
+# undef  PSEUDO_RET
+# ifdef __PIC__
+#  if !IS_IN (libc)
+#   define PSEUDO_RET	\
+	btsti  a0, 31;					\
+	bf	   1f;					\
+	subi sp, 8; st.w lr, (sp); st.w gb, (sp, 4);	\
+	__GET_GB1					\
+	bsr    SYSCALL_ERROR;				\
+	ld.w lr, (sp); ld.w gb, (sp, 4); addi sp, 8;	\
+1:							\
     rts
-#else /* !NOT_IN_libc */
-#define PSEUDO_RET							      \
-    btsti  a0, 31;	\
-    bf    2f;								      \
-    subi sp, 8; st.w lr, (sp); st.w gb, (sp, 4);         \
-    __GET_GB1;							      \
-    lrw   a2, SYSCALL_ERROR@PLT;					      \
-    add   a2, gb;							      \
-    ld.w  a2, (a2);						              \
-    jsr   a2;								      \
-    ld.w lr, (sp); ld.w gb, (sp, 4); addi sp, 8;         \
-2:									      \
-    rts
-#endif
-#else/* !__PIC__ */
-#if !IS_IN (libc)
-#define PSEUDO_RET							      \
-    btsti  a0, 31;	\
-    bt     SYSCALL_ERROR;	\
-    rts
-#else
-#define PSEUDO_RET	/* !NOT_IN_libc */					      \
-    btsti  a0, 31;\
-    bf     3f;								      \
-    jmpi   SYSCALL_ERROR;						      \
-3:									      \
-    rts
-#endif
-#endif/* __PIC__ */
+#  else
+#   define PSEUDO_RET	\
+	btsti  a0, 31;					\
+	bf    2f;					\
+	subi sp, 8; st.w lr, (sp); st.w gb, (sp, 4);	\
+	__GET_GB1;					\
+	lrw   a2, SYSCALL_ERROR@PLT;			\
+	add   a2, gb;					\
+	ld.w  a2, (a2);					\
+	jsr   a2;					\
+	ld.w lr, (sp); ld.w gb, (sp, 4); addi sp, 8;	\
+2:							\
+	rts
+#  endif /* IS_IN (libc) */
+# else
+#  if !IS_IN (libc)
+#   define PSEUDO_RET		\
+	btsti  a0, 31;		\
+	bt     SYSCALL_ERROR;	\
+	rts
+#  else
+#   define PSEUDO_RET				\
+	btsti  a0, 31;				\
+	bf     3f;				\
+	jmpi   SYSCALL_ERROR;			\
+3:						\
+	rts
+#  endif /* !IS_IN (libc) */
+# endif /* __PIC__ */
 
 
-#undef ret
-#define ret PSEUDO_RET
+# undef ret
+# define ret PSEUDO_RET
 
-#undef	PSEUDO_END
-#define	PSEUDO_END(name)						      \
-  .align 4;	\
-  SYSCALL_ERROR_HANDLER;						      \
+# undef	PSEUDO_END
+# define PSEUDO_END(name)	\
+  .align 4;			\
+  SYSCALL_ERROR_HANDLER;	\
   END (name)
 
-#undef	PSEUDO_NOERRNO
-#define	PSEUDO_NOERRNO(name, syscall_name, args)			      \
-  .text;								      \
-  ENTRY (name);								      \
+# undef	PSEUDO_NOERRNO
+# define PSEUDO_NOERRNO(name, syscall_name, args)	\
+  .text;				\
+  ENTRY (name);				\
     DO_CALL (syscall_name, args)
 
-#define PSEUDO_RET_NOERRNO \
+# define PSEUDO_RET_NOERRNO \
 	jmp     r15;
 
-#undef ret_NOERRNO
-#define ret_NOERRNO PSEUDO_RET_NOERRNO
+# undef ret_NOERRNO
+# define ret_NOERRNO PSEUDO_RET_NOERRNO
 
-#undef	PSEUDO_END_NOERRNO
-#define	PSEUDO_END_NOERRNO(name)					      \
-  END (name)
+# undef	PSEUDO_END_NOERRNO
+# define PSEUDO_END_NOERRNO(name)	\
+	END (name)
 
 /* The function has to return the error code.  */
-#undef	PSEUDO_ERRVAL
-#define	PSEUDO_ERRVAL(name, syscall_name, args) \
-  .text;								      \
-  ENTRY (name)								      \
-    DO_CALL (syscall_name, args);					      \
-    not  a0;								      \
+# undef	PSEUDO_ERRVAL
+# define PSEUDO_ERRVAL(name, syscall_name, args)	\
+  .text;				\
+  ENTRY (name)				\
+    DO_CALL (syscall_name, args);	\
+    not  a0;				\
     addi a0, 1
 
-#undef	PSEUDO_END_ERRVAL
-#define	PSEUDO_END_ERRVAL(name) \
+# undef	PSEUDO_END_ERRVAL
+# define PSEUDO_END_ERRVAL(name) \
   END (name)
 
-#define ret_ERRVAL rts
+# define ret_ERRVAL rts
 
-#if !IS_IN (libc)
-#define SYSCALL_ERROR __local_syscall_error
+# if !IS_IN (libc)
+#  define SYSCALL_ERROR __local_syscall_error
 #  if RTLD_PRIVATE_ERRNO
-#    ifdef __PIC__
-#define SYSCALL_ERROR_HANDLER                                 \
-__local_syscall_error:                                          \
-        lrw     a1, rtld_errno@PLT;                             \
-        addu	a1, gb;						\
-        ldw     a1, (a1);                              \
-        rsubi   a0, 0;                                          \
-        stw     a0, (a1);                                       \
-        bmaski  a0, 0;                                          \
+#   ifdef __PIC__
+#    define SYSCALL_ERROR_HANDLER	\
+__local_syscall_error:			\
+        lrw     a1, rtld_errno@PLT; 	\
+        addu	a1, gb;			\
+        ldw     a1, (a1);		\
+        rsubi   a0, 0;			\
+        stw     a0, (a1);		\
+        bmaski  a0, 0;			\
         rts
-#    else /* no pic */
-#define SYSCALL_ERROR_HANDLER                                 \
-__local_syscall_error:                                          \
-        lrw     a1, rtld_errno;                                 \
-        rsubi   a0, 0;                                          \
-        stw     a0, (a1);                                       \
-        bmaski  a0, 0;                                          \
+#   else /* __PIC__ */
+#    define SYSCALL_ERROR_HANDLER	\
+__local_syscall_error:			\
+        lrw     a1, rtld_errno;		\
+        rsubi   a0, 0;			\
+        stw     a0, (a1);		\
+        bmaski  a0, 0;			\
         rts
-#    endif /* __PIC__ */
-
-#  else/* !RTLD_PRIVATE_ERRNO */
+#   endif /* __PIC__ */
+#  else /* !RTLD_PRIVATE_ERRNO */
 #    ifdef __PIC__
-#define SYSCALL_ERROR_HANDLER                                   \
-__local_syscall_error:                                          \
-        subi    sp, 8;                                          \
-        stw     a0, (sp, 0);                                    \
-        stw     r15, (sp, 4);                                    \
-/*      cfi_adjust_cfa_offset(8);                               \
-        cfi_rel_offset(r15, 0); */                              \
-        lrw     a1, __errno_location@PLT;                       \
-	add	a1, gb;						\
-        ldw     a1, (a1);                                       \
-        jsr     a1;                                             \
-        ldw     a1, (sp, 0);/* load errno*/                     \
-        ldw     r15, (sp, 4);		                        \
-        addi    sp, 8;                                          \
-/*      cfi_adjust_cfa_offset(-8)                               \
-        cfi_restore(r15)        */                              \
-        movi    a2, 0;                                          \
-        rsub    a1, a1, a2;                                     \
-        stw     a1, (a0);                                       \
-        bmaski  a0, 0;                                          \
+#     define SYSCALL_ERROR_HANDLER	\
+__local_syscall_error:				\
+        subi    sp, 8;				\
+        stw     a0, (sp, 0);			\
+        stw     r15, (sp, 4);			\
+        lrw     a1, __errno_location@PLT;	\
+	add	a1, gb;				\
+        ldw     a1, (a1);			\
+        jsr     a1;				\
+        ldw     a1, (sp, 0); /* load errno*/	\
+        ldw     r15, (sp, 4);			\
+        addi    sp, 8;				\
+        movi    a2, 0;				\
+        rsub    a1, a1, a2;			\
+        stw     a1, (a0);			\
+        bmaski  a0, 0;				\
         rts 
-#    else /* no pic */
-#define SYSCALL_ERROR_HANDLER                                   \
+#    else
+#     define SYSCALL_ERROR_HANDLER 	\
 __local_syscall_error:                                          \
         subi    sp, 8;                                          \
         stw     a0, (sp, 0);                                    \
         stw     r15, (sp, 4);                                   \
-/*      cfi_adjust_cfa_offset(8);                               \
-        cfi_rel_offset(r15, 0); */                              \
         lrw     a1, __errno_location;                           \
         jsr     a1;                                             \
         ldw     a1, (sp, 0);  /* load errno */                  \
         ldw     r15, (sp, 4);                                   \
         addi    sp, 8;                                          \
-/*      cfi_adjust_cfa_offset(-8)                               \
-        cfi_restore(r15)        */                              \
         movi    a2, 0;                                          \
         rsub    a1, a1, a2;                                     \
         stw     a1, (a0);                                       \
         bmaski  a0, 0;                                          \
         rts
-#    endif /* __PIC__ */
+#   endif /* __PIC__ */
 #  endif/* RTLD_PRIVATE_ERROR */
-#else/* NOT_IN_libc */
-#define SYSCALL_ERROR_HANDLER  /* Nothing here; code in sysdep.S is used.  */
-#define SYSCALL_ERROR __syscall_error
-#endif/* NOT_IN_libc */
-
-
+# else
+#  define SYSCALL_ERROR_HANDLER  /* Nothing here; code in sysdep.S is used.  */
+#  define SYSCALL_ERROR __syscall_error
+# endif/* IS_IN (libc) */
 
 /* define DO_CALL */
 #ifdef __CSKYABIV2__

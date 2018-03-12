@@ -1,5 +1,5 @@
-/* Machine-dependent ELF dynamic relocation inline functions.  csky version.
-   Copyright (C) 1996-2012 Free Software Foundation, Inc.
+/* Machine-dependent ELF dynamic relocation inline functions.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -25,25 +25,21 @@
 #include <sysdep.h>
 #include <dl-tls.h>
 
-
 /* Return nonzero iff ELF header is compatible with the running host.  */
 static inline int
 elf_machine_matches_host (const Elf32_Ehdr *ehdr)
 {
-	return 1;
+  return 1;
 }
-
 
 /* Return the link-time address of _DYNAMIC.
    This must be inlined in a function which uses global data.  */
 static inline Elf32_Addr
 elf_machine_dynamic (void)
 {
-    register Elf32_Addr *got __asm__ ("gb");    /* need modify */
-    return *got;
-
+  register Elf32_Addr *got __asm__ ("gb");    /* need modify */
+  return *got;
 }
-
 
 /* Return the run-time load address ,of the shared object.  */
 static inline Elf32_Addr
@@ -59,9 +55,9 @@ elf_machine_load_address (void)
   Elf32_Addr got_addr = (Elf32_Addr) &__start_flag;
   Elf32_Addr pcrel_addr;
   asm  ("subi sp,8\n"		\
-	"stw lr,(sp,0)\n"		\
-	"bsr start_flag\n"		\
-	"start_flag:"				\
+	"stw lr,(sp,0)\n"	\
+	"bsr start_flag\n"	\
+	"start_flag:"		\
 	"mov  %0, lr\n"		\
 	"ldw lr,(sp,0)\n" 	\
 	"addi sp,8\n"		\
@@ -100,29 +96,10 @@ elf_machine_runtime_setup (struct link_map *l, int lazy, int profile)
 	 to intercept the calls to collect information.  In this case we
 	 don't store the address in the GOT so that all future calls also
 	 end in this function.  */
-//      if (profile)
-//	{
-//	  got[2] = (Elf32_Addr) &_dl_runtime_profile;
-//
-//	  if (GLRO(dl_profile) != NULL
-//	      && _dl_name_match_p (GLRO(dl_profile), l))
-//	    {
-//	      /* This is the object we are looking for.  Say that we really
-//		 want profiling and the timers are started.  */
-//	      GL(dl_profile_map) = l;
-//	    }
-//	}
-//      else
-	/* This function will get called to fix up the GOT entry indicated by
-	   the offset on the stack, and then jump to the resolved address.  */
 	got[2] = (Elf32_Addr) &_dl_runtime_resolve;
     }
   return lazy;
 }
-
-//#define ELF_MACHINE_RUNTIME_FIXUP_ARGS long int save_a0, long int save_a1
-//#define ELF_MACHINE_RUNTIME_FIXUP_PARAMS save_a0, save_a1
-
 
 /* Mask identifying addresses reserved for the user program,
    where the dynamic linker should not map anything.  */
@@ -277,17 +254,7 @@ _dl_start_user:\n\
         stw     a2, (a3, 0)\n\
         br      .L_done_fixup\n\
 ");
-/*.L_fixup_stack:\n\
-        ldw     r6, (r8, 0)\n\
-        ldw     r7, (sp, 0)\n\
-        rsub    r6, r7\n\
-        mov     r7, r6\n\
-        lsli    r6, 2\n\
-        br      .L_done_fixup\n\
-*/
 #endif
-
-
 
 /* ELF_RTYPE_CLASS_PLT iff TYPE describes relocation of a PLT entry or
    TLS variable, so undefined references should not be allowed to
@@ -468,7 +435,6 @@ elf_machine_rela (struct link_map *map, const Elf32_Rela *reloc,
 	case R_CKCORE_NONE:		/* Alright, Wilbur.  */
 	  break;
 	default:
-//	  _dl_reloc_bad_type (map, r_type, 0);
 	  break;
 	}
     }
@@ -481,7 +447,6 @@ elf_machine_rela_relative (Elf32_Addr l_addr, const Elf32_Rela *reloc,
   Elf32_Addr *const reloc_addr = reloc_addr_arg;
   *reloc_addr = l_addr + reloc->r_addend;
 }
-
 
 auto inline void __attribute__ ((unused, always_inline))
 elf_machine_lazy_rel (struct link_map *map,
@@ -500,8 +465,6 @@ elf_machine_lazy_rel (struct link_map *map,
         else
           *reloc_addr = map->l_mach.plt;
       }
-    //else
-     // _dl_reloc_bad_type (map, r_type, 1);
   }
 }
 

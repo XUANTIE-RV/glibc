@@ -1,7 +1,6 @@
-/* Data for Mips version of processor capability information.
-   Copyright (C) 2007-2012 Free Software Foundation, Inc.
+/* Data for C-SKY version of processor capability information.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Robert Millan <rmh@gnu.org>.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -44,13 +43,13 @@
 #endif
 
 #if !defined PROCINFO_DECL && defined SHARED
-  ._dl_mips_platforms
+  ._dl_csky_platforms
 #else
-PROCINFO_CLASS const char _dl_mips_platforms[4][11]
+PROCINFO_CLASS const char _dl_csky_platforms[4][6]
 #endif
 #ifndef PROCINFO_DECL
 = {
-    "loongson2e", "loongson2f", "octeon", "octeon2"
+    "ck610", "ck807", "ck810", "ck860"
   }
 #endif
 #if !defined SHARED || defined PROCINFO_DECL

@@ -1,7 +1,6 @@
 /* Set current rounding direction.
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Andreas Jaeger <aj@arthur.rhein-neckar.de>, 1998.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -35,9 +34,8 @@ __fesetround (int round)
 
   /* Unsupported, so fail.  */
   return 1;
-#endif
+#endif /* __csky_hard_float__ */
 }
-
 libm_hidden_def (__fesetround)
 weak_alias (__fesetround, fesetround)
 libm_hidden_weak (fesetround)

@@ -1,6 +1,5 @@
-/* Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Andreas Schwab <schwab@suse.de>, 2002.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -13,9 +12,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library.  If not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <sysdep.h>
 #include <tls.h>
@@ -24,25 +22,22 @@
 # include <nptl/pthreadP.h>
 #endif
 
-
 #if IS_IN (libc) || IS_IN (libpthread) || IS_IN (librt)
 
 # ifdef __PIC__
-
-#define __GET_GB  \
-           bsr 1f; 1: lrw gb, 1b@GOTPC; addu gb, lr;
-
+#  define __GET_GB  \
+    bsr 1f; 1: lrw gb, 1b@GOTPC; addu gb, lr;
 #  define __JSR(symbol)    \
-           lrw a2, symbol@PLT; add a2, gb; ld.w a2, (a2); jsr a2;
+    lrw a2, symbol@PLT; add a2, gb; ld.w a2, (a2); jsr a2;
 
-# if !IS_IN (libc)
-#  define PSEUDO_ERRJMP \
-           subi sp, 8; st.w lr, (sp); st.w gb, (sp, 4);         \
-	   __GET_GB				\
-	   bsr SYSCALL_ERROR;			\
-           ld.w lr, (sp); ld.w gb, (sp, 4); addi sp, 8;         \
-	   rts;
-# else
+#  if !IS_IN (libc)
+#   define PSEUDO_ERRJMP \
+     subi sp, 8; st.w lr, (sp); st.w gb, (sp, 4);         \
+     __GET_GB				\
+     bsr SYSCALL_ERROR;			\
+     ld.w lr, (sp); ld.w gb, (sp, 4); addi sp, 8;         \
+     rts;
+# else /* !IS_IN (libc) */
 #  define PSEUDO_ERRJMP  \
            subi sp, 8; st.w lr, (sp); st.w gb, (sp, 4);         \
            __GET_GB            \
@@ -68,12 +63,12 @@
    .type __##syscall_name##_nocancel,@function;                               \
    .globl __##syscall_name##_nocancel;                                        \
    __##syscall_name##_nocancel:                                               \
-    cfi_startproc;                                                                      \
+    cfi_startproc;                                                            \
     DO_CALL (syscall_name, args);                                             \
     btsti a0, 31;                                                             \
     bt    99b;                                                                \
     rts;                                                                      \
-    cfi_endproc;                                                                      \
+    cfi_endproc;							      \
    .size __##syscall_name##_nocancel,.-__##syscall_name##_nocancel;           \
   ENTRY (name);                                                               \
     SINGLE_THREAD_P;                                                          \
@@ -138,7 +133,7 @@
     bt    99b;                                                                \
     rts;                                                                      \
 
-#endif/* __CSKYABIV2__ */
+#endif /* __CSKYABIV2__ */
 
 #ifdef	__CSKYABIV2__
 #define DOCARGS_0       \

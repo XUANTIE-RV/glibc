@@ -1,6 +1,5 @@
-/* Copyright (C) 1999-2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Philip Blundell <philb@gnu.org>.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -17,28 +16,27 @@
    <http://www.gnu.org/licenses/>.  */
 
 #ifdef __CSKYABIV2__
-#include "abiv2_vfork.S"
+# include "abiv2_vfork.S"
 #else
 
-
-#include <sysdep.h>
-#define _ERRNO_H	1
-#include <bits/errno.h>
+# include <sysdep.h>
+# define _ERRNO_H	1
+# include <bits/errno.h>
 
 /* Clone the calling process, but without copying the whole address space.
    The calling process is suspended until the new process exits or is
-   replaced by a call to `execve'.  Return -1 for errors, 0 to the new process,
+   replaced by a call to `execve'. Return -1 for errors, 0 to the new process,
    and the process ID of the new process to the old process.  */
 
 ENTRY (__vfork)
-#ifdef SAVE_PID
+# ifdef SAVE_PID
 	SAVE_PID
-#endif
+# endif
 	lrw	r1, __NR_vfork
 	trap	0
-#ifdef RESTORE_PID
+# ifdef RESTORE_PID
 	RESTORE_PID
-#endif
+# endif
 	PSEUDO_RET
 	rts
 

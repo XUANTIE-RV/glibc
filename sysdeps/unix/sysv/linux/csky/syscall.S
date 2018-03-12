@@ -1,4 +1,4 @@
-/* Copyright (C) 2005, 2009 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -16,10 +16,10 @@
    <http://www.gnu.org/licenses/>.  */
 
 #ifdef __CSKYABIV2__
-#include "abiv2_syscall.S"
+# include "abiv2_syscall.S"
 #else
 
-#include <sysdep.h>
+# include <sysdep.h>
 
 ENTRY (syscall)
 	mov	r1, r2		/* syscall num */
@@ -38,7 +38,7 @@ ENTRY (syscall)
 PSEUDO_END (syscall)
 
 do_syscall_error:
-#ifdef __PIC__
+# ifdef __PIC__
 	subi	sp, 8
 	stw	gb, (sp, 0)
 	stw	r15, (sp, 4)
@@ -53,9 +53,9 @@ do_syscall_error:
 	ldw	gb, (sp, 0)
 	ldw	r15, (sp, 4)
 	addi	sp, 8
-#else
+# else
 	jmpi	__syscall_error
-#endif
+# endif /* __PIC__ */
 	rts
 
-#endif	/* __CSKYABVI2__ */
+#endif /* __CSKYABVI2__ */

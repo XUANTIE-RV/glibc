@@ -1,7 +1,6 @@
 /* Store current floating-point environment.
-   Copyright (C) 1998, 1999, 2000, 2002, 2010 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Andreas Jaeger <aj@suse.de>, 1998.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -26,22 +25,18 @@ __fegetenv (fenv_t *envp)
 #ifdef __csky_hard_float__
   unsigned int fpcr;
   unsigned int fpsr;
+
   _FPU_GETCW (fpcr);
   _FPU_GETFPSR (fpsr);
   envp->__fpcr = fpcr;
   envp->__fpsr = fpsr;
   
-  /* Success.  */
   return 0;
 #else
-  /* Unsupported, so fail.  */
+  /* Unsupported, so return 1 for failure.  */
   return 1;
-#endif
+#endif /* __csky_hard_float__ */
 }
-
-//#include <shlib-compat.h>
-//libm_hidden_ver (__fegetenv, fegetenv)
-//versioned_symbol (libm, __fegetenv, fegetenv, GLIBC_2_2);
 libm_hidden_def (__fegetenv)
 weak_alias (__fegetenv, fegetenv)
 libm_hidden_weak (fegetenv)

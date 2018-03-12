@@ -1,7 +1,7 @@
-# File name	Caller	Syscall name	Args	Strong name	Weak names
+# File name	Caller	Syscall name	Args	 Strong name	Weak names
 
-chown		-	chown32		i:sii	__chown		chown
-cacheflush  -   cacheflush  i:pii   _flush_cache    cacheflush
+chown		-	chown32		i:sii	 __chown	chown
+cacheflush	-	cacheflush	i:pii	 _flush_cache	cacheflush
 
-prlimit64	EXTRA	prlimit64	i:iipp	prlimit64
-fanotify_mark	EXTRA	fanotify_mark	i:iiiiis	fanotify_mark
+prlimit64	EXTRA	prlimit64	i:iipp	 prlimit64
+fanotify_mark	EXTRA	fanotify_mark	i:iiiiis fanotify_mark

@@ -1,5 +1,5 @@
 /* Run-time dynamic linker data structures for loaded ELF shared objects.
-   Copyright (C) 2000, 2002, 2003, 2006, 2007 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -24,18 +24,18 @@
 struct La_csky_regs;
 struct La_csky_retval;
 
-#define ARCH_PLTENTER_MEMBERS						    \
-    Elf32_Addr (*csky_gnu_pltenter) (Elf32_Sym *, unsigned int,	    \
-					 uintptr_t *, uintptr_t *,	    \
-					 struct La_csky_regs *,	    \
-					 unsigned int *, const char *name,  \
+#define ARCH_PLTENTER_MEMBERS	\
+    Elf32_Addr (*csky_gnu_pltenter) (Elf32_Sym *, unsigned int,		      \
+					 uintptr_t *, uintptr_t *,	      \
+					 struct La_csky_regs *,		      \
+					 unsigned int *, const char *name,    \
 					 long int *framesizep);
 
-#define ARCH_PLTEXIT_MEMBERS						    \
-    unsigned int (*csky_gnu_pltexit) (Elf32_Sym *, unsigned int,	    \
-					  uintptr_t *, uintptr_t *,	    \
-					  const struct La_csky_regs *,   \
-					  struct La_csky_retval *,	    \
+#define ARCH_PLTEXIT_MEMBERS	\
+    unsigned int (*csky_gnu_pltexit) (Elf32_Sym *, unsigned int,	       \
+					  uintptr_t *, uintptr_t *,	       \
+					  const struct La_csky_regs *,	       \
+					  struct La_csky_retval *,	       \
 					  const char *);
 
 #include_next <ldsodefs.h>

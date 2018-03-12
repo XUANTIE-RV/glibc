@@ -1,5 +1,5 @@
-/* Private floating point rounding and exceptions handling.  ARM VFP version.
-   Copyright (C) 2014-2017 Free Software Foundation, Inc.
+/* Private floating point rounding and exceptions handling. C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include <fpu_control.h>
 
 #ifdef __csky_hard_float__
-#include <fenv_libc.h>
+# include <fenv_libc.h>
 
 static __always_inline void
 libc_feholdexcept_vfp (fenv_t *envp)
@@ -269,7 +269,7 @@ libc_fesetenv_vfp_ctx (struct rm_ctx *ctx)
 # define libc_feupdateenv_testl libc_feupdateenv_test_vfp
 
 /* We have support for rounding mode context.  */
-#define HAVE_RM_CTX 1
+# define HAVE_RM_CTX 1
 
 # define libc_feholdsetround_ctx	libc_feholdsetround_vfp_ctx
 # define libc_feresetround_ctx		libc_feresetround_vfp_ctx
@@ -283,6 +283,6 @@ libc_fesetenv_vfp_ctx (struct rm_ctx *ctx)
 # define libc_feresetroundl_ctx		libc_feresetround_vfp_ctx
 # define libc_feresetround_noexl_ctx	libc_fesetenv_vfp_ctx
 
-#endif
+#endif /* __csky_hard_float__ */
 
 #endif /* FENV_PRIVATE_H */

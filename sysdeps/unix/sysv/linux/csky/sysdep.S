@@ -1,5 +1,4 @@
-/* Copyright (C) 1995, 1996, 1997, 1998, 2005, 2006
-   Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -18,7 +17,6 @@
 
 #include <sysdep.h>
 #include <csky_readtp.h>
-	.text
 
 /* The syscall stubs jump here when they detect an error.
    The code for Linux is almost identical to the canonical Unix
@@ -27,6 +25,7 @@
 #undef CALL_MCOUNT
 #define CALL_MCOUNT /* Don't insert the profiling call, it clobbers R0.  */
 
+	.text
 ENTRY(__syscall_error)
 	movi	a1, 0
 	rsub	a0, a0, a1 
@@ -35,13 +34,14 @@ ENTRY(__syscall_error)
         /* We translate the system's EWOULDBLOCK error into EAGAIN.
            The GNU C library always defines EWOULDBLOCK==EAGAIN.
            EWOULDBLOCK_sys is the original number.  */
-        cmpnei  a0, EWOULDBLOCK /* Is it the old EWOULDBLOCK?  */
+        cmpnei  a0, EWOULDBLOCK	/* Is it the old EWOULDBLOCK?  */
         bt      1f
-        mov     a0, EAGAIN      /* Yes; translate it to EAGAIN.  */
+        mov     a0, EAGAIN	/* Yes; translate it to EAGAIN.  */
 #endif
+
 #ifdef __CSKYABIV2__
 1:
-#if !IS_IN (rtld)
+# if !IS_IN (rtld)
 	mov	a1, a0
         csky_read_tp
 
@@ -54,31 +54,31 @@ ENTRY(__syscall_error)
         stw     a1, (t1)
         bmaski  a0, 0
         rts
-#elif RTLD_PRIVATE_ERRNO
-#ifdef  __PIC__
+# elif RTLD_PRIVATE_ERRNO /* !IS_IN (rtld) */
+#  ifdef  __PIC__
         grs     t1, .Lgetpc2
 .Lgetpc2:
         lrw     t0, .Lgetpc2@GOTPC
         addu    t1, t1, t0
         lrw     t0, rtld_errno@PLT
         ldr.w   t0, (t1, t0 << 0)
-#else
+#  else
         lrw     t0, rtld_errno
-#endif
+#  endif /* __PIC__ */
         stw     a0, (t0)
         bmaski  a0, 0
         rts
-#else
-#error "Unsupported non-TLS case"
-#endif
+# else
+#  error "Unsupported non-TLS case"
+# endif /* RTLD_PRIVATE_ERRNO */
 
-#undef  __syscall_error
+# undef  __syscall_error
 END (__syscall_error)
 
-#else/* abi */
+#else /* __CSKYABIV2__ */
 
 1:
-#if !IS_IN (rtld)
+# if !IS_IN (rtld)
         mov     r7, r15
 	mov	r1, r2
         csky_read_tp
@@ -93,8 +93,8 @@ END (__syscall_error)
         bmaski  r2, 0
 	mov	r15, r7
         rts
-#elif RTLD_PRIVATE_ERRNO
-#ifdef __PIC__
+# elif RTLD_PRIVATE_ERRNO /* !IS_IN (rtld) */
+#  ifdef __PIC__
         mov     r7, r15
         bsr     .Lgetpc2
 .Lgetpc2:
@@ -104,19 +104,16 @@ END (__syscall_error)
         addu    r5, r6
         ldw     r5, (r5)
 	mov	r15, r7
-#else
+#  else /* __PIC__ */
         lrw     r5, rtld_errno
-#endif
+#  endif /* __PIC__ */
         stw     r2, (r5)
         bmaski  r2, 0
         rts
-#else
-#error "Unsupported non-TLS case"
-#endif
+# else
+#  error "Unsupported non-TLS case"
+# endif /* RTLD_PRIVATE_ERRNO */
 
 END (__syscall_error)
 
-#endif /* abi */
-
-//#define __syscall_error __syscall_error_1
-//#include "../../../csky/sysdep.S"
+#endif /* __CSKYABIV2__ */

@@ -1,5 +1,5 @@
 /* Provide kernel hint to read ahead.
-   Copyright (C) 2002-2012 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -13,7 +13,7 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library.  If not, see
+   License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
 #include <errno.h>
@@ -23,7 +23,6 @@
 
 #include <sysdep.h>
 #include <sys/syscall.h>
-
 
 ssize_t
 __readahead (int fd, off64_t offset, size_t count)

@@ -1,6 +1,6 @@
 /* Thread-local storage descriptor handling in the ELF dynamic linker.
    CSKY version.
-   Copyright (C) 2005, 2010 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -9,7 +9,7 @@
    version 2.1 of the License, or (at your option) any later version.
 
    The GNU C Library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; witout even the implied warranty of
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Lesser General Public License for more details.
 
@@ -18,7 +18,7 @@
    <http://www.gnu.org/licenses/>.  */
 
 #ifndef _CSKY_DL_TLSDESC_H
-# define _CSKY_DL_TLSDESC_H 1
+#define _CSKY_DL_TLSDESC_H 1
 
 /* Type used to represent a TLS descriptor in the GOT.  */
 struct tlsdesc
@@ -30,7 +30,6 @@ struct tlsdesc
     } argument;
   ptrdiff_t (*entry)(struct tlsdesc *);
 };
-
 
 typedef struct dl_tls_index
 {

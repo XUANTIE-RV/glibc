@@ -1,7 +1,6 @@
 /* Raise given exceptions.
-   Copyright (C) 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Andreas Jaeger <aj@suse.de>, 2000.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -27,13 +26,13 @@ int
 __feraiseexcept (int excepts)
 {
 #ifdef __csky_hard_float__
-	/* Raise exceptions represented by EXCEPTS.  But we must raise only one
+    /* Raise exceptions represented by EXCEPTS.  But we must raise only one
      signal at a time.  It is important that if the overflow/underflow
      exception and the divide by zero exception are given at the same
      time, the overflow/underflow exception follows the divide by zero
      exception.  */
 
-#ifdef __csky_fpuv2__
+# ifdef __csky_fpuv2__
     /* First: invalid exception.  */
     if (FE_INVALID & excepts)
     {
@@ -75,7 +74,7 @@ __feraiseexcept (int excepts)
       double x = 4.9406564584124654e-324;
       __asm__ __volatile__ ("fstod %0, %0" : "+v" (x));
     }
-#else /* __csky_fpuv2__ */
+# else /* __csky_fpuv2__ */
      int tmp = 0;
     /* First: invalid exception.  */
     if (FE_INVALID & excepts)
@@ -118,17 +117,15 @@ __feraiseexcept (int excepts)
       __asm__ __volatile__ ("fdivs %0, %0, %2, %1"
                     : "+f" (x), "+r"(tmp) : "f" (y));
     }
-#endif /* __csky_fpuv2__ */
+# endif /* __csky_fpuv2__ */
 
     /* Success.  */
     return 0;
-#else  /* __csky_hard_float__ */
+#else /* __csky_hard_float__ */
   /* Unsupported, so fail unless nothing needs to be done.  */
   return (excepts != 0);
 #endif
 }
-
 libm_hidden_def (__feraiseexcept)
 weak_alias (__feraiseexcept, feraiseexcept)
 libm_hidden_weak (feraiseexcept)
-

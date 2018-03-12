@@ -1,4 +1,4 @@
-/* Copyright (C) 2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
+   License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
 #include <stdarg.h>
@@ -20,9 +20,9 @@
 
 /* Number of arguments that go in registers.  */
 #ifdef __CSKYABIV2__
-#define NREG_ARGS  4
+# define NREG_ARGS  4
 #else
-#define NREG_ARGS  6
+# define NREG_ARGS  6
 #endif
 
 /* Take a context previously prepared via getcontext() and set to

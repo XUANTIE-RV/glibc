@@ -1,7 +1,6 @@
 /* Clear given exceptions in current floating-point environment.
-   Copyright (C) 1998-2012 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Andreas Jaeger <aj@suse.de>, 1998.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -22,31 +21,27 @@
 #include <fpu_control.h>
 
 int
-__feclearexcept (int excepts)
+feclearexcept (int excepts)
 {
 #ifdef __csky_hard_float__
-	int fpsr;
+  int fpsr;
 
-    /* Mask out unsupported bits/exceptions.  */
-	excepts &= FE_ALL_EXCEPT;
-	
-    /* Read the complete control word.  */
-	_FPU_GETFPSR (fpsr);
-	
-    /* Clear the relevant bits.  */
-	fpsr &= ~(excepts | (excepts << CAUSE_SHIFT)); 
-	
-    /* Put the new data in effect.  */
-    _FPU_SETFPSR (fpsr);
-	
-	/* Success.  */
-	return 0;
+  /* Mask out unsupported bits/exceptions.  */
+  excepts &= FE_ALL_EXCEPT;
+
+  /* Read the complete control word.  */
+  _FPU_GETFPSR (fpsr);
+
+  /* Clear the relevant bits.  */
+  fpsr &= ~(excepts | (excepts << CAUSE_SHIFT)); 
+
+  /* Put the new data in effect.  */
+  _FPU_SETFPSR (fpsr);
+
+  return 0;
 #else
-	/* Unsupported, so fail unless nothing needs to be done.  */
-	return (excepts != 0);
-#endif
+  /* Unsupported, so fail unless nothing needs to be done.  */
+  return (excepts != 0);
+#endif /* __csky_hard_float__ */
 }
-
-#include <shlib-compat.h>
-libm_hidden_ver (__feclearexcept, feclearexcept)
-versioned_symbol (libm, __feclearexcept, feclearexcept, GLIBC_2_2);
+libm_hidden_def (feclearexcept)

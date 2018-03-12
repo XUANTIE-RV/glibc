@@ -1,4 +1,6 @@
-/* Copyright (C) 2000, 2010 Free Software Foundation, Inc.
+/* This file contains a bit of information about the stack allocation
+   of the processor.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -15,15 +17,12 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-/* This file contains a bit of information about the stack allocation
-   of the processor.  */
-
 #ifndef _STACKINFO_H
 #define _STACKINFO_H	1
 
 #include <elf.h>
 
-/* On MIPS the stack grows down.  */
+/* On C-SKY the stack grows down.  */
 #define _STACK_GROWS_DOWN	1
 
 /* Default to an executable stack.  PF_X can be overridden if PT_GNU_STACK is

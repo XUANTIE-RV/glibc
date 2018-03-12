@@ -1,5 +1,5 @@
-/* Install given floating-point control modes.  ARM version.
-   Copyright (C) 2016-2017 Free Software Foundation, Inc.
+/* Install given floating-point control modes.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -13,33 +13,25 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
+   License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
 #include <fenv.h>
 #include <fpu_control.h>
 
-/* NZCV flags, QC bit, IDC bit and bits for IEEE exception status.  */
-#define FPU_STATUS_BITS _FPU_RESERVED
-
 int
 fesetmode (const femode_t *modep)
 {
 #ifdef __csky_hard_float__
-  fpu_control_t fpcr, new_fpcr;
-
-  _FPU_GETCW (fpcr);
   if (modep == FE_DFL_MODE)
-    new_fpcr = (fpcr & (_FPU_RESERVED | FPU_STATUS_BITS)) | _FPU_DEFAULT;
+    mode = _FPU_DEFAULT;
   else
-    new_fpcr = (fpcr & FPU_STATUS_BITS) | (*modep & ~FPU_STATUS_BITS);
-
-  if ((new_fpcr ^ fpcr) != 0)
-    _FPU_SETCW (new_fpcr);
+    mode = *modep;
+  _FPU_SETCW (mode);
 
   return 0;
 #else
   /* Nothing to do.  */
   return 0;
-#endif
+#endif /* __csky_hard_float__ */
 }

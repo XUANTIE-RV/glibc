@@ -1,5 +1,5 @@
-/* Set given exception flags.  CSKY version.
-   Copyright (C) 2016-2017 Free Software Foundation, Inc.
+/* Set given exception flags.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -13,7 +13,7 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
+   License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
 #include <fenv.h>
@@ -31,7 +31,7 @@ fesetexcept (int excepts)
     _FPU_SETFPSR (new_fpsr);
 #else
   return (excepts != 0);
-#endif
+#endif /* __csky_hard_float__ */
 
   return 0;
 }

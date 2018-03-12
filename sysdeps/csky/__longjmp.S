@@ -1,6 +1,5 @@
-/* Copyright (C) 1992, 1995, 1997, 2000, 2009 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Brendan Kehoe (brendan@zen.org).
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -27,7 +26,6 @@ ENTRY(__longjmp)
 have_return:
 #ifdef CHECK_SP
 	ldw     r10, (a2, 0)	/* jmpbuf's sp */
-//	cfi_undefined (r10)
 	CHECK_SP(r10)
 #endif
 #ifdef __CSKYABIV2__
@@ -63,17 +61,6 @@ have_return:
 	addi    a2, 32
 	addi	a2, 4
 #endif
-
-//	cfi_restore (sp)
-//	cfi_restore (a0)
-//	cfi_restore (a1)
-//	cfi_restore (a2)
-//	cfi_restore (a3)
-//	cfi_restore (a4)
-//	cfi_restore (a5)
-//	cfi_restore (fp)
-//	cfi_restore (lr)
-
 
 	jmp lr
 

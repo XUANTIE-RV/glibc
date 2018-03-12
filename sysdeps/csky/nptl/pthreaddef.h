@@ -1,4 +1,4 @@
-/* Copyright (C) 2002, 2003, 2005 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -18,15 +18,14 @@
 /* Default stack size.  */
 #define ARCH_STACK_DEFAULT_SIZE	(2 * 1024 * 1024)
 
-/* Required stack pointer alignment at beginning.  SSE requires 16
-   bytes.  */
-#define STACK_ALIGN		16
+/* Required stack pointer alignment at beginning.  */
+#define STACK_ALIGN		8
 
 /* Minimal stack size after allocating thread descriptor and guard size.  */
 #define MINIMAL_REST_STACK	2048
 
 /* Alignment requirement for TCB.  */
-#define TCB_ALIGNMENT		16
+#define TCB_ALIGNMENT		8
 
 
 /* Location of current stack frame.
@@ -39,8 +38,3 @@
    return the hard FP minus 12.  Of course, this makes no sense
    without the obsolete APCS stack layout...  */
 #define CURRENT_STACK_FRAME	(__builtin_frame_address (0) - 12)
-
-
-/* XXX Until we have a better place keep the definitions here.  */
-#define __exit_thread_inline(val) \
-  INLINE_SYSCALL (exit, 1, (val))

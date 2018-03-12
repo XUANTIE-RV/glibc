@@ -1,7 +1,6 @@
 /* Return backtrace of current program state.
-   Copyright (C) 2003-2005,2007,2009,2011,2012 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Jakub Jelinek <jakub@redhat.com>, 2003.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -14,7 +13,7 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
+   License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
 #include <libc-lock.h>
@@ -36,7 +35,6 @@ static _Unwind_Reason_Code (*unwind_backtrace) (_Unwind_Trace_Fn, void *);
 static _Unwind_Ptr (*unwind_getip) (struct _Unwind_Context *);
 static _Unwind_Word (*unwind_getcfa) (struct _Unwind_Context *);
 static void *libgcc_handle;
-
 
 /* Dummy version in case libgcc_s does not contain the real code.  */
 static _Unwind_Word

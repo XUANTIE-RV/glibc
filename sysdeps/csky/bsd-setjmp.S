@@ -1,5 +1,5 @@
-/* BSD `setjmp' entry point to `sigsetjmp (..., 1)'.  MIPS version.
-   Copyright (C) 1996, 1997, 2000 Free Software Foundation, Inc.
+/* BSD `setjmp' entry point to `sigsetjmp (..., 1)'.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -25,15 +25,15 @@
 ENTRY(setjmp)
 	movi    a1, 1
 #ifdef __PIC__
-#ifdef  __CSKYABIV2__
-        grs     t1, .Lgetpc
+# ifdef  __CSKYABIV2__
+	grs     t1, .Lgetpc
 .Lgetpc:
-        lrw     t0, .Lgetpc@GOTPC
-        addu    t1, t0
-        lrw     a3, __sigsetjmp@PLT
-        addu    a3, t1
-        ldw     a3, (a3)
-#else
+	lrw     t0, .Lgetpc@GOTPC
+	addu    t1, t0
+	lrw     a3, __sigsetjmp@PLT
+	addu    a3, t1
+	ldw     a3, (a3)
+# else
 	mov	r7, lr
 	bsr     .Lgetpc
 .Lgetpc:
@@ -43,11 +43,11 @@ ENTRY(setjmp)
 	addu    a3, a2
 	ldw     a3, (a3)
 	mov     lr, r7
-#endif
+# endif /* !__CSKYABIV2__ */
 	jmp     a3
 #else
 	jmpi    __sigsetjmp
-#endif
+#endif /* !__PIC__ */
 
 END(setjmp)
 

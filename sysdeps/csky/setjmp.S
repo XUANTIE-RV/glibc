@@ -1,4 +1,4 @@
-/* Copyright (C) 1996, 1997, 2000 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ ENTRY(__sigsetjmp)
 #endif
 
 #ifdef __PIC__
-#ifdef	__CSKYABIV2__
+# ifdef __CSKYABIV2__
 	grs     t1, .Lgetpc
 .Lgetpc:
 	lrw     t0, .Lgetpc@GOTPC
@@ -63,7 +63,7 @@ ENTRY(__sigsetjmp)
 	lrw     a2, __sigjmp_save@PLT
 	ldr.w   a2, (t1, a2 << 0)
 	jmp     a2
-#else
+# else
 	mov     a3, lr
 	bsr     .Lgetpc
 .Lgetpc:
@@ -74,10 +74,10 @@ ENTRY(__sigsetjmp)
 	ldw     r7, (r7)
 	mov     lr, a3
 	jmp     r7
-#endif
+# endif /* !__CSKYABIV2__ */
 #else
 	jmpi    __sigjmp_save
-#endif
+#endif /* !__PIC__ */
 
 END(__sigsetjmp)
 

@@ -1,4 +1,5 @@
-/* Copyright (C) 1997, 1999, 2001 Free Software Foundation, Inc.
+/* System V/C-SKY ABI compliant context switching support.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -12,11 +13,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
-
-/* System V/ckcore ABI compliant context switching support.  */
+   License along with the GNU C Library.  If not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #ifndef _SYS_UCONTEXT_H
 #define _SYS_UCONTEXT_H	1
@@ -89,9 +87,9 @@ enum
 /* Structure to describe FPU registers.  */
 typedef struct fpregset
 {
-    unsigned long  fesr;        /* fpu exception status reg */
-    unsigned long  fsr;         /* fpu status reg, nothing in CPU_CSKYV2 */
-    unsigned long  fp[32];      /* fpu general regs */
+  unsigned long  fesr;        /* fpu exception status reg */
+  unsigned long  fsr;         /* fpu status reg, nothing in CPU_CSKYV2 */
+  unsigned long  fp[32];      /* fpu general regs */
 } fpregset_t;
 
 /* store common registers and fp registers etc. */
@@ -100,12 +98,12 @@ typedef struct sigcontext mcontext_t;
 /* Userlevel context.  */
 typedef struct ucontext
 {
-    unsigned long uc_flags;
-    struct ucontext *uc_link;
-    stack_t uc_stack;
-    mcontext_t uc_mcontext;	/* struct sigcontext */
-    __sigset_t uc_sigmask;
-	unsigned long uc_filler[80];
+  unsigned long uc_flags;
+  struct ucontext *uc_link;
+  stack_t uc_stack;
+  mcontext_t uc_mcontext;	/* struct sigcontext */
+  __sigset_t uc_sigmask;
+  unsigned long uc_filler[80];
 } ucontext_t;
 
 #endif /* sys/ucontext.h */

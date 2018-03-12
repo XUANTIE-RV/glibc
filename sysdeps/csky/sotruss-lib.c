@@ -1,5 +1,5 @@
 /* Override generic sotruss-lib.c to define actual functions for CSKY.
-   Copyright (C) 2012 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,13 +21,12 @@
 
 #include <elf/sotruss-lib.c>
 
-
 ElfW(Addr)
 la_csky_gnu_pltenter (ElfW(Sym) *sym __attribute__ ((unused)),
-			  unsigned int ndx __attribute__ ((unused)),
-			  uintptr_t *refcook, uintptr_t *defcook,
-			  La_csky_regs *regs, unsigned int *flags,
-			  const char *symname, long int *framesizep)
+		      unsigned int ndx __attribute__ ((unused)),
+		      uintptr_t *refcook, uintptr_t *defcook,
+		      La_csky_regs *regs, unsigned int *flags,
+		      const char *symname, long int *framesizep)
 {
   print_enter (refcook, defcook, symname,
 	       regs->lr_reg[0], regs->lr_reg[1], regs->lr_reg[2],
@@ -41,10 +40,8 @@ la_csky_gnu_pltenter (ElfW(Sym) *sym __attribute__ ((unused)),
 
 unsigned int
 la_csky_gnu_pltexit (ElfW(Sym) *sym, unsigned int ndx, uintptr_t *refcook,
-			 uintptr_t *defcook,
-			 const struct La_csky_regs *inregs,
-			 struct La_csky_retval *outregs,
-			 const char *symname)
+		     uintptr_t *defcook, const struct La_csky_regs *inregs,
+		     struct La_csky_retval *outregs, const char *symname)
 {
   print_exit (refcook, defcook, symname, outregs->lrv_v0);
 

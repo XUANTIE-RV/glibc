@@ -1,6 +1,5 @@
-/* Assembler macros for ARM.
-   Copyright (C) 1997, 1998, 2003, 2009, 2010, 2012
-   Free Software Foundation, Inc.
+/* Assembler macros for C-SKY.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -31,17 +30,16 @@
 #define ASM_SIZE_DIRECTIVE(name) .size name,.-name
 
 /* Define an entry point visible from C.  */
-#define ENTRY(name)                                                           \
-  .globl name;                                                 \
-  .type name,@function;                                        \
-  .align 4;                                                         \
-  name##:;                                                               \
-  cfi_startproc;								      \
-
+#define ENTRY(name)	\
+  .globl name;		\
+  .type name,@function;	\
+  .align 4;		\
+  name##:;		\
+  cfi_startproc;	\
 
 #undef  END
-#define END(name)                                                             \
-  cfi_endproc;								      \
+#define END(name)	\
+  cfi_endproc;		\
   ASM_SIZE_DIRECTIVE(name)
 
 #endif

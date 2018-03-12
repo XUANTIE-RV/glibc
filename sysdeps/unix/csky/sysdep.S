@@ -1,6 +1,4 @@
-/* Copyright (C) 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 2002, 2003,
-   2004, 2005, 2009, 2011, 2012
-   Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,15 +19,13 @@
 #include "abiv2_sysdep.S"
 #else
 
-
 #include <sysdep.h>
 #define _ERRNO_H
 #include <bits/errno.h>
 #include <csky_readtp.h>
 
-
 #if IS_IN (rtld)
-# include <dl-sysdep.h>			/* Defines RTLD_PRIVATE_ERRNO.  */
+#include <dl-sysdep.h>			/* Defines RTLD_PRIVATE_ERRNO.  */
 #endif
 
 #include <tls.h>
@@ -82,7 +78,7 @@ __syscall_error:
 #error "Unsupported non-TLS case"
 #endif
 
-#undef	__syscall_error
+#undef __syscall_error
 END (__syscall_error)
 
 #endif	/* __CSKYABIV2__*/

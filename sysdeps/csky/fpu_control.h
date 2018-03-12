@@ -1,7 +1,6 @@
-/* FPU control word bits.  csky version.
-   Copyright (C) 1996-2012 Free Software Foundation, Inc.
+/* FPU control word bits. C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Olaf Flebbe and Ralf Baechle.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -66,86 +65,86 @@
 
 #ifdef __csky_soft_float__
 
-#define _FPU_RESERVED 0xffffffff
-#define _FPU_DEFAULT  0x00000000
+# define _FPU_RESERVED 0xffffffff
+# define _FPU_DEFAULT  0x00000000
 typedef unsigned int fpu_control_t;
-#define _FPU_GETCW(cw) (cw) = 0
-#define _FPU_SETCW(cw) (void) (cw)
-#define _FPU_GETFPSR(cw) (cw) = 0
-#define _FPU_SETFPSR(cw) (void) (cw)
+# define _FPU_GETCW(cw) (cw) = 0
+# define _FPU_SETCW(cw) (void) (cw)
+# define _FPU_GETFPSR(cw) (cw) = 0
+# define _FPU_SETFPSR(cw) (void) (cw)
 extern fpu_control_t __fpu_control;
 
-#else /* __csky_soft_float__ */
+#else /* !__csky_soft_float__ */
 
 /* masking of interrupts */
-#define _FPU_MASK_IDE     (1 << 5)  /* input denormalized exception */ 
-#define _FPU_MASK_IXE     (1 << 4)  /* inexact exception            */
-#define _FPU_MASK_UFE     (1 << 3)  /* underflow exception          */
-#define _FPU_MASK_OFE     (1 << 2)  /* overflow exception           */
-#define _FPU_MASK_DZE     (1 << 1)  /* division by zero exception   */
-#define _FPU_MASK_IOE     (1 << 0)  /* invalid operation exception  */
+# define _FPU_MASK_IDE     (1 << 5)  /* input denormalized exception */ 
+# define _FPU_MASK_IXE     (1 << 4)  /* inexact exception            */
+# define _FPU_MASK_UFE     (1 << 3)  /* underflow exception          */
+# define _FPU_MASK_OFE     (1 << 2)  /* overflow exception           */
+# define _FPU_MASK_DZE     (1 << 1)  /* division by zero exception   */
+# define _FPU_MASK_IOE     (1 << 0)  /* invalid operation exception  */
 
-#define _FPU_MASK_FEA     (1 << 15) /* case for any exception */
-#define _FPU_MASK_FEC     (1 << 7)  /* flag for any exception */
+# define _FPU_MASK_FEA     (1 << 15) /* case for any exception */
+# define _FPU_MASK_FEC     (1 << 7)  /* flag for any exception */
 
 /* flush denormalized numbers to zero */
-#define _FPU_FLUSH_TZ   0x8000000
+# define _FPU_FLUSH_TZ   0x8000000
 
 /* rounding control */
-#define _FPU_RC_NEAREST (0x0 << 24)     /* RECOMMENDED */
-#define _FPU_RC_ZERO    (0x1 << 24)
-#define _FPU_RC_UP      (0x2 << 24)
-#define _FPU_RC_DOWN    (0x3 << 24)
+# define _FPU_RC_NEAREST (0x0 << 24)     /* RECOMMENDED */
+# define _FPU_RC_ZERO    (0x1 << 24)
+# define _FPU_RC_UP      (0x2 << 24)
+# define _FPU_RC_DOWN    (0x3 << 24)
 
-#define _FPU_RESERVED      0xf4ffffc0  /* Reserved bits in cw */
-#define _FPU_FPSR_RESERVED 0x3fff0000
+# define _FPU_RESERVED      0xf4ffffc0  /* Reserved bits in cw */
+# define _FPU_FPSR_RESERVED 0x3fff0000
 
 /* The fdlibm code requires strict IEEE double precision arithmetic,
    and no interrupts for exceptions, rounding to nearest.  */
 
-#define _FPU_DEFAULT        0x00000000
-#define _FPU_FPSR_DEFAULT   0x00000000
+# define _FPU_DEFAULT        0x00000000
+# define _FPU_FPSR_DEFAULT   0x00000000
 
 /* IEEE:  same as above, but exceptions */
-#define _FPU_FPCR_IEEE     0x0000001F
-#define _FPU_FPSR_IEEE     0x00000000  
+# define _FPU_FPCR_IEEE     0x0000001F
+# define _FPU_FPSR_IEEE     0x00000000  
 
 /* Type of the control word.  */
 typedef unsigned int fpu_control_t;
 
 /* Macros for accessing the hardware control word.  */
-#if     (__CSKY__ == 2)
-#define _FPU_GETCW(cw) __asm__ volatile ("mfcr %0, cr<1, 2>" : "=r" (cw))
-#define _FPU_SETCW(cw) __asm__ volatile ("mtcr %0, cr<1, 2>" : : "r" (cw))
-#define _FPU_GETFPSR(cw) __asm__ volatile ("mfcr %0, cr<2, 2>" : "=r" (cw))
-#define _FPU_SETFPSR(cw) __asm__ volatile ("mtcr %0, cr<2, 2>" : : "r" (cw))
-#else  /* __CSKY__ == 2 */
-#define _FPU_GETCW(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"           \
+# if     (__CSKY__ == 2)
+#  define _FPU_GETCW(cw) __asm__ volatile ("mfcr %0, cr<1, 2>" : "=r" (cw))
+#  define _FPU_SETCW(cw) __asm__ volatile ("mtcr %0, cr<1, 2>" : : "r" (cw))
+#  define _FPU_GETFPSR(cw) __asm__ volatile ("mfcr %0, cr<2, 2>" : "=r" (cw))
+#  define _FPU_SETFPSR(cw) __asm__ volatile ("mtcr %0, cr<2, 2>" : : "r" (cw))
+# else  /* __CSKY__ != 2 */
+#  define _FPU_GETCW(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"         \
                                          "   btsti  %0, 31    \n"           \
                                          "   bt     1b        \n"           \
 		                                 "   cprcr  %0, cpcr1\n" : "=b" (cw))
 
-#define _FPU_SETCW(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"           \
+#  define _FPU_SETCW(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"         \
                                          "   btsti  r7, 31    \n"           \
                                          "   bt     1b        \n"           \
                                          "   cpwcr  %0, cpcr1 \n"           \
                                          : : "b" (cw) : "r7")
 
-#define _FPU_GETFPSR(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"         \
+#  define _FPU_GETFPSR(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"       \
                                            "   btsti  %0, 31    \n"         \
                                            "   bt     1b        \n"         \
                                            "   cprcr  %0, cpcr4\n" : "=b" (cw))
 
-#define _FPU_SETFPSR(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"         \
+#  define _FPU_SETFPSR(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"       \
                                            "   btsti  r7, 31    \n"         \
                                            "   bt     1b        \n"         \
                                            "   cpwcr %0, cpcr4  \n"         \
                                            : : "b" (cw) : "r7")
-#endif /* __CSKY__ == 2 */
+# endif /* __CSKY__ != 2 */
 
 /* Default control word set at startup.  */
 extern fpu_control_t __fpu_control;
 
-#endif /* __csky_soft_float__ */
+#endif /* !__csky_soft_float__ */
 
 #endif	/* fpu_control.h */

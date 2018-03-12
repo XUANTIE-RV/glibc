@@ -1,4 +1,4 @@
-/* Copyright (C) 2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -27,15 +27,10 @@ ENTRY(swapcontext)
 	stw	a0, (sp, 0)
 	stw	a1, (sp, 4)
 	stw	r15, (sp, 8)
-//	cfi_adjust_cfa_offset(16)
-//	cfi_rel_offset(a0, 0)
-//	cfi_rel_offset(a1, 4)
-//	cfi_rel_offset(15, 8)
-
 
 	/* call getcontext */
 #ifdef __PIC__
-#ifdef __CSKYABIV2__
+# ifdef __CSKYABIV2__
 	grs	t1, .Lgetpc1
 .Lgetpc1:
 	lrw	t0, .Lgetpc1@GOTPC
@@ -43,33 +38,29 @@ ENTRY(swapcontext)
 	lrw	t0, __getcontext@GOT
 	ldr.w	t0, (t1, t0 << 0)
 	jsr	t0
-#else/* __CSKYABIV1 */
+# else /* __CSKYABIV1 */
 	mov	r7, lr
 	bsr	.Lgetpc1
 .Lgetpc1:	/* do not use gb here, and restore lr before call getcontext*/
 	lrw	r6, .Lgetpc1@GOTPC
 	addu	r6, r15
-	mov	lr, r7		/* restore r15 */
+	mov	lr, r7	/* restore r15 */
 	lrw	r5, __getcontext@GOT
 	addu	r5, r6
 	ldw	r5, (r5)
 	jsr	r5
-#endif
-#else/* no pic */
+# endif
+#else /* no pic */
 	jsri	 __getcontext
 #endif
 
-	mov	a3, a0		/* save return value */
+	mov	a3, a0	/* save return value */
 
 	/* restore params and lr */
 	ldw	a0, (sp, 0)
 	ldw	a1, (sp, 4)
 	ldw	r15, (sp, 8)
 	addi	sp, 16
-//	cfi_adjust_cfa_offset(-16)
-//	cfi_restore(a0)
-//	cfi_restore(a1)
-//	cfi_restore(r15)
 
 	cmpnei	a3, 0
 	bt	error_exit
@@ -93,14 +84,14 @@ ENTRY(swapcontext)
 	mov	a0, a1
 
 #ifdef __PIC__
-#ifdef __CSKYABIV2__
+# ifdef __CSKYABIV2__
 	grs	t1, .Lgetpc2
 .Lgetpc2:
 	lrw	a3, .Lgetpc2@GOTPC
 	addu	t1, t1, a3
 	lrw	a3, __setcontext@GOT
 	ldr.w	a3, (t1, a3 << 0)
-#else/* __CSKYABIV1 */
+# else
 	mov	r7, r15		/* save r15 */
 	bsr	.Lgetpc2
 .Lgetpc2:
@@ -110,10 +101,10 @@ ENTRY(swapcontext)
 	addu	r5, r6
 	ldw	r5, (r5)
 	mov	r15, r7		/* restore r15 */
-#endif
-#else/* no pic */
+# endif /* __CSKYABIV2__ */
+#else /* __PIC__ */
 	lrw	a3, __setcontext
-#endif
+#endif /* __PIC__ */
 	jmp	a3
 
 error_exit:

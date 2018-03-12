@@ -1,6 +1,5 @@
-/* Copyright (C) 1996-2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Pat Beirne <patb@corelcomputer.com>
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -55,8 +54,6 @@ ENTRY(__clone)
 	lrw	r7, __NR_clone
 	trap	0
 
-//	cfi_adjust_cfa_offset(-8)
-//	cfi_restore(r4)
 	mov	r7, t1		/* restore r7 */
 	mov	r4, t2		/* restore r4 */
 	btsti	a0, 31		/* is a0 less than zero? */
@@ -75,7 +72,7 @@ PSEUDO_END (__clone)
 	mov	a3, a0
 
 	btsti	t0, CLONE_VM		/* judge flags */
-	bmaski	a0, 0			/* if not set CLONE_VM, set pid=tid=-1*/
+	bmaski	a0, 0			/* if CLONE_VM not set, pid=tid=-1 */
 	bt	2f
 	mov	t1, r7
 	lrw	r7, __NR_getpid		/* else get pid via getpid syscall */
@@ -90,7 +87,7 @@ PSEUDO_END (__clone)
 	stw	a0, (t0)		/* save tid */
 	
 3:
-#endif
+#endif /* RESET_PID */
 	ldw	a0, (sp, 4)	/* restore args from new sp */
 	ldw	a1, (sp, 0)	/* restore args from new sp */
 	addi	sp, 8
@@ -106,10 +103,9 @@ PSEUDO_END (__clone)
         ldr.w   t0, (t1, t0 << 0)
 #else
         lrw     t0, _exit       /* exit */
-#endif
+#endif /* __PIC__ */
         jmp     t0
 
-	
 __error_arg:
 	lrw	a0, -EINVAL
 
@@ -130,7 +126,7 @@ do_syscall_error:
 	addi	sp, 8
 #else
 	jmpi	__syscall_error
-#endif
+#endif /* __PIC__ */
 	rts
 
 libc_hidden_def (__clone)

@@ -1,5 +1,5 @@
-/* Special .init and .fini section support for ARM.
-   Copyright (C) 1995-2012 Free Software Foundation, Inc.
+/* Special .init and .fini section support for C-SKY.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -59,25 +59,23 @@
 	.align 4
 	.type call_weak_fn, %function
 call_weak_fn:
-    //push lr
-    subi sp, 4
-    stw  lr, (sp)
-#ifdef	__PIC__
+	subi sp, 4
+	stw  lr, (sp)
+# ifdef	__PIC__
 	lrw	a2, PREINIT_FUNCTION@GOT
 	addu	a2, gb
 	ldw	a2, (a2)
-#else
+# else
 	lrw	a2, PREINIT_FUNCTION
-#endif
+# endif /* !__PIC__ */
 	cmpnei	a2, 0
 	bf	1f
 	jsr	a2
 1:
-	//pop lr
-    ldw  lr, (sp)
-    addi sp, 4
-    rts
-#endif
+	ldw  lr, (sp)
+	addi sp, 4
+	rts
+#endif /* PREINIT_FUNCTION_WEAK */
 
 	.section .init,"ax",@progbits
 	.align 4
@@ -92,25 +90,25 @@ _init:
 .Lgetpc:
         lrw     gb, .Lgetpc@GOTPC
 	add	gb, lr
-#endif
+#endif /* __PIC__ */
 #if PREINIT_FUNCTION_WEAK
-#ifdef __PIC__
+# ifdef __PIC__
 	lrw	a2, call_weak_fn@GOTOFF
 	add	a2, gb
 	jsr	a2
-#else
+# else
 	jsri	call_weak_fn
-#endif
+# endif /* !__PIC__ */
 #else
-#ifdef	__PIC__
+# ifdef	__PIC__
 	lrw	a2, PREINIT_FUNCTION@PLT
 	addu	a2, gb
 	ldw	a2, (a2)
 	jsr	a2
-#else
+# else
 	jsri	PREINIT_FUNCTION
-#endif
-#endif
+# endif /* !__PIC__ */
+#endif /* PREINIT_FUNCTION_WEAK */
 	br      2f
 	.literals
 	.align  4

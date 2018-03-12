@@ -1,5 +1,5 @@
-/* Definition of object in frame unwind info.  mips version.
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* Definition of object in frame unwind info.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -16,6 +16,6 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#define FIRST_PSEUDO_REGISTER 76
+#define FIRST_PSEUDO_REGISTER 71
 
 #include <sysdeps/generic/gccframe.h>

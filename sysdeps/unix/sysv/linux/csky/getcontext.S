@@ -1,4 +1,4 @@
-/* Copyright (C) 2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -12,7 +12,7 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
+   License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
 #ifdef __CSKYABIV2__
@@ -93,85 +93,12 @@ ENTRY(__getcontext)
         jsri	__sigprocmask
 #endif
 
-#ifdef __csky_hard_float__
-	/* cannot access to fesr fsr fcr in user mode,
-	   save fpu common regs only */
-//	mov	r6, r7
-//	lrw	r6, MCONTEXT_CSKY_FR0
-//	add	r6, r7
-//	fmfs	r2, fr0
-//	fmfs	r3, fr1
-//	fmfs	r4, fr2
-//	fmfs	r5, fr3
-//	stw	r2, (r6, 0)
-//	stw	r3, (r6, 4)
-//	stw	r4, (r6, 8)
-//	stw	r5, (r6, 12)
-//	fmfs	r2, fr4
-//	fmfs	r3, fr5
-//	fmfs	r4, fr6
-//	fmfs	r5, fr7
-//	stw	r2, (r6, 16)
-//	stw	r3, (r6, 20)
-//	stw	r4, (r6, 24)
-//	stw	r5, (r6, 28)
-//	fmfs	r2, fr8
-//	fmfs	r3, fr9
-//	fmfs	r4, fr10
-//	fmfs	r5, fr11
-//	stw	r2, (r6, 32)
-//	stw	r3, (r6, 36)
-//	stw	r4, (r6, 40)
-//	stw	r5, (r6, 44)
-//	fmfs	r2, fr12
-//	fmfs	r3, fr13
-//	fmfs	r4, fr14
-//	fmfs	r5, fr15
-//	stw	r2, (r6, 48)
-//	stw	r3, (r6, 52)
-//	stw	r4, (r6, 56)
-//	stw	r5, (r6, 60)
-//	addi	r6, 32
-//	addi	r6, 32
-//	fmfs	r2, fr16
-//	fmfs	r3, fr17
-//	fmfs	r4, fr18
-//	fmfs	r5, fr19
-//	stw	r2, (r6, 0)
-//	stw	r3, (r6, 4)
-//	stw	r4, (r6, 8)
-//	stw	r5, (r6, 12)
-//	fmfs	r2, fr20
-//	fmfs	r3, fr21
-//	fmfs	r4, fr22
-//	fmfs	r5, fr23
-//	stw	r2, (r6, 16)
-//	stw	r3, (r6, 20)
-//	stw	r4, (r6, 24)
-//	stw	r5, (r6, 28)
-//	fmfs	r2, fr24
-//	fmfs	r3, fr25
-//	fmfs	r4, fr26
-//	fmfs	r5, fr27
-//	stw	r2, (r6, 32)
-//	stw	r3, (r6, 36)
-//	stw	r4, (r6, 40)
-//	stw	r5, (r6, 44)
-//	fmfs	r2, fr28
-//	fmfs	r3, fr29
-//	fmfs	r4, fr30
-//	fmfs	r5, fr31
-//	stw	r2, (r6, 48)
-//	stw	r3, (r6, 52)
-//	stw	r4, (r6, 56)
-//	stw	r5, (r6, 60)
-#endif
-
 	ldw	r7, (sp, 0)
 	addi	sp, 8
 	lrw	r2, MCONTEXT_CSKY_LR
 	add	r2, r7
-	ldw	r15, (r2)	/* restore r15 for sigprocmask changes */
+	/* restore r15 for sigprocmask changes */
+	ldw	r15, (r2)
 	movi	r2, 0				/* return 0 */
 	jmp	r15
 END(__getcontext)

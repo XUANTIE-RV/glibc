@@ -1,5 +1,5 @@
-/* Thread-local storage handling in the ELF dynamic linker.  MIPS version.
-   Copyright (C) 2005, 2011 Free Software Foundation, Inc.
+/* Thread-local storage handling in the ELF dynamic linker.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
 #include <csu/libc-tls.c>
 #include <dl-tls.h>
 
-/* On MIPS, linker optimizations are not required, so __tls_get_addr
+/* On C-SKY, linker optimizations are not required, so __tls_get_addr
    can be called even in statically linked binaries.  In this case module
    must be always 1 and PT_TLS segment exist in the binary, otherwise it
    would not link.  */

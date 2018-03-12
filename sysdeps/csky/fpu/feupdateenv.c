@@ -1,7 +1,6 @@
 /* Install given floating-point environment and raise exceptions.
-   Copyright (C) 1998, 1999, 2000, 2002, 2010 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Andreas Jaeger <aj@suse.de>, 1998.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -21,8 +20,8 @@
 #include <fpu_control.h>
 #include <fenv_libc.h>
 #include <fenv_private.h>
-
 #include <stdio.h>
+
 int
 __feupdateenv (const fenv_t *envp)
 {
@@ -45,12 +44,8 @@ __feupdateenv (const fenv_t *envp)
 #else
   /* Unsupported, so fail.  */
   return 1;
-#endif
+#endif /* __csky_hard_float__ */
 }
-
-//#include <shlib-compat.h>
-//libm_hidden_ver (__feupdateenv, feupdateenv)
-//versioned_symbol (libm, __feupdateenv, feupdateenv, GLIBC_2_2);
 libm_hidden_def (__feupdateenv)
 weak_alias (__feupdateenv, feupdateenv)
 libm_hidden_weak (feupdateenv)

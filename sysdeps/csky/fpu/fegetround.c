@@ -1,7 +1,6 @@
 /* Return current rounding direction.
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Andreas Jaeger <aj@arthur.rhein-neckar.de>, 1998.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -29,11 +28,11 @@ __fegetround (void)
   /* Get control word.  */
   _FPU_GETCW (cw);
 
-  return cw & FE_DOWNWARD;
+  return cw & FE_ROUND_MASK;
 #else
   /* The current soft-float implementation only handles TONEAREST.  */
   return FE_TONEAREST;
-#endif
+#endif /* __csky_hard_float__ */
 }
 libm_hidden_def (__fegetround)
 weak_alias (__fegetround, fegetround)

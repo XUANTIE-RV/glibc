@@ -1,7 +1,5 @@
-/* Definitions for testing PLT entry/exit auditing.  ARM version.
-
-   Copyright (C) 2005 Free Software Foundation, Inc.
-
+/* Definitions for testing PLT entry/exit auditing.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or

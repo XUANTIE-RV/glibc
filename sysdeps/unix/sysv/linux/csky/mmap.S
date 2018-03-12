@@ -1,4 +1,4 @@
-/* Copyright (C) 1998-2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -16,14 +16,13 @@
    <http://www.gnu.org/licenses/>.  */
 
 #ifdef __CSKYABIV2__
-#include "abiv2_mmap.S"
+# include "abiv2_mmap.S"
 #else
 
 #include <sysdep.h>
 
 /*void *mmap(void *addr, size_t len, int prot, int flags,
-              int fildes, off_t off);
-*/
+             int fildes, off_t off);  */
 ENTRY (__mmap)
 	subi	sp, 24
 	stw	r2, (sp, 0)
@@ -56,7 +55,7 @@ ENTRY (__mmap)
 	addi	sp, 8
 #else
 	jmpi	__syscall_error
-#endif
+#endif /* __PIC__ */
 1:
 	rts
 PSEUDO_END (__mmap)

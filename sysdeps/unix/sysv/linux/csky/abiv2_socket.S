@@ -1,4 +1,4 @@
-/* Copyright (C) 1996, 1997, 1998, 2010, 2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
 #define P(a, b) P2(a, b)
 #define P2(a, b) a##b
 
-	.text
 /* The socket-oriented system calls are handled unusally in Linux.
    They are all gated through the single `socketcall' system call number.
    `socketcall' takes two arguments: the first is the subcode, specifying
@@ -45,9 +44,6 @@
 # endif
 #endif
 
-
-
-.globl __socket
 ENTRY (__socket)
 	subi	sp, 32
 	.cfi_def_cfa_offset 32
@@ -76,7 +72,6 @@ ENTRY (__socket)
 	ldw	t0, (sp, 36)
 	stw	t0, (sp, 20)
 #endif
-
 
 #if defined NEED_CANCELLATION && defined CENABLE
 	stw	r15, (sp, 24)
@@ -137,11 +132,7 @@ ENTRY (__socket)
 .Lgetpc2:
 	lrw	t0, .Lgetpc2@GOTPC
 	addu	gb, gb, t0
-/*
-	lrw	t0, SYSCALL_ERROR@GOTOFF
-	addu	t0, gb, t0
-	jsr	t0
-*/
+
 	bsr	SYSCALL_ERROR
 	ldw	r15, (sp, 4)
 	ldw	gb, (sp, 0)

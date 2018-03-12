@@ -1,6 +1,5 @@
-/* Startup code compliant to the ELF Mips ABI.
-   Copyright (C) 1995, 1997, 2000, 2001, 2002, 2003, 2004
-	Free Software Foundation, Inc.
+/* Startup code compliant to the ELF C-SKY ABI.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -34,31 +33,6 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-
-
-/* This is the canonical entry point, usually the first thing in the text
-   segment.  The SVR4/Mips ABI (pages 3-31, 3-32) says that when the entry
-   point runs, most registers' values are unspecified, except for:
-
-   v0 ($2)	Contains a function pointer to be registered with `atexit'.
-		This is how the dynamic linker arranges to have DT_FINI
-		functions called for shared libraries that have been loaded
-		before this code runs.
-
-   sp ($29)	The stack contains the arguments and environment:
-		0(%esp)			argc
-		4(%esp)			argv[0]
-		...
-		(4*argc)(%esp)		NULL
-		(4*(argc+1))(%esp)	envp[0]
-		...
-					NULL
-   ra ($31)	The return address register is set to zero so that programs
-		that search backword through stack frames recognize the last
-		stack frame.
-*/
-
-
 /* We need to call:
    __libc_start_main (int (*main) (int, char **, char **), int argc,
 		      char **argv, void (*init) (void), void (*fini) (void),
@@ -66,9 +40,6 @@
 */
 
 #include <sysdep.h>
-
-
-// FIXME: ABIV2 is not checked, liub, 20130606 
 	
 .text
 	.globl _start
@@ -103,16 +74,16 @@ _start:
 	lrw  a3, __libc_csu_fini@GOT
 	addu a3, gb
 	ldw  a3, (a3)
-#ifdef	__CSKYABIV2__
+# ifdef	__CSKYABIV2__
 	subi sp, 4
 	stw  a3, (sp,0)
-#else
+# else
 	mov  a4, a3
-#endif
+# endif /* !__CSKYABIV2__ */
 	lrw  a3, __libc_csu_init@GOT
 	addu a3, gb
 	ldw  a3,(a3,0)
-#ifdef	__CSKYABIV2__
+# ifdef __CSKYABIV2__
 	lrw  t0, main@GOT
 	addu t0, gb
 	ldw  a0,(t0,0)
@@ -120,7 +91,7 @@ _start:
 	addu t1, gb
 	ldw  t1, (t1, 0)
 	jsr  t1
-#else
+# else
 	lrw  a0, main@GOT
 	addu a0, gb
 	ldw  a0,(a0,0)
@@ -128,27 +99,27 @@ _start:
 	addu r13, gb
 	ldw  r13, (r13, 0)
 	jsr  r13
-#endif
+# endif /* !__CSKYABIV2__ */
 	ldw  lr,(sp,0)
 	ldw  gb,(sp,4)
 	addi sp, 8
-#else   // SHARED 
-#ifdef	__CSKYABIV2__
+#else /* !SHARED */
+# ifdef	__CSKYABIV2__
 	/* Fetch address of __libc_csu_fini */
 	lrw a0, __libc_csu_fini
 	/* Push __libc_csu_fini */
 	subi sp,4
 	stw a0, (sp,0)
-#else
+# else
 	lrw a4, __libc_csu_fini
-#endif
+# endif /* !__CSKYABIV2__ */
 	/* Set up the other arguments in registers */
 	lrw a0, main
 	lrw a3, __libc_csu_init
 	/* __libc_start_main (main, argc, argv, init, fini, rtld_fini, stack_end) */
 	/* Let the libc call main and exit with its return code.  */
 	jsri __libc_start_main
-#endif
+#endif /* !SHARED */
 
 	/* should never get here....*/
 	jsri abort

@@ -1,4 +1,4 @@
-/* Copyright (C) 1996, 1997, 1998, 2010, 2012 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@
 #define P(a, b) P2(a, b)
 #define P2(a, b) a##b
 
-	.text
 /* The socket-oriented system calls are handled unusally in Linux.
    They are all gated through the single `socketcall' system call number.
    `socketcall' takes two arguments: the first is the subcode, specifying
@@ -49,8 +48,6 @@
 # endif
 #endif
 
-
-.globl __socket
 ENTRY (__socket)
 	subi	sp, 32
 	subi	sp, 8
@@ -170,6 +167,5 @@ libc_hidden_def (__socket)
 #ifndef NO_WEAK_ALIAS
 weak_alias (__socket, socket)
 #endif
-
 
 #endif	/* __CSKYABIV2__*/

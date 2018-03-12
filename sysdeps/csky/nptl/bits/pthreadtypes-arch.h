@@ -1,4 +1,4 @@
-/* Copyright (C) 2002-2017 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -15,8 +15,8 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#ifndef _BITS_PTHREADTYPES_H
-#define _BITS_PTHREADTYPES_H	1
+#ifndef _BITS_PTHREADTYPES_ARCH_H
+#define _BITS_PTHREADTYPES_ARCH_H	1
 
 #include <endian.h>
 
@@ -24,7 +24,6 @@
 #define __SIZEOF_PTHREAD_MUTEX_T 24
 #define __SIZEOF_PTHREAD_MUTEXATTR_T 4
 #define __SIZEOF_PTHREAD_COND_T 48
-#define __SIZEOF_PTHREAD_COND_COMPAT_T 12
 #define __SIZEOF_PTHREAD_CONDATTR_T 4
 #define __SIZEOF_PTHREAD_RWLOCK_T 32
 #define __SIZEOF_PTHREAD_RWLOCKATTR_T 8
@@ -41,33 +40,32 @@
 #define __LOCK_ALIGNMENT
 #define __ONCE_ALIGNMENT
 
-
 struct __pthread_rwlock_arch_t
 {
-    unsigned int __readers;
-    unsigned int __writers;
-    unsigned int __wrphase_futex;
-    unsigned int __writers_futex;
-    unsigned int __pad3;
-    unsigned int __pad4;
+  unsigned int __readers;
+  unsigned int __writers;
+  unsigned int __wrphase_futex;
+  unsigned int __writers_futex;
+  unsigned int __pad3;
+  unsigned int __pad4;
 #if __BYTE_ORDER == __BIG_ENDIAN
-    unsigned char __pad1;
-    unsigned char __pad2;
-    unsigned char __shared;
-    /* FLAGS must stay at this position in the structure to maintain
-       binary compatibility.  */
-    unsigned char __flags;
+  unsigned char __pad1;
+  unsigned char __pad2;
+  unsigned char __shared;
+  /* FLAGS must stay at this position in the structure to maintain
+     binary compatibility.  */
+  unsigned char __flags;
 #else
-    /* FLAGS must stay at this position in the structure to maintain
-       binary compatibility.  */
-    unsigned char __flags;
-    unsigned char __shared;
-    unsigned char __pad1;
-    unsigned char __pad2;
+  /* FLAGS must stay at this position in the structure to maintain
+     binary compatibility.  */
+  unsigned char __flags;
+  unsigned char __shared;
+  unsigned char __pad1;
+  unsigned char __pad2;
 #endif
-    int __cur_writer;
+  int __cur_writer;
 };
 
 #define __PTHREAD_RWLOCK_ELISION_EXTRA 0
 
-#endif	/* bits/pthreadtypes.h */
+#endif

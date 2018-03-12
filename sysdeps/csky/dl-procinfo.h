@@ -1,7 +1,6 @@
-/* Mips version of processor capability information handling macros.
-   Copyright (C) 2007-2012 Free Software Foundation, Inc.
+/* C-SKY version of processor capability information handling macros.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Robert Millan <rmh@gnu.org>.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -17,23 +16,16 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
+
 #ifndef _DL_PROCINFO_H
 #define _DL_PROCINFO_H	1
 
 #include <ldsodefs.h>
 
-
 /* Mask to filter out platforms.  */
 #define _DL_HWCAP_PLATFORM    (-1ULL)
 
 #define _DL_PLATFORMS_COUNT   4
-
-static inline const char *
-__attribute__ ((unused))
-_dl_platform_string (int idx)
-{
-  return GLRO(dl_mips_platforms)[idx];
-};
 
 static inline int
 __attribute__ ((unused, always_inline))
@@ -44,14 +36,14 @@ _dl_string_platform (const char *str)
   if (str != NULL)
     for (i = 0; i < _DL_PLATFORMS_COUNT; ++i)
       {
-        if (strcmp (str, _dl_platform_string (i)) == 0)
+        if (strcmp (str, GLRO(dl_alpha_platforms)[i]) == 0)
           return i;
       }
   return -1;
 };
 
 /* We cannot provide a general printing function.  */
-#define _dl_procinfo(word, val) -1 //chenlf
+#define _dl_procinfo(word, val) -1
 
 /* There are no hardware capabilities defined.  */
 #define _dl_hwcap_string(idx) ""

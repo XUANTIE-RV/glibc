@@ -1,7 +1,6 @@
 /* Enable floating-point exceptions.
-   Copyright (C) 2000 Free Software Foundation, Inc.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
-   Contributed by Andreas Jaeger <aj@suse.de>, 2000.
 
    The GNU C Library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -35,12 +34,12 @@ feenableexcept (int excepts)
   excepts &= FE_ALL_EXCEPT;
 
   new_exc |= excepts << ENABLE_SHIFT;
-//  new_exc &= ~_FPU_RESERVED;
+
   _FPU_SETCW (new_exc);
 
   return old_exc;
 #else
   /* Unsupported, so return -1 for failure.  */
   return -1;
-#endif
+#endif /* __csky_hard_float__ */
 }
