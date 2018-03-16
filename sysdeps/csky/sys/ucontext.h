@@ -23,6 +23,9 @@
 #include <features.h>
 #include <signal.h>
 
+#include <bits/types/sigset_t.h>
+#include <bits/types/stack_t.h>
+
 /* Type for general register.  */
 typedef int greg_t;
 

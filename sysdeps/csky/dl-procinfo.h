@@ -36,7 +36,7 @@ _dl_string_platform (const char *str)
   if (str != NULL)
     for (i = 0; i < _DL_PLATFORMS_COUNT; ++i)
       {
-        if (strcmp (str, GLRO(dl_alpha_platforms)[i]) == 0)
+        if (strcmp (str, GLRO(dl_csky_platforms)[i]) == 0)
           return i;
       }
   return -1;

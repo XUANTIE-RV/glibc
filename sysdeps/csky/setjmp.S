@@ -17,6 +17,17 @@
 
 #include <sysdep.h>
 
+ENTRY(setjmp)
+        movi    a1, 1
+        jmpi    __sigsetjmp
+END(setjmp)
+
+ENTRY(_setjmp)
+        movi    a1, 0
+        jmpi    __sigsetjmp
+END(_setjmp)
+
+
 ENTRY(__sigsetjmp)
 	mov     a2, a0
 	/* Save registers */

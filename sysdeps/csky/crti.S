@@ -61,13 +61,9 @@
 call_weak_fn:
 	subi sp, 4
 	stw  lr, (sp)
-# ifdef	__PIC__
 	lrw	a2, PREINIT_FUNCTION@GOT
 	addu	a2, gb
 	ldw	a2, (a2)
-# else
-	lrw	a2, PREINIT_FUNCTION
-# endif /* !__PIC__ */
 	cmpnei	a2, 0
 	bf	1f
 	jsr	a2
@@ -84,30 +80,20 @@ call_weak_fn:
 _init:
 	subi	sp, 8
 	stw	lr, (sp, 0)
-#ifdef __PIC__
 	stw     gb, (sp, 4)
         bsr     .Lgetpc
 .Lgetpc:
         lrw     gb, .Lgetpc@GOTPC
 	add	gb, lr
-#endif /* __PIC__ */
 #if PREINIT_FUNCTION_WEAK
-# ifdef __PIC__
 	lrw	a2, call_weak_fn@GOTOFF
 	add	a2, gb
 	jsr	a2
-# else
-	jsri	call_weak_fn
-# endif /* !__PIC__ */
 #else
-# ifdef	__PIC__
 	lrw	a2, PREINIT_FUNCTION@PLT
 	addu	a2, gb
 	ldw	a2, (a2)
 	jsr	a2
-# else
-	jsri	PREINIT_FUNCTION
-# endif /* !__PIC__ */
 #endif /* PREINIT_FUNCTION_WEAK */
 	br      2f
 	.literals
