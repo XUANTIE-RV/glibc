@@ -41,9 +41,6 @@ ENTRY(__clone)
 	stw	a0, (a1, 0)	/* insert the args onto the new stack */
 	stw	a3, (a1, 4)	/* insert the args onto the new stack */
 
-#ifdef RESET_PID
-	mov	t0, a2		/* save a2(flags) */
-#endif
 	mov	t1, r7		/* save r7 */
 	mov	t2, r4		/* save r4 (has t2 ?)*/
 
@@ -64,30 +61,6 @@ ENTRY(__clone)
 PSEUDO_END (__clone)
 
 1:
-#ifdef RESET_PID
-	ldw	a2, (sp, 0)
-	btsti	t0, CLONE_THREAD	/* judge flags */
-	bt	3f
-	csky_read_tp
-	mov	a3, a0
-
-	btsti	t0, CLONE_VM		/* judge flags */
-	bmaski	a0, 0			/* if CLONE_VM not set, pid=tid=-1 */
-	bt	2f
-	mov	t1, r7
-	lrw	r7, __NR_getpid		/* else get pid via getpid syscall */
-	trap	0
-	mov	r7, t1
-2:
-	lrw	t0, PID_OFFSET
-	add	t0, a3
-	stw	a0, (t0)		/* save pid */
-	lrw	t0, TID_OFFSET
-	add	t0, a3
-	stw	a0, (t0)		/* save tid */
-	
-3:
-#endif /* RESET_PID */
 	ldw	a0, (sp, 4)	/* restore args from new sp */
 	ldw	a1, (sp, 0)	/* restore args from new sp */
 	addi	sp, 8

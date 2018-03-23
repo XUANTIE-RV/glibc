@@ -55,24 +55,6 @@
 	.hidden PREINIT_FUNCTION
 #endif
 
-#if PREINIT_FUNCTION_WEAK
-	.align 4
-	.type call_weak_fn, %function
-call_weak_fn:
-	subi sp, 4
-	stw  lr, (sp)
-	lrw	a2, PREINIT_FUNCTION@GOT
-	addu	a2, gb
-	ldw	a2, (a2)
-	cmpnei	a2, 0
-	bf	1f
-	jsr	a2
-1:
-	ldw  lr, (sp)
-	addi sp, 4
-	rts
-#endif /* PREINIT_FUNCTION_WEAK */
-
 	.section .init,"ax",@progbits
 	.align 4
 	.globl _init
@@ -86,14 +68,15 @@ _init:
         lrw     gb, .Lgetpc@GOTPC
 	add	gb, lr
 #if PREINIT_FUNCTION_WEAK
-	lrw	a2, call_weak_fn@GOTOFF
-	add	a2, gb
-	jsr	a2
+        lrw     a2, PREINIT_FUNCTION@GOT
+        addu    a2, gb
+        ldw     a2, (a2)
+        cmpnei  a2, 0
+        bf      1f
+        jsr     a2
+1:
 #else
-	lrw	a2, PREINIT_FUNCTION@PLT
-	addu	a2, gb
-	ldw	a2, (a2)
-	jsr	a2
+	jsri	PREINIT_FUNCTION
 #endif /* PREINIT_FUNCTION_WEAK */
 	br      2f
 	.literals

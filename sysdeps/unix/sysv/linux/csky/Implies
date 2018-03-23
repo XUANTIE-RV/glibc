@@ -1,1 +1,4 @@
+unix/sysv/linux/csky
+unix/sysv/linux/generic/wordsize-32
+unix/sysv/linux/generic
 csky/nptl

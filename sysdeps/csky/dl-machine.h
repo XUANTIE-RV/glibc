@@ -29,7 +29,12 @@
 static inline int
 elf_machine_matches_host (const Elf32_Ehdr *ehdr)
 {
-  return 1;
+//#ifndef  __CSKYABIV2__
+#if 1  /* FIXME: remove when gen patch */
+  return ehdr->e_machine == EM_RCE;
+#else
+  return ehdr->e_machine == EM_CSKY;
+#endif
 }
 
 /* Return the link-time address of _DYNAMIC.
@@ -367,10 +372,6 @@ elf_machine_rela (struct link_map *map, const Elf32_Rela *reloc,
 	case R_CKCORE_ADDR32:
 	  *reloc_addr = value + reloc->r_addend;
 	  break;
-	case R_CKCORE_PCRELIMM4BY2:
-	  *(short *) reloc_addr
-	    = value + reloc->r_addend - (Elf32_Addr) reloc_addr;
-	  break;
 	case R_CKCORE_PCREL32:
 	  *reloc_addr = value + reloc->r_addend - (Elf32_Addr) reloc_addr;
 	  break;
@@ -461,7 +462,7 @@ elf_machine_lazy_rel (struct link_map *map,
     if (__builtin_expect (r_type == R_CKCORE_JUMP_SLOT, 1))
       {
         if (__builtin_expect (map->l_mach.plt, 0) == 0)
-          *reloc_addr = l_addr+ reloc->r_addend;
+          *reloc_addr = l_addr + reloc->r_addend;
         else
           *reloc_addr = map->l_mach.plt;
       }

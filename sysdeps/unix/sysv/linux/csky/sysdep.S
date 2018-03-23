@@ -30,15 +30,6 @@ ENTRY(__syscall_error)
 	movi	a1, 0
 	rsub	a0, a0, a1 
 
-#if defined (EWOULDBLOCK_sys) && EWOULDBLOCK_sys != EAGAIN
-        /* We translate the system's EWOULDBLOCK error into EAGAIN.
-           The GNU C library always defines EWOULDBLOCK==EAGAIN.
-           EWOULDBLOCK_sys is the original number.  */
-        cmpnei  a0, EWOULDBLOCK	/* Is it the old EWOULDBLOCK?  */
-        bt      1f
-        mov     a0, EAGAIN	/* Yes; translate it to EAGAIN.  */
-#endif
-
 #ifdef __CSKYABIV2__
 1:
 # if !IS_IN (rtld)

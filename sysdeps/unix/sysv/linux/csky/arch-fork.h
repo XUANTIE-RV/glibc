@@ -1,4 +1,4 @@
-/* Provide kernel hint to read ahead.
+/* ARCH_FORK definition for Linux fork implementation.  C-SKY version.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -13,22 +13,14 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
+   License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#include <errno.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <endian.h>
-
+#include <sched.h>
 #include <sysdep.h>
-#include <sys/syscall.h>
+#include <tls.h>
 
-ssize_t
-__readahead (int fd, off64_t offset, size_t count)
-{
-  return INLINE_SYSCALL_CALL (readahead, fd,
-                              __ALIGNMENT_ARG SYSCALL_LL64 (offset), count);
-}
-
-weak_alias (__readahead, readahead)
+#define ARCH_FORK()                                                     \
+  INLINE_SYSCALL (clone, 5,                                             \
+                  CLONE_CHILD_SETTID | CLONE_CHILD_CLEARTID | SIGCHLD,  \
+                  NULL, NULL, &THREAD_SELF->tid, NULL)

@@ -360,8 +360,9 @@ typedef struct
 #define EM_RISCV	243	/* RISC-V */
 
 #define EM_BPF		247	/* Linux BPF -- in-kernel virtual machine */
+#define EM_CSKY         252     /* C_SKY */
 
-#define EM_NUM		248
+#define EM_NUM		253
 
 /* Old spellings/synonyms.  */
 
@@ -3016,57 +3017,54 @@ enum
 #define R_ARM_NUM		256
 
 /* csky */
-#define R_CKCORE_NONE               0  /* */
-#define R_CKCORE_ADDR32             1  /* */
-#define R_CKCORE_PCRELIMM8BY4       2  /* */
-#define R_CKCORE_PCRELIMM11BY2      3  /* */
-#define R_CKCORE_PCRELIMM4BY2       4  /* */ 
-#define R_CKCORE_PCREL32            5  /* */ 
-#define R_CKCORE_PCRELJSR_IMM11BY2  6  /* */
-#define R_CKCORE_GNU_VTINHERIT      7  /* */
-#define R_CKCORE_GNU_VTENTRY        8  /* */
-#define R_CKCORE_RELATIVE           9  /* */
-#define R_CKCORE_COPY               10  /* */
-#define R_CKCORE_GLOB_DAT           11  /* */
-#define R_CKCORE_JUMP_SLOT          12  /* */
-#define R_CKCORE_GOTOFF             13  /* */
-#define R_CKCORE_GOTPC              14  /* */
-#define R_CKCORE_GOT32              15  /* */  
-#define R_CKCORE_PLT32              16  /* */
-#define R_CKCORE_ADDRGOT            17  /* */
-#define R_CKCORE_ADDRPLT            18  /* */
-#define R_CKCORE_PCREL_IMM26BY2     19  /* */
-#define R_CKCORE_PCREL_IMM16BY2     20  /* */
-#define R_CKCORE_PCREL_IMM16BY4     21  /* */
-#define R_CKCORE_PCREL_IMM10BY2     22  /* */
-#define R_CKCORE_PCREL_IMM10BY4     23  /* */
-#define R_CKCORE_ADDR_HI16          24  /* */
-#define R_CKCORE_ADDR_LO16          25  /* */
-#define R_CKCORE_GOTPC_HI16         26  /* */
-#define R_CKCORE_GOTPC_LO16         27  /* */
-#define R_CKCORE_GOTOFF_HI16        28  /* */
-#define R_CKCORE_GOTOFF_LO16        29  /* */
-#define R_CKCORE_GOT12              30  /* */
-#define R_CKCORE_GOT_HI16           31  /* */
-#define R_CKCORE_GOT_LO16           32  /* */
-#define R_CKCORE_PLT12              33  /* */
-#define R_CKCORE_PLT_HI16           34  /* */
-#define R_CKCORE_PLT_LO16           35  /* */
-#define R_CKCORE_ADDRGOT_HI16       36  /* */
-#define R_CKCORE_ADDRGOT_LO16       37  /* */
-#define R_CKCORE_ADDRPLT_HI16       38  /* */
-#define R_CKCORE_ADDRPLT_LO16       39  /* */
-#define R_CKCORE_PCREL_JSR_IMM26BY2 40  /* */
-#define R_CKCORE_TOFFSET_LO16       41  /* */
-#define R_CKCORE_DOFFSET_LO16       42  /* */
-#define R_CKCORE_PCREL_IMM18BY2     43  /* */
-#define R_CKCORE_DOFFSET_IMM18      44  /* */
-#define R_CKCORE_DOFFSET_IMM18BY2   45  /* */
-#define R_CKCORE_DOFFSET_IMM18BY4   46  /* */
-#define R_CKCORE_GOTOFF_IMM18       47  /* */
-#define R_CKCORE_GOT_IMM18BY4       48  /* */
-#define R_CKCORE_PLT_IMM18BY4       49  /* */
-#define R_CKCORE_PCREL_IMM7BY4      50  /* */
+#define R_CKCORE_NONE               0	/* no reloc */
+#define R_CKCORE_ADDR32             1	/* direct 32 bit(S + A) */
+#define R_CKCORE_PCRELIMM8BY4       2	/* jump imm((S + A - P) >> 2) &0xff */
+#define R_CKCORE_PCRELIMM11BY2      3	/* branch((S + A - P) >> 1) & 0x7ff */
+#define R_CKCORE_PCREL32            5	/* 32-bit rel(S + A – P)*/ 
+#define R_CKCORE_PCRELJSR_IMM11BY2  6	/* jump register
+					   ((S + A - P) >>1) & 0x7ff*/
+#define R_CKCORE_RELATIVE           9	/* 32 bit adjust program base(B + A)*/
+#define R_CKCORE_COPY               10	/* 32 bit adjust by program base*/
+#define R_CKCORE_GLOB_DAT           11	/* off between got and sym(S) */
+#define R_CKCORE_JUMP_SLOT          12	/* (S) */
+#define R_CKCORE_GOTOFF             13	/* (S + A – GOT) */
+#define R_CKCORE_GOTPC              14	/* (GOT + A - P)*/
+#define R_CKCORE_GOT32              15	/* (G) */  
+#define R_CKCORE_PLT32              16	/* (G) */
+#define R_CKCORE_ADDRGOT            17	/* (GOT+G) */
+#define R_CKCORE_ADDRPLT            18	/* (GOT+G) */
+#define R_CKCORE_PCREL_IMM26BY2     19	/* ((S + A - P) >> 1) & 0x3ffffff */
+#define R_CKCORE_PCREL_IMM16BY2     20	/* ((S + A - P) >> 1) & 0xffff */
+#define R_CKCORE_PCREL_IMM16BY4     21	/* ((S + A - P) >> 2) & 0xffff */
+#define R_CKCORE_PCREL_IMM10BY2     22	/* ((S + A - P) >> 1) & 0x3ff */
+#define R_CKCORE_PCREL_IMM10BY4     23	/* ((S + A - P) >> 2) & 0x3ff */
+#define R_CKCORE_ADDR_HI16          24	/* ((S + A) >> 16) & 0xffff */
+#define R_CKCORE_ADDR_LO16          25	/* (S + A) & 0xffff */
+#define R_CKCORE_GOTPC_HI16         26	/* ((GOT + A - P) >> 16) & 0xffff */
+#define R_CKCORE_GOTPC_LO16         27	/* (GOT + A – P) & 0xffff */
+#define R_CKCORE_GOTOFF_HI16        28	/* ((S + A - GOT) >> 16) & 0xffff */
+#define R_CKCORE_GOTOFF_LO16        29	/* (S + A - GOT) & 0xffff */
+#define R_CKCORE_GOT12              30	/* (G) */
+#define R_CKCORE_GOT_HI16           31	/* (G >> 16) & 0xffff */
+#define R_CKCORE_GOT_LO16           32	/* (G & 0xffff) */
+#define R_CKCORE_PLT12              33	/* (G)*/
+#define R_CKCORE_PLT_HI16           34	/* (G >> 16) & 0xffff */
+#define R_CKCORE_PLT_LO16           35	/* G & 0xffff */
+#define R_CKCORE_ADDRGOT_HI16       36	/* (GOT + G * 4)& 0xffff */
+#define R_CKCORE_ADDRGOT_LO16       37	/* (GOT + G * 4) & 0xffff */
+#define R_CKCORE_ADDRPLT_HI16       38	/* ((GOT + G * 4) >> 16) & 0xFFFF */
+#define R_CKCORE_ADDRPLT_LO16       39	/* (GOT+G*4) & 0xffff */
+#define R_CKCORE_PCREL_JSR_IMM26BY2 40	/* ((S+A-P) >>1) &x3ffffff */
+#define R_CKCORE_TOFFSET_LO16       41	/* (S+A-BTEXT) & 0xffff */
+#define R_CKCORE_DOFFSET_LO16       42	/* (S+A-BTEXT) & 0xffff */
+#define R_CKCORE_PCREL_IMM18BY2     43	/* ((S+A-P) >>1) &0x3ffff */
+#define R_CKCORE_DOFFSET_IMM18      44	/* (S+A-BDATA)&0x3ffff */
+#define R_CKCORE_DOFFSET_IMM18BY2   45	/* ((S+A-BDATA)>>1)&0x3ffff */
+#define R_CKCORE_DOFFSET_IMM18BY4   46	/* ((S+A-BDATA)>>2)&0x3ffff */
+#define R_CKCORE_GOT_IMM18BY4       48	/* (G >> 2) */
+#define R_CKCORE_PLT_IMM18BY4       49	/* (G >> 2) */
+#define R_CKCORE_PCREL_IMM7BY4      50	/* ((S+A-P) >>2) & 0x7f */
 #define R_CKCORE_TLS_LE32           51
 #define R_CKCORE_TLS_IE32           52
 #define R_CKCORE_TLS_GD32           53

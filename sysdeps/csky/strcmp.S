@@ -19,7 +19,6 @@
 #include <sysdep.h>
 #include "macro.S"
 
-/* FIXME attention!!! it may be a bug when WANT_WIDE define */
 ENTRY(strcmp)
 #ifndef  __CSKYABIV2__
 	mov        r6, r2

@@ -19,6 +19,7 @@
 #define _LINUX_CSKY_SYSDEP_H 1
 
 /* There is some commonality.  */
+#include <sysdeps/unix/sysv/linux/generic/sysdep.h>
 #include <sysdeps/unix/sysv/linux/sysdep.h>
 #include <sysdeps/unix/csky/sysdep.h>
 
@@ -723,8 +724,27 @@ __local_syscall_error:                                          \
 
 #endif	/* __ASSEMBLER__ */
 
-/* Pointer mangling is not yet supported for CSKY.  */
 #define PTR_MANGLE(var) (void) (var)
 #define PTR_DEMANGLE(var) (void) (var)
+
+/* Pointer mangling support.  */
+/*#if IS_IN (rtld)
+#else
+# ifdef __ASSEMBLER__
+#  define PTR_MANGLE(dst, src, guard) \
+  READ_THREAD_POINTER() \
+  mov	dst, a0 \
+  ldw	guard, (dst, 8) \
+  xor	dst, src, guard
+#  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
+#  define PTR_MANGLE2(dst, src, guard) \
+  xor	dst, src, guard
+#  define PTR_DEMANGLE2(dst, src, guard) PTR_MANGLE2 (dst, src, guard)
+# else
+#  define PTR_MANGLE(var) \
+  (var) = (__typeof (var)) ((uintptr_t) (var) ^ THREAD_GET_POINTER_GUARD ())
+#  define PTR_DEMANGLE(var)     PTR_MANGLE (var)
+# endif
+#endif  */
 
 #endif /* linux/csky/sysdep.h */

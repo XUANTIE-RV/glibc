@@ -31,7 +31,6 @@
 #define _FP_KEEPNANFRACP 1
 #define _FP_QNANNEGATEDP 0
 
-/* Someone please check this.  */
 #define _FP_CHOOSENAN(fs, wc, R, X, Y, OP)			\
   do {								\
     if ((_FP_FRAC_HIGH_RAW_##fs(X) & _FP_QNANBIT_##fs)		\
