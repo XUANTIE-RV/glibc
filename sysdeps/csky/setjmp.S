@@ -17,6 +17,18 @@
 
 #include <sysdep.h>
 
+ENTRY(setjmp)
+        movi    a1, 1
+        br      __sigsetjmp
+END(setjmp)
+
+ENTRY(_setjmp)
+        movi    a1, 0
+        br      __sigsetjmp
+END(_setjmp)
+
+libc_hidden_def (_setjmp)
+
 ENTRY(__sigsetjmp)
 	mov     a2, a0
 	/* Save registers */

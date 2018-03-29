@@ -1,6 +1,6 @@
 blkcnt64_t:x
 blkcnt_t:l
-blksize_t:l
+blksize_t:i
 caddr_t:Pc
 clockid_t:i
 clock_t:l

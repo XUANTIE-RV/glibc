@@ -417,7 +417,6 @@ GLIBC_2.27 __strverscmp F
 GLIBC_2.27 __strxfrm_l F
 GLIBC_2.27 __swprintf_chk F
 GLIBC_2.27 __sysconf F
-GLIBC_2.27 __sysctl F
 GLIBC_2.27 __syslog_chk F
 GLIBC_2.27 __sysv_signal F
 GLIBC_2.27 __timezone D 0x4
@@ -522,7 +521,7 @@ GLIBC_2.27 _res_hconf D 0x30
 GLIBC_2.27 _rpc_dtablesize F
 GLIBC_2.27 _seterr_reply F
 GLIBC_2.27 _setjmp F
-GLIBC_2.27 _sys_errlist D 0x21c
+GLIBC_2.27 _sys_errlist D 0x218
 GLIBC_2.27 _sys_nerr D 0x4
 GLIBC_2.27 _sys_siglist D 0x104
 GLIBC_2.27 _tolower F
@@ -594,6 +593,7 @@ GLIBC_2.27 btowc F
 GLIBC_2.27 bzero F
 GLIBC_2.27 c16rtomb F
 GLIBC_2.27 c32rtomb F
+GLIBC_2.27 cacheflush F
 GLIBC_2.27 calloc F
 GLIBC_2.27 callrpc F
 GLIBC_2.27 canonicalize_file_name F
@@ -738,6 +738,7 @@ GLIBC_2.27 exit F
 GLIBC_2.27 explicit_bzero F
 GLIBC_2.27 faccessat F
 GLIBC_2.27 fallocate F
+GLIBC_2.27 fallocate64 F
 GLIBC_2.27 fanotify_init F
 GLIBC_2.27 fanotify_mark F
 GLIBC_2.27 fattach F
@@ -1809,7 +1810,7 @@ GLIBC_2.27 symlinkat F
 GLIBC_2.27 sync F
 GLIBC_2.27 sync_file_range F
 GLIBC_2.27 syncfs F
-GLIBC_2.27 sys_errlist D 0x21c
+GLIBC_2.27 sys_errlist D 0x218
 GLIBC_2.27 sys_nerr D 0x4
 GLIBC_2.27 sys_sigabbrev D 0x104
 GLIBC_2.27 sys_siglist D 0x104

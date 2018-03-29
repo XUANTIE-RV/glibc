@@ -48,20 +48,7 @@ _dl_runtime_resolve:
 	addu r3, r6
 	lsli r3, 2
 	# r2 = id, r3 = offset(do it in plt*)
-#  ifdef __PIC__
-	# get global offset table address_
-	bsr .L2
-.L2:
-	lrw r7, .L2@GOTPC
-	add r7, r15
-	# get the address of function (_dl_fixup) in got table
-	lrw r6, _dl_fixup@GOT
-	add r6, r7
-	ldw r5, (r6, 0)
-	jsr r5
-#  else
-	jsri  _dl_fixup
-#  endif /* !__PIC__ */
+	bsr  _dl_fixup
 	# Return from _dl_fixup, the address of function is in r2
 	mov  r1, r2
 	# Restore the registers
