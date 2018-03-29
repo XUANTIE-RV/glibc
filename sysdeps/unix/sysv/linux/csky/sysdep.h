@@ -185,7 +185,7 @@ __local_syscall_error:				\
         rsub    a1, a1, a2;			\
         stw     a1, (a0);			\
         bmaski  a0, 0;				\
-        rts 
+        rts
 #    else
 #     define SYSCALL_ERROR_HANDLER 	\
 __local_syscall_error:                                          \
@@ -223,7 +223,7 @@ __local_syscall_error:                                          \
   subi sp, 8;       \
   cfi_adjust_cfa_offset (8); \
   stw  r7, (sp, 0);  \
-  cfi_rel_offset (r7, 0); 
+  cfi_rel_offset (r7, 0);
 
 #undef  DOARGS_1
 #define DOARGS_1 DOARGS_0
@@ -277,7 +277,7 @@ __local_syscall_error:                                          \
   ldw  r4, (sp, 4); \
   cfi_restore (r4); \
   addi sp, 8;  \
-  cfi_adjust_cfa_offset (-8); 
+  cfi_adjust_cfa_offset (-8);
 
 #undef  UNDOARGS_6
 #define UNDOARGS_6 \
@@ -288,7 +288,7 @@ __local_syscall_error:                                          \
   ldw  r5, (sp, 8); \
   cfi_restore (r5); \
   addi sp, 16;    \
-  cfi_adjust_cfa_offset (-16); 
+  cfi_adjust_cfa_offset (-16);
 
 #else	/* __CSKYABIV1__ */
 
@@ -313,7 +313,7 @@ __local_syscall_error:                                          \
  * to be quite different with DO_CALL, DO_CALL_2 need not save r7.
  */
 #undef  DOARGS2_0
-#define DOARGS2_0    
+#define DOARGS2_0
 
 #undef  DOARGS2_1
 #define DOARGS2_1 DOARGS2_0
@@ -342,7 +342,7 @@ __local_syscall_error:                                          \
   ldw  r5, (sp, 24)
 
 #undef  UNDOARGS2_0
-#define UNDOARGS2_0 
+#define UNDOARGS2_0
 
 #undef  UNDOARGS2_1
 #define UNDOARGS2_1 UNDOARGS2_0

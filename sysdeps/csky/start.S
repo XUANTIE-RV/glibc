@@ -40,7 +40,7 @@
 */
 
 #include <sysdep.h>
-	
+
 .text
 	.globl _start
 	.type _start,@function

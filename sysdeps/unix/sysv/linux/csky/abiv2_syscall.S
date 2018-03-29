@@ -66,4 +66,3 @@ do_syscall_error:
 	jmpi	__syscall_error
 #endif /* __PIC__ */
 	rts
-

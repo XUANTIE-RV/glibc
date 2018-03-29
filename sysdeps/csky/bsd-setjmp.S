@@ -50,4 +50,3 @@ ENTRY(setjmp)
 #endif /* !__PIC__ */
 
 END(setjmp)
-

@@ -30,7 +30,7 @@
 typedef int greg_t;
 
 /* Number of general registers.  */
-#if (__CSKY__ == 2) 
+#if (__CSKY__ == 2)
 #define NGREG	34
 #else
 #define NGREG	18
@@ -97,7 +97,7 @@ typedef struct fpregset
 
 /* Context to describe whole processor state.  */
 typedef struct
-{ 
+{
   gregset_t gregs;
   fpregset_t fpregs;
 } mcontext_t;

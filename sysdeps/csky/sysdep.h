@@ -43,4 +43,3 @@
   ASM_SIZE_DIRECTIVE(name)
 
 #endif
-

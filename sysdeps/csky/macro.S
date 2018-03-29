@@ -28,4 +28,3 @@
       cmpne \rx, \ry
       bt    \label
 .endm
-

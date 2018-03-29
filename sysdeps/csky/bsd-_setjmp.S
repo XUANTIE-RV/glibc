@@ -52,4 +52,3 @@ ENTRY(_setjmp)
 END(_setjmp)
 
 libc_hidden_def (_setjmp)
-

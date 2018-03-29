@@ -23,9 +23,9 @@
    performance (and in the case of ld.so, out of necessity); those are
    all hidden.  */
 
-/* 
+/*
  * __read_tp
- * clobbe r0, others had to be saved 
+ * clobbe r0, others had to be saved
  *
  */
 #if IS_IN (libc)
@@ -35,7 +35,7 @@
 #endif
 #ifdef __CSKYABIV2__
 ENTRY (__read_tp)
-	mov	r0, r31 
+	mov	r0, r31
 	rts
 END (__read_tp)
 #else
@@ -44,4 +44,3 @@ ENTRY (__read_tp)
 	rts
 END (__read_tp)
 #endif
-

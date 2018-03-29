@@ -51,17 +51,17 @@ ENTRY(memcpy)
 	andi    r6, 3
 	cmpnei  r6, 0
 	/* If dest is aligned, but src is not aligned */
-	jbt     .L_dest_aligned_but_src_not_aligned     
+	jbt     .L_dest_aligned_but_src_not_aligned
 
 	/* If dest and src are all aligned and len less than 16 bytes */
-	cmplti  r4, 16                                  
+	cmplti  r4, 16
 	jbt     .L_aligned_and_len_less_16bytes
 
 	/* src and dst are all aligned, and len > 16 bytes */
 	subi    sp, 8
 	stw     r8, (sp, 0)
 	stw     r9, (sp, 4)
-.L_aligned_and_len_larger_16bytes:                  
+.L_aligned_and_len_larger_16bytes:
 	ldw     r1, (r3, 0)
 	ldw     r5, (r3, 4)
 	ldw     r8, (r3, 8)
@@ -127,7 +127,7 @@ ENTRY(memcpy)
 	cmplti  r4, 4
 	jbt     .L_copy_by_byte
 	/* Judge whether the src is aligned. */
-	jbf     .L0                                     
+	jbf     .L0
 
 	/* consider overlapped case */
 .L_dest_aligned_but_src_not_aligned:
@@ -207,7 +207,7 @@ ENTRY(memcpy)
 	jbf     .L2
 	/* r6 is used to stored the misaligned bits */
 	rsubi   r6, 4
-	/* initial the position */                                  
+	/* initial the position */
 	subu    r3, r6
 	ldw     r11, (sp, 0)
 	ldw     r12, (sp, 4)

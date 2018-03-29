@@ -27,7 +27,7 @@
  *           1: flush denormalized results to signed minimal normal number.
  * 26     -> reserved (read as 0, write with 0)
  * 25-24  -> rounding control
- * 23-6   -> reserved (read as 0, write with 0) 
+ * 23-6   -> reserved (read as 0, write with 0)
  *  5     -> enable exception for input denormalized exception
  *  4     -> enable exception for inexact exception
  *  3     -> enable exception for underflow exception
@@ -44,7 +44,7 @@
  * CSKY FPU floating point exception status register bits.
  *
  * 15     -> accumulate bit for any exception
- * 14     -> reserved (read as 0, write with 0) 
+ * 14     -> reserved (read as 0, write with 0)
  * 13     -> cause bit for input denormalized exception
  * 12     -> cause bit for inexact exception
  * 11     -> cause bit for underflow exception
@@ -52,7 +52,7 @@
  *  9     -> cause bit for division by zero exception
  *  8     -> cause bit for invalid operation exception
  *  7     -> flag bit for any exception
- *  6     -> reserved (read as 0, write with 0) 
+ *  6     -> reserved (read as 0, write with 0)
  *  5     -> flag exception for input denormalized exception
  *  4     -> flag exception for inexact exception
  *  3     -> flag exception for underflow exception
@@ -77,7 +77,7 @@ extern fpu_control_t __fpu_control;
 #else /* !__csky_soft_float__ */
 
 /* masking of interrupts */
-# define _FPU_MASK_IDE     (1 << 5)  /* input denormalized exception */ 
+# define _FPU_MASK_IDE     (1 << 5)  /* input denormalized exception */
 # define _FPU_MASK_IXE     (1 << 4)  /* inexact exception            */
 # define _FPU_MASK_UFE     (1 << 3)  /* underflow exception          */
 # define _FPU_MASK_OFE     (1 << 2)  /* overflow exception           */
@@ -107,7 +107,7 @@ extern fpu_control_t __fpu_control;
 
 /* IEEE:  same as above, but exceptions */
 # define _FPU_FPCR_IEEE     0x0000001F
-# define _FPU_FPSR_IEEE     0x00000000  
+# define _FPU_FPSR_IEEE     0x00000000
 
 /* Type of the control word.  */
 typedef unsigned int fpu_control_t;

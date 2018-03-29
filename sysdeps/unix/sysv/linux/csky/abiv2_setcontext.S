@@ -34,7 +34,7 @@ ENTRY(__setcontext)
 	/* do sigprocmask syscall */
 #ifdef __PIC__
 	subi	sp, 8
-	stw	gb, (sp, 0) 
+	stw	gb, (sp, 0)
 	grs	gb, .Lgetpc1
 .Lgetpc1:
 	lrw	a3, .Lgetpc1@GOTPC
@@ -66,7 +66,7 @@ ENTRY(__startcontext)
 	bf	1f	/* null, then exit */
 
 	/* call setcontext */
-#ifdef __PIC__  
+#ifdef __PIC__
 	grs	t1, .Lgetpc2
 .Lgetpc2:
 	lrw	t0, .Lgetpc2@GOTPC
@@ -80,7 +80,7 @@ ENTRY(__startcontext)
 
 1:
 	/* call _exit */
-#ifdef __PIC__  
+#ifdef __PIC__
 	grs	t1, .Lgetpc3
 .Lgetpc3:
 	lrw	t0, .Lgetpc3@GOTPC

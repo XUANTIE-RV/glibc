@@ -24,5 +24,3 @@ endif
 ifeq ($(subdir), malloc)
 libmemusage-routines += read_tp
 endif
-
-

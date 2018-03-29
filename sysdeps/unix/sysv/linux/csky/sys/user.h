@@ -14,9 +14,9 @@
    You should have received a copy of the GNU Lesser General Public
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
-  
+
 #ifndef _SYS_USER_H
-#define _SYS_USER_H  1  
+#define _SYS_USER_H  1
 
 struct user_fpregs {
   unsigned long fsr;		/* fpu status reg */
@@ -31,8 +31,8 @@ struct user_regs {
   unsigned long int uregs[18];	/* CSKY V1 has 16 general rgister */
 #endif
 };
-	
-/* 
+
+/*
  * When the kernel dumps core, it starts by dumping the user struct -
  * this will be used by gdb to figure out where the data and stack segments
  * are within the file, and what virtual addresses to use.
@@ -54,7 +54,7 @@ struct user{
 				      the esp register.  */
   long int            signal;	   /* Signal that caused the core dump. */
   int                 reserved;	   /* No longer used */
-  struct user_regs *  u_ar0;	   /* Used by gdb to help find the values 
+  struct user_regs *  u_ar0;	   /* Used by gdb to help find the values
 				      for the registers. */
   unsigned long       magic;	   /* To uniquely identify a core file */
   char                u_comm[32];  /* User command that was responsible */

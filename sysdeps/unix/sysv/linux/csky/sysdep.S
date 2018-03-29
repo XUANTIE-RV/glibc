@@ -28,7 +28,7 @@
 	.text
 ENTRY(__syscall_error)
 	movi	a1, 0
-	rsub	a0, a0, a1 
+	rsub	a0, a0, a1
 
 #ifdef __CSKYABIV2__
 1:

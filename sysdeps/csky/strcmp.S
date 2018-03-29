@@ -185,7 +185,7 @@ ENTRY(strcmp)
 	or         a0, a1
 	andi       a0, 0x3
 	M_BNEZ     a0, 4f
-	1:                   
+	1:
 	/* if aligned, load word each time. */
 	ldw        a0, (a3, 0)
 	ldw        t0, (a1, 0)
@@ -193,7 +193,7 @@ ENTRY(strcmp)
 	M_BNE      a0, t0, 1f
 	/* if d[i] == s[i], check if d or s is at the end. */
 	tstnbz     a0
-	/* if at the end, goto 3f (finish comparing) */      
+	/* if at the end, goto 3f (finish comparing) */
 	bf         3f
 #if defined ( __ck802__ )
 	addi       a3, 4
