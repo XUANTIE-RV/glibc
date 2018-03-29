@@ -30,7 +30,7 @@ __fegetenv (fenv_t *envp)
   _FPU_GETFPSR (fpsr);
   envp->__fpcr = fpcr;
   envp->__fpsr = fpsr;
-  
+
   return 0;
 #else
   /* Unsupported, so return 1 for failure.  */

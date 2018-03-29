@@ -23,8 +23,8 @@
  * CSKY FPU floating point control register bits.
  *
  * 31-28  -> reserved (read as 0, write with 0)
- * 27     -> 0: flush denormalized results to zero 
- *           1: flush denormalized results to signed minimal normal number. 
+ * 27     -> 0: flush denormalized results to zero
+ *           1: flush denormalized results to signed minimal normal number.
  * 26     -> reserved (read as 0, write with 0)
  * 25-24  -> rounding control
  * 23-6   -> reserved (read as 0, write with 0) 

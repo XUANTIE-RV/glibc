@@ -15,9 +15,9 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-/* This function is not called directly. It is jumped when attempting to use a 
+/* This function is not called directly. It is jumped when attempting to use a
    symbol that has not yet been resolved.
- 
+
    .plt*:
      subi r0, 32
      stw r2, (r0, 0)
@@ -41,8 +41,8 @@ _dl_runtime_resolve:
 	stw  r6, (r0, 16)
 	stw  r7, (r0, 20)
 	stw  r15,(r0, 24)
-	# load the ID of this module  
-	ldw  r2, (gb, 4)  
+	# load the ID of this module
+	ldw  r2, (gb, 4)
 	mov  r6, r3
 	addu r6, r6
 	addu r3, r6

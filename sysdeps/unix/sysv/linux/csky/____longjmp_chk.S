@@ -18,7 +18,7 @@
 #include <sysdep.h>
 
 	.section .rodata.str1.8,"aMS",@progbits,1
-	.align  2 
+	.align  2
 	.type   longjmp_msg,@object
 longjmp_msg:
 	.string "longjmp causes uninitialized stack frame"
@@ -55,12 +55,12 @@ longjmp_msg:
 	lrw     a0, longjmp_msg@GOTOFF;				\
 	addu	a0, gb;						\
 	lrw     r7, (HIDDEN_JUMPTARGET(__fortify_fail))@PLT;	\
-	add     r7, gb;         				\
-	ldw     r7, (r7);       				\
-	jsr     r7;             				\
-	ldw     gb, (sp, 0);    				\
-	ldw     r15,(sp, 4);    				\
-	addi    sp, 8;          
+	add     r7, gb;						\
+	ldw     r7, (r7);					\
+	jsr     r7;						\
+	ldw     gb, (sp, 0);					\
+	ldw     r15,(sp, 4);					\
+	addi    sp, 8;
 # endif /* __CSKYABIV2__ */
 #else /* __PIC__ */
 # define CALL_FAIL	\
@@ -96,7 +96,7 @@ longjmp_msg:
 	CALL_FAIL						\
 .Lok:								\
 	mov     a0, r9;						\
-.Lok1:						
+.Lok1:
 #else
 # define  CHECK_SP(reg)	\
 	cmplt   sp, reg;					\
@@ -123,7 +123,7 @@ longjmp_msg:
 	CALL_FAIL						\
 .Lok:								\
 	mov     a0, r9;						\
-.Lok1:						
+.Lok1:
 #endif
 
 #include <__longjmp.S>

@@ -112,4 +112,3 @@ typedef uintmax_t uatomic_max_t;
                mem, new, old)
 
 #endif
-

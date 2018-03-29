@@ -30,7 +30,7 @@
 typedef int greg_t;
 
 /* Number of general registers.  */
-#if (__CSKY__ == 2) 
+#if (__CSKY__ == 2)
 #define NGREG   34
 #else
 #define NGREG   18

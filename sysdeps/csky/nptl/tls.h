@@ -46,10 +46,10 @@
 #ifdef __CSKYABIV2__
 /* define r31 as thread pointer register. */
 #define READ_THREAD_POINTER() \
-       mov r0, r31;	           
+       mov r0, r31;
 #else
 #define READ_THREAD_POINTER() \
-       trap 3;             
+       trap 3;
 #endif
 #endif /* __ASSEMBLER__ */
 

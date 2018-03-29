@@ -33,7 +33,7 @@ feclearexcept (int excepts)
   _FPU_GETFPSR (fpsr);
 
   /* Clear the relevant bits.  */
-  fpsr &= ~(excepts | (excepts << CAUSE_SHIFT)); 
+  fpsr &= ~(excepts | (excepts << CAUSE_SHIFT));
 
   /* Put the new data in effect.  */
   _FPU_SETFPSR (fpsr);

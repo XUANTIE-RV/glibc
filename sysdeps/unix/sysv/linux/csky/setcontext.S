@@ -31,7 +31,7 @@ ENTRY(__setcontext)
 	/* set sigmask */
 	movi	r2, SIG_SETMASK
 	lrw	r3, UCONTEXT_SIGMASK
-	add	r3, r7 
+	add	r3, r7
 	movi	r4, 0
 
 	subi	sp, 8
@@ -86,7 +86,7 @@ ENTRY(__setcontext)
 	lrw	r2, MCONTEXT_CSKY_PC
 	add	r2, r1
 	ldw	r2, (r2)			/* load start addr */
-	
+
 	subi	sp, 8				/* for getcontext success */
 	stw	r2, (sp, 0)
 	lrw	r2, MCONTEXT_CSKY_A0

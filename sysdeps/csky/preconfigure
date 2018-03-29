@@ -1,5 +1,4 @@
 case "$machine" in
-csky*)          base_machine=csky 
+csky*)          base_machine=csky
 		machine=csky
 esac
-

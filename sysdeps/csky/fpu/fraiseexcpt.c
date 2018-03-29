@@ -89,7 +89,7 @@ __feraiseexcept (int excepts)
     if (FE_DIVBYZERO & excepts)
     {
       float x = 1.0f, y = 0.0f;
-      __asm__ __volatile__ ("fdivs %0, %0, %2, %1" 
+      __asm__ __volatile__ ("fdivs %0, %0, %2, %1"
                     : "+f" (x), "+r"(tmp) : "f" (y));
     }
 

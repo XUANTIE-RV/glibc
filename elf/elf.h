@@ -3021,7 +3021,7 @@ enum
 #define R_CKCORE_ADDR32             1	/* direct 32 bit(S + A) */
 #define R_CKCORE_PCRELIMM8BY4       2	/* jump imm((S + A - P) >> 2) &0xff */
 #define R_CKCORE_PCRELIMM11BY2      3	/* branch((S + A - P) >> 1) & 0x7ff */
-#define R_CKCORE_PCREL32            5	/* 32-bit rel(S + A – P)*/ 
+#define R_CKCORE_PCREL32            5	/* 32-bit rel(S + A – P)*/
 #define R_CKCORE_PCRELJSR_IMM11BY2  6	/* jump register
 					   ((S + A - P) >>1) & 0x7ff*/
 #define R_CKCORE_RELATIVE           9	/* 32 bit adjust program base(B + A)*/
@@ -3030,7 +3030,7 @@ enum
 #define R_CKCORE_JUMP_SLOT          12	/* (S) */
 #define R_CKCORE_GOTOFF             13	/* (S + A – GOT) */
 #define R_CKCORE_GOTPC              14	/* (GOT + A - P)*/
-#define R_CKCORE_GOT32              15	/* (G) */  
+#define R_CKCORE_GOT32              15	/* (G) */
 #define R_CKCORE_PLT32              16	/* (G) */
 #define R_CKCORE_ADDRGOT            17	/* (GOT+G) */
 #define R_CKCORE_ADDRPLT            18	/* (GOT+G) */
