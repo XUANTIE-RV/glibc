@@ -32,9 +32,17 @@ libc_hidden_def (_setjmp)
 ENTRY(__sigsetjmp)
 	mov     a2, a0
 	/* Save registers */
+
 #ifdef __CSKYABIV2__
+#ifdef PTR_MANGLE
+        PTR_MANGLE(t0, sp, a3)
+	stw     t0, (a2, 0)
+        PTR_MANGLE2(t0, lr, a3)
+	stw     t0, (a2, 4)
+#else
 	stw     sp, (a2, 0)
 	stw     lr, (a2, 4)
+#endif
 	stw     r4, (a2, 8)
 	stw     r5, (a2, 12)
 	stw     r6, (a2, 16)
@@ -53,8 +61,15 @@ ENTRY(__sigsetjmp)
 	stw     r31, (a2, 68)
 	addi    a2, 72
 #else
-	stw     sp, (a2, 0)
-	stw     lr, (a2, 4)
+#ifdef PTR_MANGLE
+        PTR_MANGLE(r6, sp, a3)
+        stw     r6, (a2, 0)
+        PTR_MANGLE2(r6, lr, a3)
+        stw     r6, (a2, 4)
+#else
+        stw     sp, (a2, 0)
+        stw     lr, (a2, 4)
+#endif
 	stw     r8, (a2, 8)
 	stw     r9, (a2, 12)
 	stw     r10, (a2, 16)

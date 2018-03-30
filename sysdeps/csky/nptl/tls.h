@@ -142,13 +142,13 @@ typedef struct
   descr->member[idx] = (value)
 
 /* Set the pointer guard field in the TCB head.  */
-/*# define THREAD_GET_POINTER_GUARD() \
-  THREAD_GETMEM (THREAD_SELF, header.pointer_guard)
+# define THREAD_GET_POINTER_GUARD() \
+  THREAD_GETMEM (((tcbhead_t *) READ_THREAD_POINTER ()), pointer_guard)
 #define THREAD_SET_POINTER_GUARD(value) \
-  THREAD_SETMEM (THREAD_SELF, header.pointer_guard, value)
+  THREAD_SETMEM (((tcbhead_t *) READ_THREAD_POINTER ()), pointer_guard, value)
 #define THREAD_COPY_POINTER_GUARD(descr) \
-  ((descr)->header.pointer_guard						\
-   = THREAD_GETMEM (THREAD_SELF, header.pointer_guard)) */
+  ((tcbhead_t *) ((char *) (descr) + TLS_PRE_TCB_SIZE))->pointer_guard	      \
+   = THREAD_GET_POINTER_GUARD()
 
 /* Get and set the global scope generation counter in struct pthread.  */
 #define THREAD_GSCOPE_IN_TCB      1
@@ -156,20 +156,20 @@ typedef struct
 #define THREAD_GSCOPE_FLAG_USED   1
 #define THREAD_GSCOPE_FLAG_WAIT   2
 #define THREAD_GSCOPE_RESET_FLAG() \
-  do										\
-    { int __res									\
-	= atomic_exchange_rel (&THREAD_SELF->header.gscope_flag,		\
-			       THREAD_GSCOPE_FLAG_UNUSED);			\
-      if (__res == THREAD_GSCOPE_FLAG_WAIT)					\
-	lll_futex_wake (&THREAD_SELF->header.gscope_flag, 1, LLL_PRIVATE); 	\
-    }										\
+  do									      \
+    { int __res								      \
+	= atomic_exchange_rel (&THREAD_SELF->header.gscope_flag,	      \
+			       THREAD_GSCOPE_FLAG_UNUSED);		      \
+      if (__res == THREAD_GSCOPE_FLAG_WAIT)				      \
+	lll_futex_wake (&THREAD_SELF->header.gscope_flag, 1, LLL_PRIVATE);    \
+    }									      \
   while (0)
 #define THREAD_GSCOPE_SET_FLAG() \
-  do										\
-    {										\
-      THREAD_SELF->header.gscope_flag = THREAD_GSCOPE_FLAG_USED;		\
-      atomic_write_barrier ();						    	\
-    }									    	\
+  do									      \
+    {									      \
+      THREAD_SELF->header.gscope_flag = THREAD_GSCOPE_FLAG_USED;	      \
+      atomic_write_barrier ();						      \
+    }									      \
   while (0)
 #define THREAD_GSCOPE_WAIT() \
   GL(dl_wait_lookup_done) ()

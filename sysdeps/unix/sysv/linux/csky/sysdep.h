@@ -724,18 +724,25 @@ __local_syscall_error:                                          \
 
 #endif	/* __ASSEMBLER__ */
 
-#define PTR_MANGLE(var) (void) (var)
-#define PTR_DEMANGLE(var) (void) (var)
-
 /* Pointer mangling support.  */
-/*#if IS_IN (rtld)
+#if IS_IN (rtld)
 #else
 # ifdef __ASSEMBLER__
-#  define PTR_MANGLE(dst, src, guard) \
-  READ_THREAD_POINTER() \
-  mov	dst, a0 \
-  ldw	guard, (dst, 8) \
-  xor	dst, src, guard
+#  ifdef __CSKYABIV2__
+#   define PTR_MANGLE(dst, src, guard)	\
+  mov	t0, a0;				\
+  READ_THREAD_POINTER()			\
+  ldw	guard, (a0, POINTER_GUARD); 	\
+  mov	a0, t0;				\
+  xor	dst, src, guard;
+#  else
+#   define PTR_MANGLE(dst, src, guard)	\
+  mov   r7, a0;				\
+  READ_THREAD_POINTER();		\
+  ldw   guard, (a0, POINTER_GUARD);	\
+  mov   a0, r7;\
+  xor   dst, src, guard;
+#  endif
 #  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
 #  define PTR_MANGLE2(dst, src, guard) \
   xor	dst, src, guard
@@ -745,6 +752,6 @@ __local_syscall_error:                                          \
   (var) = (__typeof (var)) ((uintptr_t) (var) ^ THREAD_GET_POINTER_GUARD ())
 #  define PTR_DEMANGLE(var)     PTR_MANGLE (var)
 # endif
-#endif  */
+#endif
 
 #endif /* linux/csky/sysdep.h */

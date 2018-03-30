@@ -26,6 +26,9 @@ ENTRY(__longjmp)
 have_return:
 #ifdef CHECK_SP
 	ldw     r10, (a2, 0)	/* jmpbuf's sp */
+#ifdef PTR_MANGLE
+        PTR_DEMANGLE(r10, r10, a3)
+#endif
 	CHECK_SP(r10)
 #endif
 #ifdef __CSKYABIV2__
@@ -62,6 +65,10 @@ have_return:
 	addi	a2, 4
 #endif
 
+#ifdef PTR_MANGLE
+        PTR_DEMANGLE(sp, sp, a3)
+        PTR_DEMANGLE2(lr, lr, a3)
+#endif
 	jmp lr
 
 END(__longjmp)
