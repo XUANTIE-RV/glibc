@@ -62,9 +62,11 @@ ENTRY(__sigsetjmp)
 	addi    a2, 72
 #else
 #ifdef PTR_MANGLE
-        PTR_MANGLE(r6, sp, a3)
+        mov     r6, sp
+        PTR_MANGLE(r6, r6, a3)
         stw     r6, (a2, 0)
-        PTR_MANGLE2(r6, lr, a3)
+        mov     r6, lr
+        PTR_MANGLE2(r6, r6, a3)
         stw     r6, (a2, 4)
 #else
         stw     sp, (a2, 0)

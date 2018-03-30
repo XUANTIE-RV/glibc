@@ -35,7 +35,6 @@
 
 _dl_runtime_resolve:
 #if !defined(__CSKYABIV2__)
-# if !defined(__ck810__)
 	stw  r4, (r0, 8)
 	stw  r5, (r0, 12)
 	stw  r6, (r0, 16)
@@ -48,7 +47,16 @@ _dl_runtime_resolve:
 	addu r3, r6
 	lsli r3, 2
 	# r2 = id, r3 = offset(do it in plt*)
-	bsr  _dl_fixup
+	# get global offset table address_
+	bsr .L2
+.L2:
+	lrw r7, .L2@GOTPC
+	add r7, r15
+	# get the address of function (_dl_fixup) in got table
+	lrw r6, _dl_fixup@GOT
+	add r6, r7
+	ldw r5, (r6, 0)
+	jsr r5
 	# Return from _dl_fixup, the address of function is in r2
 	mov  r1, r2
 	# Restore the registers
@@ -63,23 +71,6 @@ _dl_runtime_resolve:
 	addi r0, 32
 	# The address of function is in r1, call the function without saving pc
 	jmp  r1
-# else /* __ck810__ */
-	subi sp, 32
-	stm  r2-r7, (sp)
-	stw  r15, (sp, 24)
-	ldw  r2,  (gb, 4)
-	mov  r6, r3
-	addu r6, r6
-	addu r3, r6
-	lsli r3, 2
-	mov  r3, r21
-	bsr  _dl_fixup
-	mov  r20, r2
-	ldw  r15, (sp, 24)
-	ldm  r2-r7, (sp)
-	addi sp, 32
-	jmp  r20
-# endif /* __ck810__ */
 #else /* __CSKYABIV2__ */
 	subi sp, 20
 	stm  a0-a3, (sp)
