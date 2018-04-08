@@ -3043,7 +3043,7 @@ enum
 #define R_CKCORE_ADDR_LO16          25	/* (S + A) & 0xffff */
 #define R_CKCORE_GOTPC_HI16         26	/* high & low 16 bit GOTPC */
                                         /* ((GOT + A - P) >> 16) & 0xffff */
-#define R_CKCORE_GOTPC_LO16         27	/* (GOT + A – P) & 0xffff */
+#define R_CKCORE_GOTPC_LO16         27	/* (GOT + A - P) & 0xffff */
 #define R_CKCORE_GOTOFF_HI16        28	/* high & low 16 bit GOTOFF */
                                         /* ((S + A - GOT) >> 16) & 0xffff */
 #define R_CKCORE_GOTOFF_LO16        29	/* (S + A - GOT) & 0xffff */
