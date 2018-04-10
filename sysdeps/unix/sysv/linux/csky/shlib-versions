@@ -1,3 +1,3 @@
-DEFAULT			GLIBC_2.27
+DEFAULT			GLIBC_2.28
 
 ld=ld.so.1

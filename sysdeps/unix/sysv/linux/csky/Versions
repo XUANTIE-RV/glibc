@@ -1,5 +1,5 @@
 libc {
-  GLIBC_2.27 {
+  GLIBC_2.28 {
     #errlist-compat     134
     _sys_errlist; sys_errlist; _sys_nerr; sys_nerr;
 
