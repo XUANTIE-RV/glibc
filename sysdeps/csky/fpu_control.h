@@ -76,6 +76,10 @@ extern fpu_control_t __fpu_control;
 
 #else /* !__csky_soft_float__ */
 
+# if (__CSKY__ == 1)
+#error "Hard float not support in csky abiv1"
+#endif
+
 /* masking of interrupts */
 # define _FPU_MASK_IDE     (1 << 5)  /* input denormalized exception */
 # define _FPU_MASK_IXE     (1 << 4)  /* inexact exception            */
@@ -113,34 +117,10 @@ extern fpu_control_t __fpu_control;
 typedef unsigned int fpu_control_t;
 
 /* Macros for accessing the hardware control word.  */
-# if     (__CSKY__ == 2)
 #  define _FPU_GETCW(cw) __asm__ volatile ("mfcr %0, cr<1, 2>" : "=r" (cw))
 #  define _FPU_SETCW(cw) __asm__ volatile ("mtcr %0, cr<1, 2>" : : "r" (cw))
 #  define _FPU_GETFPSR(cw) __asm__ volatile ("mfcr %0, cr<2, 2>" : "=r" (cw))
 #  define _FPU_SETFPSR(cw) __asm__ volatile ("mtcr %0, cr<2, 2>" : : "r" (cw))
-# else  /* __CSKY__ != 2 */
-#  define _FPU_GETCW(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"         \
-                                         "   btsti  %0, 31    \n"           \
-                                         "   bt     1b        \n"           \
-		                                 "   cprcr  %0, cpcr1\n" : "=b" (cw))
-
-#  define _FPU_SETCW(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"         \
-                                         "   btsti  r7, 31    \n"           \
-                                         "   bt     1b        \n"           \
-                                         "   cpwcr  %0, cpcr1 \n"           \
-                                         : : "b" (cw) : "r7")
-
-#  define _FPU_GETFPSR(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"       \
-                                           "   btsti  %0, 31    \n"         \
-                                           "   bt     1b        \n"         \
-                                           "   cprcr  %0, cpcr4\n" : "=b" (cw))
-
-#  define _FPU_SETFPSR(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"       \
-                                           "   btsti  r7, 31    \n"         \
-                                           "   bt     1b        \n"         \
-                                           "   cpwcr %0, cpcr4  \n"         \
-                                           : : "b" (cw) : "r7")
-# endif /* __CSKY__ != 2 */
 
 /* Default control word set at startup.  */
 extern fpu_control_t __fpu_control;

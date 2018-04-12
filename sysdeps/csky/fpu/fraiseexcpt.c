@@ -32,7 +32,6 @@ __feraiseexcept (int excepts)
      time, the overflow/underflow exception follows the divide by zero
      exception.  */
 
-# ifdef __csky_fpuv2__
     /* First: invalid exception.  */
     if (FE_INVALID & excepts)
     {
@@ -74,50 +73,6 @@ __feraiseexcept (int excepts)
       double x = 4.9406564584124654e-324;
       __asm__ __volatile__ ("fstod %0, %0" : "+v" (x));
     }
-# else /* __csky_fpuv2__ */
-     int tmp = 0;
-    /* First: invalid exception.  */
-    if (FE_INVALID & excepts)
-    {
-      /* One example of a invalid operation is 0 * Infinity.  */
-      float x = HUGE_VALF, y = 0.0f;
-      __asm__ __volatile__ ("fmuls %0, %0, %2, %1"
-                    : "+f" (x), "+r"(tmp) : "f" (y));
-    }
-
-    /* Next: division by zero.  */
-    if (FE_DIVBYZERO & excepts)
-    {
-      float x = 1.0f, y = 0.0f;
-      __asm__ __volatile__ ("fdivs %0, %0, %2, %1"
-                    : "+f" (x), "+r"(tmp) : "f" (y));
-    }
-
-    /* Next: overflow.  */
-    if (FE_OVERFLOW & excepts)
-    {
-      float x = FLT_MAX, y = FLT_MAX;
-      __asm__ __volatile__ ("fmuls %0, %0, %2, %1"
-                    : "+f" (x), "+r"(tmp) : "f" (y));
-    }
-
-    /* Next: underflow.  */
-    if (FE_UNDERFLOW & excepts)
-    {
-      float x = -FLT_MIN, y = -FLT_MIN;
-
-      __asm__ __volatile__ ("fmuls %0, %0, %2, %1"
-                    : "+f" (x), "+r"(tmp) : "f" (y));
-    }
-
-    /* Last: inexact.  */
-    if (FE_INEXACT & excepts)
-    {
-      float x = 1.0f, y = 3.0f;
-      __asm__ __volatile__ ("fdivs %0, %0, %2, %1"
-                    : "+f" (x), "+r"(tmp) : "f" (y));
-    }
-# endif /* __csky_fpuv2__ */
 
     /* Success.  */
     return 0;
