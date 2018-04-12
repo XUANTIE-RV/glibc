@@ -23,6 +23,7 @@ int
 fesetmode (const femode_t *modep)
 {
 #ifdef __csky_hard_float__
+  femode_t mode;
   if (modep == FE_DFL_MODE)
     mode = _FPU_DEFAULT;
   else
