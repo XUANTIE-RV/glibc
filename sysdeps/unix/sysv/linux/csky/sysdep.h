@@ -730,17 +730,13 @@ __local_syscall_error:                                          \
 # ifdef __ASSEMBLER__
 #  ifdef __CSKYABIV2__
 #   define PTR_MANGLE(dst, src, guard)	\
-  mov	t0, a0;				\
-  READ_THREAD_POINTER()			\
-  ldw	guard, (a0, POINTER_GUARD); 	\
-  mov	a0, t0;				\
+  lrw	t0, __pointer_chk_guard; 	\
+  ldw	guard, (t0, 0);			\
   xor	dst, src, guard;
 #  else
 #   define PTR_MANGLE(dst, src, guard)	\
-  mov   r7, a0;				\
-  READ_THREAD_POINTER();		\
-  ldw   guard, (a0, POINTER_GUARD);	\
-  mov   a0, r7;\
+  lrw	r7, __pointer_chk_guard; 	\
+  ldw	guard, (r7, 0);			\
   xor   dst, src, guard;
 #  endif
 #  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
@@ -748,8 +744,9 @@ __local_syscall_error:                                          \
   xor	dst, src, guard
 #  define PTR_DEMANGLE2(dst, src, guard) PTR_MANGLE2 (dst, src, guard)
 # else
+extern uintptr_t __pointer_chk_guard attribute_relro;
 #  define PTR_MANGLE(var) \
-  (var) = (__typeof (var)) ((uintptr_t) (var) ^ THREAD_GET_POINTER_GUARD ())
+  (var) = (__typeof (var)) ((uintptr_t) (var) ^ __pointer_chk_guard)
 #  define PTR_DEMANGLE(var)     PTR_MANGLE (var)
 # endif
 #endif

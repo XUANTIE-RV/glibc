@@ -8,4 +8,3 @@
 
 MULTIPLE_THREADS_OFFSET		thread_offsetof (header.multiple_threads)
 TID_OFFSET			thread_offsetof (tid)
-POINTER_GUARD                   offsetof (tcbhead_t, pointer_guard)
