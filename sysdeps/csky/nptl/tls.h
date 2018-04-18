@@ -69,7 +69,6 @@ typedef struct
 {
   dtv_t *dtv;
   void *private;
-  uintptr_t pointer_guard;
 } tcbhead_t;
 
 /* This is the size of the initial TCB.  */
@@ -140,15 +139,6 @@ typedef struct
   descr->member = (value)
 #define THREAD_SETMEM_NC(descr, member, idx, value) \
   descr->member[idx] = (value)
-
-/* Set the pointer guard field in the TCB head.  */
-# define THREAD_GET_POINTER_GUARD() \
-  THREAD_GETMEM (((tcbhead_t *) READ_THREAD_POINTER ()), pointer_guard)
-#define THREAD_SET_POINTER_GUARD(value) \
-  THREAD_SETMEM (((tcbhead_t *) READ_THREAD_POINTER ()), pointer_guard, value)
-#define THREAD_COPY_POINTER_GUARD(descr) \
-  ((tcbhead_t *) ((char *) (descr) + TLS_PRE_TCB_SIZE))->pointer_guard	      \
-   = THREAD_GET_POINTER_GUARD()
 
 /* Get and set the global scope generation counter in struct pthread.  */
 #define THREAD_GSCOPE_IN_TCB      1
