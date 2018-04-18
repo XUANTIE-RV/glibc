@@ -725,17 +725,40 @@ __local_syscall_error:                                          \
 #endif	/* __ASSEMBLER__ */
 
 /* Pointer mangling support.  */
-#if IS_IN (rtld)
+#if (IS_IN (rtld) || \
+     (!defined SHARED && (IS_IN (libc) || IS_IN (libpthread))))
+# ifdef __ASSEMBLER__
+#  ifdef __CSKYABIV2__
+#   define PTR_MANGLE(dst, src, guard)  \
+  lrw   t0, __pointer_chk_guard_local;	\
+  ldw   guard, (t0, 0);                 \
+  xor   dst, src, guard;
+#  else
+#   define PTR_MANGLE(dst, src, guard)  \
+  lrw   r7, __pointer_chk_guard_local;	\
+  ldw   guard, (r7, 0);                 \
+  xor   dst, src, guard;
+#  endif
+#  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
+#  define PTR_MANGLE2(dst, src, guard) \
+  xor   dst, src, guard
+#  define PTR_DEMANGLE2(dst, src, guard) PTR_MANGLE2 (dst, src, guard)
+# else
+extern uintptr_t __pointer_chk_guard_local;
+#  define PTR_MANGLE(var) \
+  (var) = (__typeof (var)) ((uintptr_t) (var) ^ __pointer_chk_guard_local)
+#  define PTR_DEMANGLE(var)     PTR_MANGLE (var)
+# endif
 #else
 # ifdef __ASSEMBLER__
 #  ifdef __CSKYABIV2__
 #   define PTR_MANGLE(dst, src, guard)	\
-  lrw	t0, __pointer_chk_guard; 	\
+  lrw	t0, __pointer_chk_guard;	\
   ldw	guard, (t0, 0);			\
   xor	dst, src, guard;
 #  else
 #   define PTR_MANGLE(dst, src, guard)	\
-  lrw	r7, __pointer_chk_guard; 	\
+  lrw	r7, __pointer_chk_guard;	\
   ldw	guard, (r7, 0);			\
   xor   dst, src, guard;
 #  endif
@@ -744,7 +767,7 @@ __local_syscall_error:                                          \
   xor	dst, src, guard
 #  define PTR_DEMANGLE2(dst, src, guard) PTR_MANGLE2 (dst, src, guard)
 # else
-extern uintptr_t __pointer_chk_guard attribute_relro;
+extern uintptr_t __pointer_chk_guard;
 #  define PTR_MANGLE(var) \
   (var) = (__typeof (var)) ((uintptr_t) (var) ^ __pointer_chk_guard)
 #  define PTR_DEMANGLE(var)     PTR_MANGLE (var)
