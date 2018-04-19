@@ -740,8 +740,8 @@ __local_syscall_error:                                          \
   xor   dst, src, guard;
 #  else
 #   define PTR_MANGLE(dst, src, guard)  \
-  mov   r7, lr                                  \
-  bsr   .Lgetpcn                                \
+  mov   r7, lr;                                 \
+  bsr   .Lgetpcn;                               \
 .Lgetpcn:                                       \
   lrw   guard, .Lgetpcn@GOTPC;                  \
   addu  lr, guard;                              \
@@ -775,8 +775,8 @@ extern uintptr_t __pointer_chk_guard_local;
   xor	dst, src, guard;
 #  else
 #   define PTR_MANGLE(dst, src, guard)		\
-  mov   r7, lr					\
-  bsr   .Lgetpcn				\
+  mov   r7, lr;					\
+  bsr   .Lgetpcn;				\
 .Lgetpcn:                                       \
   lrw   guard, .Lgetpcn@GOTPC;                  \
   addu  lr, guard;                              \
