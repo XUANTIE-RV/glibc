@@ -730,13 +730,25 @@ __local_syscall_error:                                          \
 # ifdef __ASSEMBLER__
 #  ifdef __CSKYABIV2__
 #   define PTR_MANGLE(dst, src, guard)  \
-  lrw   t0, __pointer_chk_guard_local;	\
-  ldw   guard, (t0, 0);                 \
+  grs   t0, .Lgetpcn;                           \
+.Lgetpcn:                                       \
+  lrw   guard, .Lgetpcn@GOTPC;                  \
+  addu  t0, guard;                              \
+  lrw   guard, __pointer_chk_guard_local@GOTOFF;\
+  addu  t0, guard;                              \
+  ldw   guard, (t0, 0);                         \
   xor   dst, src, guard;
 #  else
 #   define PTR_MANGLE(dst, src, guard)  \
-  lrw   r7, __pointer_chk_guard_local;	\
-  ldw   guard, (r7, 0);                 \
+  mov   r7, lr                                  \
+  bsr   .Lgetpcn                                \
+.Lgetpcn:                                       \
+  lrw   guard, .Lgetpcn@GOTPC;                  \
+  addu  lr, guard;                              \
+  lrw   guard, __pointer_chk_guard_local@GOTOFF;\
+  addu  lr, guard;                              \
+  ldw   guard, (lr, 0);                         \
+  mov   lr, r7;                                 \
   xor   dst, src, guard;
 #  endif
 #  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
@@ -752,15 +764,28 @@ extern uintptr_t __pointer_chk_guard_local;
 #else
 # ifdef __ASSEMBLER__
 #  ifdef __CSKYABIV2__
-#   define PTR_MANGLE(dst, src, guard)	\
-  lrw	t0, __pointer_chk_guard;	\
-  ldw	guard, (t0, 0);			\
+#   define PTR_MANGLE(dst, src, guard)		\
+  grs   t0, .Lgetpcn;				\
+.Lgetpcn:					\
+  lrw   guard, .Lgetpcn@GOTPC;			\
+  addu  t0, guard;				\
+  lrw	guard, __pointer_chk_guard@GOTOFF;	\
+  addu  t0, guard;				\
+  ldw	guard, (t0, 0);				\
   xor	dst, src, guard;
 #  else
-#   define PTR_MANGLE(dst, src, guard)	\
-  lrw	r7, __pointer_chk_guard;	\
-  ldw	guard, (r7, 0);			\
+#   define PTR_MANGLE(dst, src, guard)		\
+  mov   r7, lr					\
+  bsr   .Lgetpcn				\
+.Lgetpcn:                                       \
+  lrw   guard, .Lgetpcn@GOTPC;                  \
+  addu  lr, guard;                              \
+  lrw   guard, __pointer_chk_guard@GOTOFF;      \
+  addu  lr, guard;                              \
+  ldw   guard, (lr, 0);                         \
+  mov   lr, r7;					\
   xor   dst, src, guard;
+
 #  endif
 #  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
 #  define PTR_MANGLE2(dst, src, guard) \
