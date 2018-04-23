@@ -1,4 +1,4 @@
-/* System V/C-SKY ABI compliant context switching support.
+/* struct ucontext definition, C-SKY version.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -20,13 +20,9 @@
 #define _SYS_UCONTEXT_H	1
 
 #include <features.h>
-#include <signal.h>
 
-#include <bits/sigcontext.h>
 #include <bits/types/sigset_t.h>
 #include <bits/types/stack_t.h>
-
-typedef struct sigcontext mcontext_t;
 
 #ifdef __USE_MISC
 # define __ctx(fld) fld
@@ -34,8 +30,61 @@ typedef struct sigcontext mcontext_t;
 # define __ctx(fld) __ ## fld
 #endif
 
+typedef struct gregset
+  {
+    unsigned long __ctx(tls);
+    unsigned long __ctx(lr);
+    unsigned long __ctx(pc);
+    unsigned long __ctx(sr);
+    unsigned long __ctx(usp);
+
+    /*
+     * a0, a1, a2, a3:
+     * abiv1: r2, r3, r4, r5
+     * abiv2: r0, r1, r2, r3
+     */
+
+    unsigned long __ctx(orig_a0);
+    unsigned long __ctx(a0);
+    unsigned long __ctx(a1);
+    unsigned long __ctx(a2);
+    unsigned long __ctx(a3);
+
+    /*
+     * ABIV2: r4 ~ r13
+     * ABIV1: r6 ~ r14, r1
+     */
+    unsigned long __ctx(regs)[10];
+
+#if defined(__CSKYABIV2__)
+    /* r16 ~ r30 */
+    unsigned long __ctx(exregs)[15];
+
+    unsigned long __ctx(rhi);
+    unsigned long __ctx(rlo);
+    unsigned long __glibc_reserved;
+#endif
+  } gregset_t;
+
+typedef struct fpregset
+  {
+    unsigned long __ctx(vr)[64];
+    unsigned long __ctx(fcr);
+    unsigned long __ctx(fesr);
+    unsigned long __ctx(fid);
+    unsigned long __glibc_reserved;
+  } fpregset_t;
+
+/* Context to describe whole processor state. */
+typedef struct
+  {
+    unsigned long __ctx(mask);
+    gregset_t __ctx(gregs);
+    fpregset_t __ctx(fpregs);
+  } mcontext_t;
+
 /* Userlevel context.  */
-typedef struct ucontext
+typedef struct ucontext_t
   {
     unsigned long int __ctx(uc_flags);
     struct ucontext *uc_link;

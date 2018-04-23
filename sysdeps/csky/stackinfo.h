@@ -25,8 +25,6 @@
 /* On C-SKY the stack grows down.  */
 #define _STACK_GROWS_DOWN	1
 
-/* Default to an executable stack.  PF_X can be overridden if PT_GNU_STACK is
- * present, but it is presumed absent.  */
-#define DEFAULT_STACK_PERMS (PF_R|PF_W|PF_X)
+#define DEFAULT_STACK_PERMS (PF_R|PF_W)
 
 #endif	/* stackinfo.h */

@@ -15,12 +15,12 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#define SIGCONTEXT siginfo_t *_si, struct ucontext *
+#define SIGCONTEXT siginfo_t *_si, struct ucontext_t *
 #define SIGCONTEXT_EXTRA_ARGS _si,
-#define GET_PC(ctx)	((void *) (ctx)->uc_mcontext.sc_pc)
+#define GET_PC(ctx)     ((void *) (ctx)->uc_mcontext.gregs.pc)
 /* r8 is fp, make sure it is in the same area in sigcontext.  */
-#define GET_FRAME(ctx)	((void *) (ctx)->uc_mcontext.sc_regs[2])
-#define GET_STACK(ctx)	((void *) (ctx)->uc_mcontext.sc_usp)
+#define GET_FRAME(ctx)  ((void *) (ctx)->uc_mcontext.gregs.sc_regs[2])
+#define GET_STACK(ctx)  ((void *) (ctx)->uc_mcontext.gregs.sc_usp)
 #define CALL_SIGHANDLER(handler, signo, ctx) \
   (handler)((signo), SIGCONTEXT_EXTRA_ARGS (ctx))
 
@@ -35,3 +35,4 @@
   (act)->sa_flags |= SA_SIGINFO; \
   (sigaction) (sig, act, oact); \
 })
+
