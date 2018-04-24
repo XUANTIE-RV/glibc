@@ -22,7 +22,6 @@
 int
 __fesetenv (const fenv_t *envp)
 {
-#ifdef __csky_hard_float__
   unsigned int fpcr;
   unsigned int fpsr;
 
@@ -54,10 +53,6 @@ __fesetenv (const fenv_t *envp)
 
   /* Success.  */
   return 0;
-#else
-  /* Unsupported, so fail.  */
-  return 1;
-#endif /* __csky_hard_float__ */
 }
 libm_hidden_def (__fesetenv)
 weak_alias (__fesetenv, fesetenv)

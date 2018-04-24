@@ -38,14 +38,11 @@ enum
     FE_INEXACT =
 #define FE_INEXACT	0x10
       FE_INEXACT,
-    FE_DENORMAL =
-#define FE_DENORMAL	0x20
-      FE_DENORMAL,
+    __FE_DENORMAL = 0x20,
   };
 
 #define FE_ALL_EXCEPT \
-	(FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW |\
-         FE_INVALID | FE_DENORMAL)
+	(FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_OVERFLOW | FE_INVALID)
 
 /* The C-SKY FPU supports all of the four defined rounding modes.  We
    use again the bit positions in the FPU control word as the values

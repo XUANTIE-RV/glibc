@@ -19,47 +19,45 @@
 #ifndef _FPU_CONTROL_H
 #define _FPU_CONTROL_H
 
-/*
- * CSKY FPU floating point control register bits.
- *
- * 31-28  -> reserved (read as 0, write with 0)
- * 27     -> 0: flush denormalized results to zero
- *           1: flush denormalized results to signed minimal normal number.
- * 26     -> reserved (read as 0, write with 0)
- * 25-24  -> rounding control
- * 23-6   -> reserved (read as 0, write with 0)
- *  5     -> enable exception for input denormalized exception
- *  4     -> enable exception for inexact exception
- *  3     -> enable exception for underflow exception
- *  2     -> enable exception for overflow exception
- *  1     -> enable exception for division by zero exception
- *  0     -> enable exception for invalid operation exception
- *
- * Rounding Control:
- * 00 - rounding to nearest (RN)
- * 01 - rounding toward zero (RZ)
- * 10 - rounding (up) toward plus infinity (RP)
- * 11 - rounding (down)toward minus infinity (RM)
- *
- * CSKY FPU floating point exception status register bits.
- *
- * 15     -> accumulate bit for any exception
- * 14     -> reserved (read as 0, write with 0)
- * 13     -> cause bit for input denormalized exception
- * 12     -> cause bit for inexact exception
- * 11     -> cause bit for underflow exception
- * 10     -> cause bit for overflow exception
- *  9     -> cause bit for division by zero exception
- *  8     -> cause bit for invalid operation exception
- *  7     -> flag bit for any exception
- *  6     -> reserved (read as 0, write with 0)
- *  5     -> flag exception for input denormalized exception
- *  4     -> flag exception for inexact exception
- *  3     -> flag exception for underflow exception
- *  2     -> flag exception for overflow exception
- *  1     -> flag exception for division by zero exception
- *  0     -> flag exception for invalid operation exception
- */
+/* CSKY FPU floating point control register bits.
+  
+   31-28  -> reserved (read as 0, write with 0)
+   27     -> 0: flush denormalized results to zero
+             1: flush denormalized results to signed minimal normal number.
+   26     -> reserved (read as 0, write with 0)
+   25-24  -> rounding control
+   23-6   -> reserved (read as 0, write with 0)
+    5     -> enable exception for input denormalized exception
+    4     -> enable exception for inexact exception
+    3     -> enable exception for underflow exception
+    2     -> enable exception for overflow exception
+    1     -> enable exception for division by zero exception
+    0     -> enable exception for invalid operation exception
+  
+   Rounding Control:
+   00 - rounding to nearest (RN)
+   01 - rounding toward zero (RZ)
+   10 - rounding (up) toward plus infinity (RP)
+   11 - rounding (down)toward minus infinity (RM)
+  
+   CSKY FPU floating point exception status register bits.
+  
+   15     -> accumulate bit for any exception
+   14     -> reserved (read as 0, write with 0)
+   13     -> cause bit for input denormalized exception
+   12     -> cause bit for inexact exception
+   11     -> cause bit for underflow exception
+   10     -> cause bit for overflow exception
+    9     -> cause bit for division by zero exception
+    8     -> cause bit for invalid operation exception
+    7     -> flag bit for any exception
+    6     -> reserved (read as 0, write with 0)
+    5     -> flag exception for input denormalized exception
+    4     -> flag exception for inexact exception
+    3     -> flag exception for underflow exception
+    2     -> flag exception for overflow exception
+    1     -> flag exception for division by zero exception
+    0     -> flag exception for invalid operation exception  */
 
 #include <features.h>
 
@@ -75,10 +73,6 @@ typedef unsigned int fpu_control_t;
 extern fpu_control_t __fpu_control;
 
 #else /* !__csky_soft_float__ */
-
-# if (__CSKY__ == 1)
-#error "Hard float not support in csky abiv1"
-#endif
 
 /* masking of interrupts */
 # define _FPU_MASK_IDE     (1 << 5)  /* input denormalized exception */
@@ -117,10 +111,34 @@ extern fpu_control_t __fpu_control;
 typedef unsigned int fpu_control_t;
 
 /* Macros for accessing the hardware control word.  */
+# if     (__CSKY__ == 2)
 #  define _FPU_GETCW(cw) __asm__ volatile ("mfcr %0, cr<1, 2>" : "=r" (cw))
 #  define _FPU_SETCW(cw) __asm__ volatile ("mtcr %0, cr<1, 2>" : : "r" (cw))
 #  define _FPU_GETFPSR(cw) __asm__ volatile ("mfcr %0, cr<2, 2>" : "=r" (cw))
 #  define _FPU_SETFPSR(cw) __asm__ volatile ("mtcr %0, cr<2, 2>" : : "r" (cw))
+# else  /* __CSKY__ != 2 */
+#  define _FPU_GETCW(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"         \
+                                         "   btsti  %0, 31    \n"           \
+                                         "   bt     1b        \n"           \
+		                                 "   cprcr  %0, cpcr1\n" : "=b" (cw))
+
+#  define _FPU_SETCW(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"         \
+                                         "   btsti  r7, 31    \n"           \
+                                         "   bt     1b        \n"           \
+                                         "   cpwcr  %0, cpcr1 \n"           \
+                                         : : "b" (cw) : "r7")
+
+#  define _FPU_GETFPSR(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"       \
+                                           "   btsti  %0, 31    \n"         \
+                                           "   bt     1b        \n"         \
+                                           "   cprcr  %0, cpcr4\n" : "=b" (cw))
+
+#  define _FPU_SETFPSR(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"       \
+                                           "   btsti  r7, 31    \n"         \
+                                           "   bt     1b        \n"         \
+                                           "   cpwcr %0, cpcr4  \n"         \
+                                           : : "b" (cw) : "r7")
+# endif /* __CSKY__ != 2 */
 
 /* Default control word set at startup.  */
 extern fpu_control_t __fpu_control;

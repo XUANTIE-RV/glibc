@@ -22,17 +22,12 @@
 int
 __fegetround (void)
 {
-#ifdef __csky_hard_float__
   unsigned int cw;
 
   /* Get control word.  */
   _FPU_GETCW (cw);
 
   return cw & FE_ROUND_MASK;
-#else
-  /* The current soft-float implementation only handles TONEAREST.  */
-  return FE_TONEAREST;
-#endif /* __csky_hard_float__ */
 }
 libm_hidden_def (__fegetround)
 weak_alias (__fegetround, fegetround)

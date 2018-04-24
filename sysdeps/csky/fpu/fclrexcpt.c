@@ -23,7 +23,6 @@
 int
 feclearexcept (int excepts)
 {
-#ifdef __csky_hard_float__
   int fpsr;
 
   /* Mask out unsupported bits/exceptions.  */
@@ -39,9 +38,5 @@ feclearexcept (int excepts)
   _FPU_SETFPSR (fpsr);
 
   return 0;
-#else
-  /* Unsupported, so fail unless nothing needs to be done.  */
-  return (excepts != 0);
-#endif /* __csky_hard_float__ */
 }
 libm_hidden_def (feclearexcept)

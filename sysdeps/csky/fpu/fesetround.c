@@ -24,17 +24,8 @@
 int
 __fesetround (int round)
 {
-#ifdef __csky_hard_float__
   libc_fesetround_vfp (round);
   return 0;
-#else
-  if (round == FE_TONEAREST)
-  /* This is the only supported rounding mode for soft-fp.  */
-    return 0;
-
-  /* Unsupported, so fail.  */
-  return 1;
-#endif /* __csky_hard_float__ */
 }
 libm_hidden_def (__fesetround)
 weak_alias (__fesetround, fesetround)

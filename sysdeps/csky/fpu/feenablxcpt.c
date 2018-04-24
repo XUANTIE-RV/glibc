@@ -23,7 +23,6 @@
 int
 feenableexcept (int excepts)
 {
-#ifdef __csky_hard_float__
   unsigned int new_exc, old_exc;
 
   /* Get the current control word.  */
@@ -38,8 +37,4 @@ feenableexcept (int excepts)
   _FPU_SETCW (new_exc);
 
   return old_exc;
-#else
-  /* Unsupported, so return -1 for failure.  */
-  return -1;
-#endif /* __csky_hard_float__ */
 }

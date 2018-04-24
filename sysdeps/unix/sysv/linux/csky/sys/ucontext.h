@@ -30,7 +30,7 @@
 # define __ctx(fld) __ ## fld
 #endif
 
-typedef struct gregset
+typedef struct
   {
     unsigned long __ctx(tls);
     unsigned long __ctx(lr);
@@ -66,7 +66,7 @@ typedef struct gregset
 #endif
   } gregset_t;
 
-typedef struct fpregset
+typedef struct
   {
     unsigned long __ctx(vr)[64];
     unsigned long __ctx(fcr);
@@ -87,7 +87,7 @@ typedef struct
 typedef struct ucontext_t
   {
     unsigned long int __ctx(uc_flags);
-    struct ucontext *uc_link;
+    struct ucontext_t *uc_link;
     stack_t uc_stack;
     mcontext_t uc_mcontext;
     sigset_t uc_sigmask;

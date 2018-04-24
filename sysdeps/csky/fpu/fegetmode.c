@@ -22,8 +22,7 @@
 int
 fegetmode (femode_t *modep)
 {
-#ifdef __csky_hard_float__
   _FPU_GETCW (*modep);
-#endif /* __csky_hard_float__ */
+
   return 0;
 }

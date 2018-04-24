@@ -23,15 +23,11 @@
 int
 fesetexcept (int excepts)
 {
-#ifdef __csky_hard_float__
   fpu_control_t fpsr, new_fpsr;
   _FPU_GETFPSR (fpsr);
   new_fpsr = fpsr | ((excepts & FE_ALL_EXCEPT) << CAUSE_SHIFT);
   if (new_fpsr != fpsr)
     _FPU_SETFPSR (new_fpsr);
-#else
-  return (excepts != 0);
-#endif /* __csky_hard_float__ */
 
   return 0;
 }

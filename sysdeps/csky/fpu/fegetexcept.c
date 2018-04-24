@@ -23,15 +23,10 @@
 int
 fegetexcept (void)
 {
-#ifdef __csky_hard_float__
   unsigned int exc;
 
   /* Get the current control word.  */
   _FPU_GETCW (exc);
 
   return (exc & ENABLE_MASK) >> ENABLE_SHIFT;
-#else
-  /* Unsupported. Return all exceptions disabled.  */
-  return 0;
-#endif /* __csky_hard_float__ */
 }

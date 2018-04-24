@@ -25,7 +25,6 @@
 int
 __feupdateenv (const fenv_t *envp)
 {
-#ifdef __csky_hard_float__
   int temp;
 
   /* Save current exceptions.  */
@@ -41,10 +40,6 @@ __feupdateenv (const fenv_t *envp)
 
   /* Success.  */
   return 0;
-#else
-  /* Unsupported, so fail.  */
-  return 1;
-#endif /* __csky_hard_float__ */
 }
 libm_hidden_def (__feupdateenv)
 weak_alias (__feupdateenv, feupdateenv)

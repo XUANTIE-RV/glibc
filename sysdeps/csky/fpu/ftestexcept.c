@@ -25,11 +25,6 @@
 int
 fetestexcept (int excepts)
 {
-#ifdef __csky_hard_float__
   return libc_fetestexcept_vfp (excepts);
-#else
-  /* Unsupported, return 0.  */
-  return 0;
-#endif
 }
 libm_hidden_def (fetestexcept)

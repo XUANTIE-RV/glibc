@@ -26,13 +26,8 @@
 int
 __feholdexcept (fenv_t *envp)
 {
-#ifdef __csky_hard_float__
   libc_feholdexcept_vfp (envp);
   return 0;
-#else
-  /* Unsupported, so fail.  */
-  return 1;
-#endif /* __csky_hard_float__ */
 }
 libm_hidden_def (__feholdexcept)
 weak_alias (__feholdexcept, feholdexcept)

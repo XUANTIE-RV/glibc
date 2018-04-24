@@ -1,4 +1,20 @@
 case "$machine" in
-csky*)          base_machine=csky
-		machine=csky
+csky*)
+echo $CC $CFLAGS $CPPFLAGS
+    abi=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null |
+      sed -n 's/^#define __CSKYABI__ \(.*\)/\1/p'`
+    float_abi=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | 
+      sed -n 's/^#define __CSKY_HARD_FLOAT__ \(.*\)/\1/p'`
+
+    case "$float_abi" in
+    1)
+        with_fp_cond=1
+        ;;
+    *)
+        with_fp_cond=0
+        ;;
+    esac
+
+    base_machine=csky
+    machine=csky
 esac

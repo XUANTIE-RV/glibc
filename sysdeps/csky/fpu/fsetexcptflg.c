@@ -23,7 +23,6 @@
 int
 fesetexceptflag (const fexcept_t *flagp, int excepts)
 {
-#ifdef __csky_hard_float__
   fpu_control_t temp;
 
   /* Get the current exceptions.  */
@@ -41,8 +40,4 @@ fesetexceptflag (const fexcept_t *flagp, int excepts)
 
   /* Success.  */
   return 0;
-#else
-  /* Unsupported, so fail unless nothing needs to be done.  */
-  return (excepts != 0);
-#endif
 }

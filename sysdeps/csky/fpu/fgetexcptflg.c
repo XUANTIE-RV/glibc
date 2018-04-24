@@ -25,13 +25,8 @@
 int
 fegetexceptflag (fexcept_t *flagp, int excepts)
 {
-#ifdef __csky_hard_float__
   *flagp = libc_fetestexcept_vfp (excepts);
 
   /* Success.  */
   return 0;
-#else
-  /* Unsupported, so fail.  */
-  return 1;
-#endif /* __csky_hard_float__ */
 }
