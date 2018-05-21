@@ -730,9 +730,9 @@ __local_syscall_error:                                          \
 # ifdef __ASSEMBLER__
 #  ifdef __CSKYABIV2__
 #   define PTR_MANGLE(dst, src, guard)  \
-  grs   t0, .Lgetpcn;                           \
-.Lgetpcn:                                       \
-  lrw   guard, .Lgetpcn@GOTPC;                  \
+  grs   t0, 1f;					\
+1:						\
+  lrw   guard, 1b@GOTPC;			\
   addu  t0, guard;                              \
   lrw   guard, __pointer_chk_guard_local@GOTOFF;\
   addu  t0, guard;                              \
@@ -741,9 +741,9 @@ __local_syscall_error:                                          \
 #  else
 #   define PTR_MANGLE(dst, src, guard)  \
   mov   r7, lr;                                 \
-  bsr   .Lgetpcn;                               \
-.Lgetpcn:                                       \
-  lrw   guard, .Lgetpcn@GOTPC;                  \
+  bsr   .1f;	                                \
+1:  		                                \
+  lrw   guard, 1b@GOTPC;                  	\
   addu  lr, guard;                              \
   lrw   guard, __pointer_chk_guard_local@GOTOFF;\
   addu  lr, guard;                              \
@@ -765,9 +765,9 @@ extern uintptr_t __pointer_chk_guard_local;
 # ifdef __ASSEMBLER__
 #  ifdef __CSKYABIV2__
 #   define PTR_MANGLE(dst, src, guard)		\
-  grs   t0, .Lgetpcn;				\
-.Lgetpcn:					\
-  lrw   guard, .Lgetpcn@GOTPC;			\
+  grs   t0, 1f;		                	\
+1:                                       	\
+  lrw   guard, 1b@GOTPC;                  	\
   addu  t0, guard;				\
   lrw	guard, __pointer_chk_guard@GOTOFF;	\
   addu  t0, guard;				\
@@ -776,9 +776,9 @@ extern uintptr_t __pointer_chk_guard_local;
 #  else
 #   define PTR_MANGLE(dst, src, guard)		\
   mov   r7, lr;					\
-  bsr   .Lgetpcn;				\
-.Lgetpcn:                                       \
-  lrw   guard, .Lgetpcn@GOTPC;                  \
+  bsr   1f;					\
+1:						\
+  lrw   guard, 1b@GOTPC;                  	\
   addu  lr, guard;                              \
   lrw   guard, __pointer_chk_guard@GOTOFF;      \
   addu  lr, guard;                              \

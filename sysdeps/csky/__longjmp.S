@@ -66,11 +66,7 @@ have_return:
 #endif
 
 #ifdef PTR_MANGLE
-#ifdef CHECK_SP
-        PTR_DEMANGLE2(sp, sp, a3)
-#else
         PTR_DEMANGLE(sp, sp, a3)
-#endif
         PTR_DEMANGLE2(lr, lr, a3)
 #endif
 	jmp lr
