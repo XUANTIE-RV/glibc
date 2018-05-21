@@ -68,7 +68,7 @@ __feraiseexcept (int excepts)
       __asm__ __volatile__ ("fdivs %0, %0, %1" : "+v" (x) : "v" (y));
     }
 
-    if (FE_DENORMAL & excepts)
+    if (__FE_DENORMAL & excepts)
     {
       double x = 4.9406564584124654e-324;
       __asm__ __volatile__ ("fstod %0, %0" : "+v" (x));
