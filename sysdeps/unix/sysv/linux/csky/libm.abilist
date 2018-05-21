@@ -287,6 +287,7 @@ GLIBC_2.28 daddl F
 GLIBC_2.28 drem F
 GLIBC_2.28 dremf F
 GLIBC_2.28 dreml F
+GLIBC_2.28 dsubl F
 GLIBC_2.28 erf F
 GLIBC_2.28 erfc F
 GLIBC_2.28 erfcf F
@@ -325,7 +326,10 @@ GLIBC_2.28 expm1f64 F
 GLIBC_2.28 expm1l F
 GLIBC_2.28 f32addf32x F
 GLIBC_2.28 f32addf64 F
+GLIBC_2.28 f32subf32x F
+GLIBC_2.28 f32subf64 F
 GLIBC_2.28 f32xaddf64 F
+GLIBC_2.28 f32xsubf64 F
 GLIBC_2.28 fabs F
 GLIBC_2.28 fabsf F
 GLIBC_2.28 fabsf32 F
@@ -421,6 +425,8 @@ GLIBC_2.28 fromfpxf32 F
 GLIBC_2.28 fromfpxf32x F
 GLIBC_2.28 fromfpxf64 F
 GLIBC_2.28 fromfpxl F
+GLIBC_2.28 fsub F
+GLIBC_2.28 fsubl F
 GLIBC_2.28 gamma F
 GLIBC_2.28 gammaf F
 GLIBC_2.28 gammal F

@@ -521,7 +521,7 @@ GLIBC_2.28 _res_hconf D 0x30
 GLIBC_2.28 _rpc_dtablesize F
 GLIBC_2.28 _seterr_reply F
 GLIBC_2.28 _setjmp F
-GLIBC_2.28 _sys_errlist D 0x218
+GLIBC_2.28 _sys_errlist D 0x21c
 GLIBC_2.28 _sys_nerr D 0x4
 GLIBC_2.28 _sys_siglist D 0x104
 GLIBC_2.28 _tolower F
@@ -1810,7 +1810,7 @@ GLIBC_2.28 symlinkat F
 GLIBC_2.28 sync F
 GLIBC_2.28 sync_file_range F
 GLIBC_2.28 syncfs F
-GLIBC_2.28 sys_errlist D 0x218
+GLIBC_2.28 sys_errlist D 0x21c
 GLIBC_2.28 sys_nerr D 0x4
 GLIBC_2.28 sys_sigabbrev D 0x104
 GLIBC_2.28 sys_siglist D 0x104
