@@ -741,7 +741,7 @@ __local_syscall_error:                                          \
 #  else
 #   define PTR_MANGLE(dst, src, guard)  \
   mov   r7, lr;                                 \
-  bsr   .1f;	                                \
+  bsr   1f;	                                \
 1:  		                                \
   lrw   guard, 1b@GOTPC;                  	\
   addu  lr, guard;                              \
