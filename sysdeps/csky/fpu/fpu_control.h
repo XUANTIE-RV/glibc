@@ -112,10 +112,10 @@ typedef unsigned int fpu_control_t;
 
 /* Macros for accessing the hardware control word.  */
 # if     (__CSKY__ == 2)
-#  define _FPU_GETCW(cw) __asm__ volatile ("mfcr %0, cr<1, 2>" : "=r" (cw))
-#  define _FPU_SETCW(cw) __asm__ volatile ("mtcr %0, cr<1, 2>" : : "r" (cw))
-#  define _FPU_GETFPSR(cw) __asm__ volatile ("mfcr %0, cr<2, 2>" : "=r" (cw))
-#  define _FPU_SETFPSR(cw) __asm__ volatile ("mtcr %0, cr<2, 2>" : : "r" (cw))
+#  define _FPU_GETCW(cw) __asm__ volatile ("mfcr %0, cr<1, 2>" : "=a" (cw))
+#  define _FPU_SETCW(cw) __asm__ volatile ("mtcr %0, cr<1, 2>" : : "a" (cw))
+#  define _FPU_GETFPSR(cw) __asm__ volatile ("mfcr %0, cr<2, 2>" : "=a" (cw))
+#  define _FPU_SETFPSR(cw) __asm__ volatile ("mtcr %0, cr<2, 2>" : : "a" (cw))
 # else  /* __CSKY__ != 2 */
 #  define _FPU_GETCW(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"         \
                                          "   btsti  %0, 31    \n"           \
