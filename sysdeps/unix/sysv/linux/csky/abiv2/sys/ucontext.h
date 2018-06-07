@@ -56,14 +56,12 @@ typedef struct
      */
     unsigned long __ctx(regs)[10];
 
-#if defined(__CSKYABIV2__)
     /* r16 ~ r30 */
     unsigned long __ctx(exregs)[15];
 
     unsigned long __ctx(rhi);
     unsigned long __ctx(rlo);
     unsigned long __glibc_reserved;
-#endif
   } gregset_t;
 
 typedef struct

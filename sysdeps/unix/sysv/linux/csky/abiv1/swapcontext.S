@@ -30,15 +30,6 @@ ENTRY(swapcontext)
 
 	/* call getcontext */
 #ifdef __PIC__
-# ifdef __CSKYABIV2__
-	grs	t1, .Lgetpc1
-.Lgetpc1:
-	lrw	t0, .Lgetpc1@GOTPC
-	addu	t1, t1, t0
-	lrw	t0, __getcontext@GOT
-	ldr.w	t0, (t1, t0 << 0)
-	jsr	t0
-# else /* __CSKYABIV1 */
 	mov	r7, lr
 	bsr	.Lgetpc1
 .Lgetpc1:	/* do not use gb here, and restore lr before call getcontext*/
@@ -49,7 +40,6 @@ ENTRY(swapcontext)
 	addu	r5, r6
 	ldw	r5, (r5)
 	jsr	r5
-# endif
 #else /* no pic */
 	jsri	 __getcontext
 #endif
@@ -66,11 +56,6 @@ ENTRY(swapcontext)
 	bt	error_exit
 
 	/* Fix up LR and the PC */
-#ifdef	__CSKYABIV2__
-	stw	sp, (a0, MCONTEXT_CSKY_SP)
-	stw	r15, (a0, MCONTEXT_CSKY_LR)
-	stw	r15, (a0, MCONTEXT_CSKY_PC)
-#else
 	lrw	r4, MCONTEXT_CSKY_SP
 	add	r4, a0
 	stw	sp, (r4)
@@ -78,20 +63,11 @@ ENTRY(swapcontext)
 	add	r4, a0
 	stw	r15, (r4)
 	stw	r15, (r4, 8)	/* MCONTEXT_CSKY_PC */
-#endif
 
 	/* set setcontext's arg */
 	mov	a0, a1
 
 #ifdef __PIC__
-# ifdef __CSKYABIV2__
-	grs	t1, .Lgetpc2
-.Lgetpc2:
-	lrw	a3, .Lgetpc2@GOTPC
-	addu	t1, t1, a3
-	lrw	a3, __setcontext@GOT
-	ldr.w	a3, (t1, a3 << 0)
-# else
 	mov	r7, r15		/* save r15 */
 	bsr	.Lgetpc2
 .Lgetpc2:
@@ -101,7 +77,6 @@ ENTRY(swapcontext)
 	addu	r5, r6
 	ldw	r5, (r5)
 	mov	r15, r7		/* restore r15 */
-# endif /* __CSKYABIV2__ */
 #else /* __PIC__ */
 	lrw	a3, __setcontext
 #endif /* __PIC__ */

@@ -15,27 +15,41 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#include <sys/types.h>
-#include <errno.h>
-#include <endian.h>
-#include <unistd.h>
+# include <sysdep.h>
 
-#include <sysdep.h>
-#include <sys/syscall.h>
+ENTRY (syscall)
+	mov	r1, r2		/* syscall num */
 
-/* Truncate the file FD refers to to LENGTH bytes.  */
-int
-__ftruncate64 (int fd, off64_t length)
-{
-  unsigned int low = length & 0xffffffff;
-  unsigned int high = length >> 32;
-#ifdef __CSKYABIV2__
-  int result = INLINE_SYSCALL (ftruncate64, 3, fd,
-			       __LONG_LONG_PAIR (high, low));
-#else
-  int result = INLINE_SYSCALL (ftruncate64, 4, fd, 0,
-			       __LONG_LONG_PAIR (high, low));
-#endif
-  return result;
-}
-weak_alias (__ftruncate64, ftruncate64)
+	mov	r2, r3		/* arg1 */
+	mov	r3, r4		/* arg2 */
+	mov	r4, r5		/* arg3 */
+	mov	r5, r6		/* arg4*/
+	mov	r6, r7		/* arg5*/
+	ld	r7, (sp, 0)	/* arg6 */
+	trap	0
+	lrw	r3, 0xfffff000
+	cmphs	r2, r3
+	bt	do_syscall_error
+	rts
+PSEUDO_END (syscall)
+
+do_syscall_error:
+# ifdef __PIC__
+	subi	sp, 8
+	stw	gb, (sp, 0)
+	stw	r15, (sp, 4)
+	bsr	.Lgetpc
+.Lgetpc:
+	lrw	gb, .Lgetpc@GOTPC
+	addu	gb, r15
+	lrw	r7, __syscall_error@PLT
+	addu	r7, gb
+	ldw	r7, (r7)
+	jsr	r7
+	ldw	gb, (sp, 0)
+	ldw	r15, (sp, 4)
+	addi	sp, 8
+# else
+	jmpi	__syscall_error
+# endif /* __PIC__ */
+	rts

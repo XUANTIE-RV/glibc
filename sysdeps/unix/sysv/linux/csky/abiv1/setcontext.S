@@ -15,10 +15,6 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#ifdef __CSKYABIV2__
-# include "abiv2_setcontext.S"
-#else
-
 # include <sysdep.h>
 
 # include "ucontext_i.h"
@@ -125,4 +121,3 @@ ENTRY(__startcontext)
 	trap	0
 END(__startcontext)
 
-#endif	/* __CSKYAVBI2__*/

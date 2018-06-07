@@ -6,6 +6,15 @@ echo $CC $CFLAGS $CPPFLAGS
     float_abi=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | 
       sed -n 's/^#define __CSKY_HARD_FLOAT__ \(.*\)/\1/p'`
 
+    case "$abi" in
+    __CSKYABIV1__)
+        machine=abiv1
+        ;;
+    __CSKYABIV2__)
+        machine=abiv2
+        ;;
+    esac
+
     case "$float_abi" in
     1)
         with_fp_cond=1
@@ -16,5 +25,5 @@ echo $CC $CFLAGS $CPPFLAGS
     esac
 
     base_machine=csky
-    machine=csky
+    machine=csky/$machine
 esac

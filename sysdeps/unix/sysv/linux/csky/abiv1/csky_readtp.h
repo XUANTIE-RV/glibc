@@ -15,31 +15,5 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#include <sysdep.h>
-#define _ERRNO_H	1
-#include <bits/errno.h>
-
-/* Clone the calling process, but without copying the whole address space.
-   The calling process is suspended until the new process exits or is
-   replaced by a call to `execve'.  Return -1 for errors, 0 to the new process,
-   and the process ID of the new process to the old process.  */
-
-ENTRY (__vfork)
-#ifdef SAVE_PID
-	SAVE_PID
-#endif
-	mov	t0, r7
-	lrw	r7, __NR_vfork
-	trap	0
-	mov	r7, t0
-#ifdef RESTORE_PID
-	RESTORE_PID
-#endif
-	PSEUDO_RET
-	rts
-
-PSEUDO_END (__vfork)
-libc_hidden_def (__vfork)
-
-weak_alias (__vfork, vfork)
-strong_alias (__vfork, __libc_vfork)
+# define csky_read_tp	\
+	trap	3

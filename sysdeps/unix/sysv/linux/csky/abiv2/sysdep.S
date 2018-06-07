@@ -30,8 +30,6 @@ ENTRY(__syscall_error)
 	movi	a1, 0
 	rsub	a0, a0, a1
 
-#ifdef __CSKYABIV2__
-1:
 # if !IS_IN (rtld)
 	mov	a1, a0
         csky_read_tp
@@ -65,46 +63,3 @@ ENTRY(__syscall_error)
 
 # undef  __syscall_error
 END (__syscall_error)
-
-#else /* __CSKYABIV2__ */
-
-1:
-# if !IS_IN (rtld)
-        mov     r7, r15
-	mov	r1, r2
-        csky_read_tp
-
-        bsr     .Lgetpc1
-.Lgetpc1:
-        lrw     r5, errno@gottpoff
-        add     r5, r15
-        ldw     r5, (r5)
-        add     r5, r2
-        stw     r1, (r5)
-        bmaski  r2, 0
-	mov	r15, r7
-        rts
-# elif RTLD_PRIVATE_ERRNO /* !IS_IN (rtld) */
-#  ifdef __PIC__
-        mov     r7, r15
-        bsr     .Lgetpc2
-.Lgetpc2:
-        lrw     r6, .Lgetpc2@GOTPC
-        addu    r6, r15
-        lrw     r5, rtld_errno@PLT
-        addu    r5, r6
-        ldw     r5, (r5)
-	mov	r15, r7
-#  else /* __PIC__ */
-        lrw     r5, rtld_errno
-#  endif /* __PIC__ */
-        stw     r2, (r5)
-        bmaski  r2, 0
-        rts
-# else
-#  error "Unsupported non-TLS case"
-# endif /* RTLD_PRIVATE_ERRNO */
-
-END (__syscall_error)
-
-#endif /* __CSKYABIV2__ */

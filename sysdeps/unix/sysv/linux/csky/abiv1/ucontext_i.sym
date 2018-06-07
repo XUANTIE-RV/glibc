@@ -23,12 +23,7 @@ MCONTEXT_CSKY_SP		greg(usp)
 MCONTEXT_CSKY_LR		greg(lr)
 MCONTEXT_CSKY_A0		greg(a0)
 MCONTEXT_CSKY_R8		greg(regs[2])
-#ifdef __CSKYABIV2__
-MCONTEXT_CSKY_R16		greg(exregs[0])
-MCONTEXT_CSKY_HI		greg(rhi)
-MCONTEXT_CSKY_LO		greg(rlo)
-MCONTEXT_CSKY_R4		greg(regs[0])
-#endif
+
 MCONTEXT_CSKY_FESR		fpreg(fesr)
 MCONTEXT_CSKY_FCR		fpreg(fcr)
 MCONTEXT_CSKY_FR0		fpreg(vr[0])

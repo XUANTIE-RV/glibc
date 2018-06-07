@@ -19,11 +19,7 @@
 #include <ucontext.h>
 
 /* Number of arguments that go in registers.  */
-#ifdef __CSKYABIV2__
-# define NREG_ARGS  4
-#else
 # define NREG_ARGS  6
-#endif
 
 /* Take a context previously prepared via getcontext() and set to
    call func() with the given int only args.  */
@@ -59,11 +55,7 @@ __makecontext (ucontext_t *ucp, void (*func) (void), int argc, ...)
   ucp->uc_mcontext.gregs.pc = (unsigned long) func;
 
   /* Exit to startcontext() with the next context in R9 */
-#ifdef __CSKYABIV2__
-  ucp->uc_mcontext.gregs.regs[5] = (unsigned long) ucp->uc_link;
-#else
   ucp->uc_mcontext.gregs.regs[3] = (unsigned long) ucp->uc_link;
-#endif
   ucp->uc_mcontext.gregs.lr = (unsigned long) __startcontext;
 
   /* The first four arguments go into registers.  */

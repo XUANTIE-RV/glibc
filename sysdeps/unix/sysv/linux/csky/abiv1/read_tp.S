@@ -1,5 +1,4 @@
-/* Provide kernel hint to read ahead.
-   Copyright (C) 2018 Free Software Foundation, Inc.
+/* Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -13,22 +12,28 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, see
+   License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#include <errno.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <endian.h>
-
+#include <features.h>
 #include <sysdep.h>
-#include <sys/syscall.h>
 
-ssize_t
-__readahead (int fd, off64_t offset, size_t count)
-{
-  return INLINE_SYSCALL_CALL (readahead, fd,
-                              __ALIGNMENT_ARG SYSCALL_LL64 (offset), count);
-}
+/* This function is exported from libc for use by user code.  libpthread, librt,
+   and the dynamic linker get their own private copies, for
+   performance (and in the case of ld.so, out of necessity); those are
+   all hidden.  */
 
-weak_alias (__readahead, readahead)
+/*
+ * __read_tp
+ * clobbe r0, others had to be saved
+ *
+ */
+#if IS_IN (libc)
+	.global __read_tp
+#else
+	.hidden __read_tp
+#endif
+ENTRY (__read_tp)
+	trap	3
+	rts
+END (__read_tp)

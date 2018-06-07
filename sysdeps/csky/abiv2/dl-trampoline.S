@@ -15,10 +15,35 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#ifdef	__CSKYABIV2__
-# define csky_read_tp	\
-	mov	a0, r31
-#else
-# define csky_read_tp	\
-	trap	3
-#endif
+/* This function is not called directly. It is jumped when attempting to use a
+   symbol that has not yet been resolved.
+
+   .plt*:
+     subi r0, 32
+     stw r2, (r0, 0)
+     stw r3, (r0, 4)
+     lrw r3, #offset
+     ldw r2, (gb, 8)
+     jmp r2
+ */
+
+.import _dl_fixup
+
+.text
+.globl _dl_runtime_resolve
+.type  _dl_runtime_resolve,@function
+
+_dl_runtime_resolve:
+	subi sp, 20
+	stm  a0-a3, (sp)
+	stw  lr, (sp, 16)
+	# a0 = id, a1 = offset(do it in plt*)
+	ldw  a0,  (gb, 4)
+	movi a1, 12
+	mult a1, t1
+	bsr  _dl_fixup
+	mov  t0, a0
+	ldw  lr, (sp, 16)
+	ldm  a0-a3, (sp)
+	addi sp, 20
+	jmp  t0

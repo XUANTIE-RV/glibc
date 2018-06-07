@@ -15,32 +15,5 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-#include <features.h>
-#include <sysdep.h>
-
-/* This function is exported from libc for use by user code.  libpthread, librt,
-   and the dynamic linker get their own private copies, for
-   performance (and in the case of ld.so, out of necessity); those are
-   all hidden.  */
-
-/*
- * __read_tp
- * clobbe r0, others had to be saved
- *
- */
-#if IS_IN (libc)
-	.global __read_tp
-#else
-	.hidden __read_tp
-#endif
-#ifdef __CSKYABIV2__
-ENTRY (__read_tp)
-	mov	r0, r31
-	rts
-END (__read_tp)
-#else
-ENTRY (__read_tp)
-	trap	3
-	rts
-END (__read_tp)
-#endif
+# define csky_read_tp	\
+	mov	a0, r31

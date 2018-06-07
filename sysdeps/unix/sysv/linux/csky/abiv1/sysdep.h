@@ -210,160 +210,10 @@ __local_syscall_error:                                          \
 # endif/* IS_IN (libc) */
 
 /* define DO_CALL */
-#ifdef __CSKYABIV2__
-#undef	DO_CALL
-#define DO_CALL(syscall_name, args)		\
-    DOARGS_##args;				\
-    lrw  r7, SYS_ify(syscall_name);		\
-    trap 0;					\
-    UNDOARGS_##args
-
-#undef  DOARGS_0
-#define DOARGS_0    \
-  subi sp, 8;       \
-  cfi_adjust_cfa_offset (8); \
-  stw  r7, (sp, 0);  \
-  cfi_rel_offset (r7, 0);
-
-#undef  DOARGS_1
-#define DOARGS_1 DOARGS_0
-#undef  DOARGS_2
-#define DOARGS_2 DOARGS_0
-#undef  DOARGS_3
-#define DOARGS_3 DOARGS_0
-#undef  DOARGS_4
-#define DOARGS_4 DOARGS_0
-#undef  DOARGS_5
-#define DOARGS_5    \
-  subi sp, 8;       \
-  cfi_adjust_cfa_offset (8); \
-  stw  r7, (sp, 0); \
-  cfi_rel_offset (7, 0); \
-  stw  r4, (sp, 4); \
-  cfi_rel_offset (4, 4); \
-  ldw  r4, (sp, 8)
-#undef  DOARGS_6
-#define DOARGS_6    \
-  subi sp, 16;      \
-  cfi_adjust_cfa_offset (16); \
-  stw  r7, (sp, 0); \
-  cfi_rel_offset (7, 0); \
-  stw  r4, (sp, 4); \
-  cfi_rel_offset (4, 4); \
-  stw  r5, (sp, 8); \
-  cfi_rel_offset (5, 8); \
-  ldw  r4, (sp, 16); \
-  ldw  r5, (sp, 20)
-
-#undef  UNDOARGS_0
-#define UNDOARGS_0 \
-  ldw  r7, (sp, 0); \
-  cfi_restore (r7); \
-  addi sp, 8;   \
-  cfi_adjust_cfa_offset (-8);
-
-#undef  UNDOARGS_1
-#define UNDOARGS_1 UNDOARGS_0
-#undef  UNDOARGS_2
-#define UNDOARGS_2 UNDOARGS_0
-#undef  UNDOARGS_3
-#define UNDOARGS_3 UNDOARGS_0
-#undef  UNDOARGS_4
-#define UNDOARGS_4 UNDOARGS_0
-#undef  UNDOARGS_5
-#define UNDOARGS_5  \
-  ldw  r7, (sp, 0); \
-  cfi_restore (r4); \
-  ldw  r4, (sp, 4); \
-  cfi_restore (r4); \
-  addi sp, 8;  \
-  cfi_adjust_cfa_offset (-8);
-
-#undef  UNDOARGS_6
-#define UNDOARGS_6 \
-  ldw  r7, (sp, 0); \
-  cfi_restore (r7); \
-  ldw  r4, (sp, 4); \
-  cfi_restore (r4); \
-  ldw  r5, (sp, 8); \
-  cfi_restore (r5); \
-  addi sp, 16;    \
-  cfi_adjust_cfa_offset (-16);
-
-#else	/* __CSKYABIV1__ */
-
 #undef  DO_CALL
 #define DO_CALL(syscall_name, args)             \
     lrw  r1, SYS_ify(syscall_name);            \
     trap 0
-//#endif	/* DO_CALL */
-#endif	/* __CSKYABIV2__ */
-
-/* define DO_CALL_2, only ABIV2 need DO_CALL_2 */
-#ifdef __CSKYABIV2__
-
-#undef	DO_CALL_2
-#define DO_CALL_2(syscall_name, args)		\
-    DOARGS2_##args;				\
-    lrw  r7, SYS_ify(syscall_name);		\
-    trap 0;					\
-    UNDOARGS2_##args
-
-/*
- * to be quite different with DO_CALL, DO_CALL_2 need not save r7.
- */
-#undef  DOARGS2_0
-#define DOARGS2_0
-
-#undef  DOARGS2_1
-#define DOARGS2_1 DOARGS2_0
-#undef  DOARGS2_2
-#define DOARGS2_2 DOARGS2_0
-#undef  DOARGS2_3
-#define DOARGS2_3 DOARGS2_0
-#undef  DOARGS2_4
-#define DOARGS2_4 DOARGS2_0
-#undef  DOARGS2_5
-#define DOARGS2_5   \
-  subi sp, 8;       \
-  cfi_adjust_cfa_offset (8); \
-  stw  r4, (sp, 0); \
-  cfi_rel_offset (4, 0); \
-  ldw  r4, (sp, 20)
-#undef  DOARGS2_6
-#define DOARGS2_6    \
-  subi sp, 8;       \
-  cfi_adjust_cfa_offset (8); \
-  stw  r4, (sp, 0); \
-  cfi_rel_offset (4, 0); \
-  stw  r5, (sp, 4); \
-  cfi_rel_offset (5, 0); \
-  ldw  r4, (sp, 20); \
-  ldw  r5, (sp, 24)
-
-#undef  UNDOARGS2_0
-#define UNDOARGS2_0
-
-#undef  UNDOARGS2_1
-#define UNDOARGS2_1 UNDOARGS2_0
-#undef  UNDOARGS2_2
-#define UNDOARGS2_2 UNDOARGS2_0
-#undef  UNDOARGS2_3
-#define UNDOARGS2_3 UNDOARGS2_0
-#undef  UNDOARGS2_4
-#define UNDOARGS2_4 UNDOARGS2_0
-#undef  UNDOARGS2_5
-#define UNDOARGS2_5  \
-  ldw  r4, (sp, 0); \
-  addi sp, 8
-
-#undef  UNDOARGS2_6
-#define UNDOARGS2_6 \
-  ldw  r4, (sp, 0); \
-  ldw  r5, (sp, 4); \
-  addi sp, 8
-
-#endif  /* DO_CALL_2 */
 
 #else /* not __ASSEMBLER__ */
 
@@ -392,7 +242,6 @@ __local_syscall_error:                                          \
 
 
 #undef INTERNAL_SYSCALL_RAW
-#ifndef __CSKYABIV2__
 #define INTERNAL_SYSCALL_RAW0(name, err, dummy...)                      \
   ({unsigned int __sys_result;                                          \
      {                                                                  \
@@ -552,168 +401,6 @@ __local_syscall_error:                                          \
      }                                                                  \
      (int) __sys_result; })
 
-#else
-#define INTERNAL_SYSCALL_RAW0(name, err, dummy...)                      \
-  ({unsigned int __sys_result;                                          \
-     {                                                                  \
-       register int _a1 __asm__ ("a0"), _nr __asm__ ("r7");             \
-       _nr = name;                                                      \
-       __asm__ __volatile__ ("trap  0 \n\t"                             \
-                             : "=r" (_a1)                               \
-                             : "r" (_nr)                                \
-                             : "memory");                               \
-               __sys_result = _a1;                                      \
-     }                                                                  \
-     (int) __sys_result; })
-
-#define INTERNAL_SYSCALL_RAW1(name, err, arg1)                          \
-  ({unsigned int __sys_result;                                          \
-    register int _tmp_arg1 = (int)(arg1);                               \
-     {                                                                  \
-       register int _a1 __asm__ ("a0"), _nr __asm__ ("r7");             \
-       _a1 = _tmp_arg1;                                                 \
-       _nr = name;                                                      \
-       __asm__ __volatile__ ("trap  0 \n\t"                             \
-                             : "=r" (_a1)                               \
-                             : "r" (_nr), "r" (_a1)                     \
-                             : "memory");                               \
-               __sys_result = _a1;                                      \
-     }                                                                  \
-     (int) __sys_result; })
-
-#define INTERNAL_SYSCALL_RAW2(name, err, arg1, arg2)                    \
-  ({unsigned int __sys_result;                                          \
-    register int _tmp_arg1 = (int)(arg1), _tmp_arg2 = (int)(arg2);      \
-     {                                                                  \
-       register int _nr __asm__ ("r7");                                 \
-       register int _a1 __asm__ ("a0"), _a2 __asm__ ("a1");             \
-       _a1 = _tmp_arg1, _a2 = _tmp_arg2;                                \
-       _nr = name;                                                      \
-       __asm__ __volatile__ ("trap  0 \n\t"                             \
-                             : "=r" (_a1)                               \
-                             : "r" (_nr), "r" (_a1), "r" (_a2)          \
-                             : "memory");                               \
-               __sys_result = _a1;                                      \
-     }                                                                  \
-     (int) __sys_result; })
-
-#define INTERNAL_SYSCALL_RAW3(name, err, arg1, arg2, arg3)              \
-  ({unsigned int __sys_result;                                          \
-    register int _tmp_arg1 = (int)(arg1), _tmp_arg2 = (int)(arg2);      \
-    register int _tmp_arg3 = (int)(arg3);                               \
-     {                                                                  \
-       register int _nr __asm__ ("r7");                                 \
-       register int _a1 __asm__ ("a0"), _a2 __asm__ ("a1");             \
-       register int _a3 __asm__ ("a2");                                 \
-       _a1 = _tmp_arg1;                                                 \
-       _a2 = _tmp_arg2;                                                 \
-       _a3 = _tmp_arg3;                                                 \
-       _nr = name;                                                      \
-       __asm__ __volatile__ ("trap  0 \n\t"                             \
-                             : "=r" (_a1)                               \
-                             : "r" (_nr), "r" (_a1), "r" (_a2),         \
-                               "r" (_a3)                                \
-                             : "memory");                               \
-               __sys_result = _a1;                                      \
-     }                                                                  \
-     (int) __sys_result; })
-
-#define INTERNAL_SYSCALL_RAW4(name, err, arg1, arg2, arg3, arg4)        \
-  ({unsigned int __sys_result;                                          \
-    register int _tmp_arg1 = (int)(arg1), _tmp_arg2 = (int)(arg2);      \
-    register int _tmp_arg3 = (int)(arg3), _tmp_arg4 = (int)(arg4);      \
-     {                                                                  \
-       register int _nr __asm__ ("r7");                                 \
-       register int _a1 __asm__ ("a0"), _a2 __asm__ ("a1");             \
-       register int _a3 __asm__ ("a2"), _a4 __asm__ ("a3");             \
-       _a1 = _tmp_arg1, _a2 = _tmp_arg2, _a3 = _tmp_arg3;               \
-       _a4 = _tmp_arg4;                                                 \
-       _nr = name;                                                      \
-       __asm__ __volatile__ ("trap  0 \n\t"                             \
-                             : "=r" (_a1)                               \
-                             : "r" (_nr), "r" (_a1), "r" (_a2),         \
-                               "r" (_a3), "r" (_a4)                     \
-                             : "memory");                               \
-               __sys_result = _a1;                                      \
-     }                                                                  \
-     (int) __sys_result; })
-
-#define INTERNAL_SYSCALL_RAW5(name, err, arg1, arg2, arg3, arg4,        \
-                              arg5)                                     \
-  ({unsigned int __sys_result;                                          \
-    register int _tmp_arg1 = (int)(arg1), _tmp_arg2 = (int)(arg2);      \
-    register int _tmp_arg3 = (int)(arg3), _tmp_arg4 = (int)(arg4);      \
-    register int _tmp_arg5 = (int)(arg5);                               \
-     {                                                                  \
-       register int _nr __asm__ ("r7");                                 \
-       register int _a1 __asm__ ("a0"), _a2 __asm__ ("a1");             \
-       register int _a3 __asm__ ("a2"), _a4 __asm__ ("a3");             \
-       register int _a5 __asm__ ("r4");                                 \
-       _a1 = _tmp_arg1, _a2 = _tmp_arg2, _a3 = _tmp_arg3;               \
-       _a4 = _tmp_arg4, _a5 = _tmp_arg5;                                \
-       _nr = name;                                                      \
-       __asm__ __volatile__ ("trap  0 \n\t"                             \
-                             : "=r" (_a1)                               \
-                             : "r" (_nr), "r" (_a1), "r" (_a2),         \
-                               "r" (_a3), "r" (_a4), "r" (_a5)          \
-                             : "memory");                               \
-               __sys_result = _a1;                                      \
-     }                                                                  \
-     (int) __sys_result; })
-
-#define INTERNAL_SYSCALL_RAW6(name, err, arg1, arg2, arg3, arg4,        \
-                              arg5, arg6)                               \
-  ({unsigned int __sys_result;                                          \
-    register int _tmp_arg1 = (int)(arg1), _tmp_arg2 = (int)(arg2);      \
-    register int _tmp_arg3 = (int)(arg3), _tmp_arg4 = (int)(arg4);      \
-    register int _tmp_arg5 = (int)(arg5), _tmp_arg6 = (int)(arg6);      \
-     {                                                                  \
-       register int _nr __asm__ ("r7");                                 \
-       register int _a1 __asm__ ("a0"), _a2 __asm__ ("a1");             \
-       register int _a3 __asm__ ("a2"), _a4 __asm__ ("a3");             \
-       register int _a5 __asm__ ("r4"), _a6 __asm__ ("r5");             \
-       _a1 = _tmp_arg1, _a2 = _tmp_arg2, _a3 = _tmp_arg3;               \
-       _a4 = _tmp_arg4, _a5 = _tmp_arg5, _a6 = _tmp_arg6;               \
-       _nr = name;                                                      \
-       __asm__ __volatile__ ("trap  0 \n\t"                             \
-                             : "=r" (_a1)                               \
-                             : "r" (_nr), "r" (_a1), "r" (_a2),         \
-                               "r" (_a3), "r" (_a4), "r" (_a5),         \
-                               "r" (_a6)                                \
-                             : "memory");                               \
-               __sys_result = _a1;                                      \
-     }                                                                  \
-     (int) __sys_result; })
-
-#define INTERNAL_SYSCALL_RAW7(name, err, arg1, arg2, arg3, arg4,        \
-                              arg5, arg6, arg7)                         \
-  ({unsigned int __sys_result;                                          \
-    register int _tmp_arg1 = (int)(arg1), _tmp_arg2 = (int)(arg2);      \
-    register int _tmp_arg3 = (int)(arg3), _tmp_arg4 = (int)(arg4);      \
-    register int _tmp_arg5 = (int)(arg5), _tmp_arg6 = (int)(arg6);      \
-    register int _tmp_arg7 = (int)(arg7);                               \
-     {                                                                  \
-       register int _nr __asm__ ("r7");                                 \
-       register int _a1 __asm__ ("a0"), _a2 __asm__ ("a1");             \
-       register int _a3 __asm__ ("a2"), _a4 __asm__ ("a3");             \
-       register int _a5 __asm__ ("r4"), _a6 __asm__ ("r5");             \
-       register int _a7 __asm__ ("r6");                                 \
-       _a1 = _tmp_arg1, _a2 = _tmp_arg2, _a3 = _tmp_arg3;               \
-       _a4 = _tmp_arg4, _a5 = _tmp_arg5, _a6 = _tmp_arg6;               \
-       _a7 = _tmp_arg7;                                                 \
-       _nr = name;                                                      \
-       __asm__ __volatile__ ("trap  0 \n\t"                             \
-                             : "=r" (_a1)                               \
-                             : "r" (_nr), "r" (_a1), "r" (_a2),         \
-                               "r" (_a3), "r" (_a4), "r" (_a5),         \
-                               "r" (_a6), "r" (_a7)                     \
-                             : "memory");                               \
-               __sys_result = _a1;                                      \
-     }                                                                  \
-     (int) __sys_result; })
-
-#endif /* __ABI_CSKY_V2__ */
-
 #undef INTERNAL_SYSCALL
 #define INTERNAL_SYSCALL(name, err, nr, args...)                \
         INTERNAL_SYSCALL_RAW##nr(SYS_ify(name), err, args)
@@ -728,29 +415,18 @@ __local_syscall_error:                                          \
 #if (IS_IN (rtld) || \
      (!defined SHARED && (IS_IN (libc) || IS_IN (libpthread))))
 # ifdef __ASSEMBLER__
-#  ifdef __CSKYABIV2__
-#   define PTR_MANGLE(dst, src, guard)  \
-  grs   t0, 1f;					\
-1:						\
-  lrw   guard, 1b@GOTPC;			\
-  addu  t0, guard;                              \
-  lrw   guard, __pointer_chk_guard_local@GOTOFF;\
-  addu  t0, guard;                              \
-  ldw   guard, (t0, 0);                         \
-  xor   dst, src, guard;
-#  else
 #   define PTR_MANGLE(dst, src, guard)  \
   mov   r7, lr;                                 \
   bsr   1f;	                                \
 1:  		                                \
   lrw   guard, 1b@GOTPC;                  	\
   addu  lr, guard;                              \
-  lrw   guard, __pointer_chk_guard_local@GOTOFF;\
+  lrw   guard, __pointer_chk_guard_local@GOT;	\
   addu  lr, guard;                              \
   ldw   guard, (lr, 0);                         \
+  ldw   guard, (guard, 0);                      \
   mov   lr, r7;                                 \
   xor   dst, src, guard;
-#  endif
 #  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
 #  define PTR_MANGLE2(dst, src, guard) \
   xor   dst, src, guard
@@ -763,30 +439,18 @@ extern uintptr_t __pointer_chk_guard_local;
 # endif
 #else
 # ifdef __ASSEMBLER__
-#  ifdef __CSKYABIV2__
-#   define PTR_MANGLE(dst, src, guard)		\
-  grs   t0, 1f;		                	\
-1:                                       	\
-  lrw   guard, 1b@GOTPC;                  	\
-  addu  t0, guard;				\
-  lrw	guard, __pointer_chk_guard@GOTOFF;	\
-  addu  t0, guard;				\
-  ldw	guard, (t0, 0);				\
-  xor	dst, src, guard;
-#  else
 #   define PTR_MANGLE(dst, src, guard)		\
   mov   r7, lr;					\
   bsr   1f;					\
 1:						\
   lrw   guard, 1b@GOTPC;                  	\
   addu  lr, guard;                              \
-  lrw   guard, __pointer_chk_guard@GOTOFF;      \
+  lrw   guard, __pointer_chk_guard@GOT;		\
   addu  lr, guard;                              \
   ldw   guard, (lr, 0);                         \
+  ldw   guard, (guard, 0);                      \
   mov   lr, r7;					\
   xor   dst, src, guard;
-
-#  endif
 #  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
 #  define PTR_MANGLE2(dst, src, guard) \
   xor	dst, src, guard

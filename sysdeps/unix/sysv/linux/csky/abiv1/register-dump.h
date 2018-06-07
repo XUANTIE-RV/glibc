@@ -91,24 +91,6 @@ register_dump (int fd, const struct ucontext_t *ctx)
   hexvalue (ctx->uc_mcontext.gregs.regs[7], regs[16], 8);
   hexvalue (ctx->uc_mcontext.gregs.regs[8], regs[17], 8);
   hexvalue (ctx->uc_mcontext.gregs.regs[9], regs[18], 8);
-#ifdef	__CSKYABIV2__
-  hexvalue (ctx->uc_mcontext.gregs.exregs[0], regs[19], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[1], regs[20], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[2], regs[21], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[3], regs[22], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[4], regs[23], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[5], regs[24], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[6], regs[25], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[7], regs[26], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[8], regs[27], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[9], regs[28], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[10], regs[29], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[11], regs[30], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[12], regs[31], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[13], regs[32], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[14], regs[33], 8);
-  hexvalue (ctx->uc_mcontext.gregs.tls, regs[34], 8);
-#endif
 
   /* Generate the output.  */
   ADD_STRING ("Register dump:\n\n PSR: ");
@@ -129,64 +111,6 @@ register_dump (int fd, const struct ucontext_t *ctx)
   ADD_MEM (regs[7], 8);
   ADD_STRING ("   A3: ");
   ADD_MEM (regs[8], 8);
-#ifdef __CSKYABIV2__
-  ADD_STRING ("\n R4: ");
-  ADD_MEM (regs[9], 8);
-  ADD_STRING ("   r5: ");
-  ADD_MEM (regs[10], 8);
-  ADD_STRING ("   r6: ");
-  ADD_MEM (regs[11], 8);
-  ADD_STRING ("   r7: ");
-  ADD_MEM (regs[12], 8);
-  ADD_STRING ("\n R8: ");
-  ADD_MEM (regs[13], 8);
-  ADD_STRING ("   R9: ");
-  ADD_MEM (regs[14], 8);
-  ADD_STRING ("   R10: ");
-  ADD_MEM (regs[15], 8);
-  ADD_STRING ("  R11: ");
-  ADD_MEM (regs[16], 8);
-  ADD_STRING ("\n R12: ");
-  ADD_MEM (regs[17], 8);
-  ADD_STRING ("  R13: ");
-  ADD_MEM (regs[18], 8);
-  ADD_STRING ("  R14: ");
-  ADD_MEM (regs[19], 8);
-  ADD_STRING ("  R15: ");
-  ADD_MEM (regs[20], 8);
-  ADD_STRING ("\n R16: ");
-  ADD_MEM (regs[21], 8);
-  ADD_STRING ("  R17: ");
-  ADD_MEM (regs[22], 8);
-  ADD_STRING ("  R18: ");
-  ADD_MEM (regs[23], 8);
-  ADD_STRING ("  R19: ");
-  ADD_MEM (regs[24], 8);
-  ADD_STRING ("\n R20: ");
-  ADD_MEM (regs[25], 8);
-  ADD_STRING ("  R21: ");
-  ADD_MEM (regs[26], 8);
-  ADD_STRING ("  R22: ");
-  ADD_MEM (regs[27], 8);
-  ADD_STRING ("  R23: ");
-  ADD_MEM (regs[28], 8);
-  ADD_STRING ("\n R24: ");
-  ADD_MEM (regs[29], 8);
-  ADD_STRING ("  R25: ");
-  ADD_MEM (regs[30], 8);
-  ADD_STRING ("  R26: ");
-  ADD_MEM (regs[31], 8);
-  ADD_STRING ("  R27: ");
-  ADD_MEM (regs[32], 8);
-  ADD_STRING ("\n R28: ");
-  ADD_MEM (regs[33], 8);
-  ADD_STRING ("  R29: ");
-  ADD_MEM (regs[34], 8);
-  ADD_STRING ("  R30: ");
-  ADD_MEM (regs[33], 8);
-  ADD_STRING ("  TP: ");
-  ADD_MEM (regs[34], 8);
-#else
   ADD_STRING ("   R6: ");
   ADD_MEM (regs[9], 8);
   ADD_STRING ("   R7: ");
@@ -207,7 +131,6 @@ register_dump (int fd, const struct ucontext_t *ctx)
   ADD_MEM (regs[17], 8);
   ADD_STRING ("  R1: ");
   ADD_MEM (regs[18], 8);
-#endif
 
   ADD_STRING ("\n");
 

@@ -28,7 +28,6 @@ longjmp_msg:
 #define __longjmp ____longjmp_chk
 
 #ifdef	__PIC__
-# ifdef	__CSKYABIV2__
 #  define CALL_FAIL	\
 	subi    sp, 8;						\
 	stw     gb, (sp, 0);					\
@@ -43,32 +42,12 @@ longjmp_msg:
 	jsr     t0;						\
 	ldw     gb, (sp, 0);					\
 	addi    sp, 8;
-# else /* __CSKYABIV2__ */
-#  define CALL_FAIL	\
-	subi    sp, 8;						\
-	stw     gb, (sp);					\
-	stw     r15, (sp, 4);					\
-	bsr     .Lgetpc2;					\
-.Lgetpc2:							\
-	lrw     gb, .Lgetpc2@GOTPC;				\
-	add     gb, r15;					\
-	lrw     a0, longjmp_msg@GOTOFF;				\
-	addu	a0, gb;						\
-	lrw     r7, (HIDDEN_JUMPTARGET(__fortify_fail))@PLT;	\
-	add     r7, gb;						\
-	ldw     r7, (r7);					\
-	jsr     r7;						\
-	ldw     gb, (sp, 0);					\
-	ldw     r15,(sp, 4);					\
-	addi    sp, 8;
-# endif /* __CSKYABIV2__ */
 #else /* __PIC__ */
 # define CALL_FAIL	\
 	lrw     a0, longjmp_msg;				\
 	jsri    HIDDEN_JUMPTARGET(__fortify_fail);
 #endif/* __PIC__ */
 
-#ifdef	__CSKYABIV2__
 # define  CHECK_SP(reg)	\
 	cmplt   sp, reg;					\
 	bt      .Lok1;						\
@@ -97,33 +76,5 @@ longjmp_msg:
 .Lok:								\
 	mov     a0, r9;						\
 .Lok1:
-#else
-# define  CHECK_SP(reg)	\
-	cmplt   sp, reg;					\
-	bt      .Lok1;						\
-	mov     r9, a0;						\
-	lrw     r1, __NR_sigaltstack;				\
-	movi	a0, 0;						\
-	subi	sp, 12;	/* sizeof (stack_t) */			\
-	mov     a1, sp;						\
-	trap    0;						\
-	cmpnei  a0, 0;						\
-	bt      .Lok;						\
-	ldw     a1, (sp, 4);					\
-	btsti   a1, 1;						\
-	bt      .Lfail;						\
-	ldw     a1, (sp, 0);					\
-	ldw     a3, (sp, 8);					\
-	add     a1, a3;						\
-	sub     a1, reg;					\
-	cmphs   a1, a3;						\
-	bt      .Lok;						\
-.Lfail:								\
-	addi    sp, 12;						\
-	CALL_FAIL						\
-.Lok:								\
-	mov     a0, r9;						\
-.Lok1:
-#endif
 
 #include <__longjmp.S>

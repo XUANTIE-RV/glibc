@@ -18,10 +18,6 @@
 /* clone() is even more special than fork() as it mucks with stacks
    and invokes a function in the right context after its all over.  */
 
-#ifdef	__CSKYABIV2__
-# include "abiv2_clone.S"
-#else
-
 # include <sysdep.h>
 # define _ERRNO_H	1
 # include <bits/errno.h>
@@ -96,4 +92,3 @@ do_syscall_error:
 libc_hidden_def (__clone)
 weak_alias (__clone, clone)
 
-#endif	/* __CSKYABIV2__*/
