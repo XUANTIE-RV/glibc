@@ -20,8 +20,7 @@
 
 /* There is some commonality.  */
 #include <sysdeps/unix/sysv/linux/generic/sysdep.h>
-#include <sysdeps/unix/sysv/linux/sysdep.h>
-#include <sysdeps/unix/csky/sysdep.h>
+#include <sysdeps/csky/sysdep.h>
 
 /* Defines RTLD_PRIVATE_ERRNO and USE_DL_SYSINFO.  */
 #include <dl-sysdep.h>
@@ -103,7 +102,6 @@
 	rts
 #  endif /* !IS_IN (libc) */
 # endif /* __PIC__ */
-
 
 # undef ret
 # define ret PSEUDO_RET
@@ -555,11 +553,10 @@ __local_syscall_error:                                          \
 1:						\
   lrw   guard, 1b@GOTPC;			\
   addu  t0, guard;                              \
-  lrw   guard, __pointer_chk_guard_local@GOTOFF;\
-  addu  t0, guard;                              \
-  ldw   guard, (t0, 0);                         \
+  lrw   guard, __pointer_chk_guard_local@GOT;	\
+  ldr.w guard, (t0, guard << 0);                \
+  ldw   guard, (guard, 0);                      \
   xor   dst, src, guard;
-#  endif
 #  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
 #  define PTR_MANGLE2(dst, src, guard) \
   xor   dst, src, guard
@@ -577,9 +574,9 @@ extern uintptr_t __pointer_chk_guard_local;
 1:                                       	\
   lrw   guard, 1b@GOTPC;                  	\
   addu  t0, guard;				\
-  lrw	guard, __pointer_chk_guard@GOTOFF;	\
-  addu  t0, guard;				\
-  ldw	guard, (t0, 0);				\
+  lrw	guard, __pointer_chk_guard@GOT;		\
+  ldr.w guard, (t0, guard << 0);                \
+  ldw   guard, (guard, 0);                      \
   xor	dst, src, guard;
 #  define PTR_DEMANGLE(dst, src, guard) PTR_MANGLE (dst, src, guard)
 #  define PTR_MANGLE2(dst, src, guard) \

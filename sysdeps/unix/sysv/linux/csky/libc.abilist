@@ -1,4 +1,3 @@
-GLIBC_2.28 GLIBC_2.28 A
 GLIBC_2.28 _Exit F
 GLIBC_2.28 _IO_2_1_stderr_ D 0x98
 GLIBC_2.28 _IO_2_1_stdin_ D 0x98
@@ -1203,7 +1202,6 @@ GLIBC_2.28 listxattr F
 GLIBC_2.28 llabs F
 GLIBC_2.28 lldiv F
 GLIBC_2.28 llistxattr F
-GLIBC_2.28 llseek F
 GLIBC_2.28 localeconv F
 GLIBC_2.28 localtime F
 GLIBC_2.28 localtime_r F
@@ -1301,7 +1299,6 @@ GLIBC_2.28 nanosleep F
 GLIBC_2.28 netname2host F
 GLIBC_2.28 netname2user F
 GLIBC_2.28 newlocale F
-GLIBC_2.28 nfsservctl F
 GLIBC_2.28 nftw F
 GLIBC_2.28 nftw64 F
 GLIBC_2.28 ngettext F
@@ -1890,7 +1887,6 @@ GLIBC_2.28 updwtmpx F
 GLIBC_2.28 uselocale F
 GLIBC_2.28 user2netname F
 GLIBC_2.28 usleep F
-GLIBC_2.28 ustat F
 GLIBC_2.28 utime F
 GLIBC_2.28 utimensat F
 GLIBC_2.28 utimes F

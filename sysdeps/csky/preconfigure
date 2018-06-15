@@ -1,16 +1,15 @@
 case "$machine" in
 csky*)
-echo $CC $CFLAGS $CPPFLAGS
     abi=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null |
       sed -n 's/^#define __CSKYABI__ \(.*\)/\1/p'`
     float_abi=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | 
       sed -n 's/^#define __CSKY_HARD_FLOAT__ \(.*\)/\1/p'`
 
     case "$abi" in
-    __CSKYABIV1__)
+    1)
         machine=abiv1
         ;;
-    __CSKYABIV2__)
+    2)
         machine=abiv2
         ;;
     esac
