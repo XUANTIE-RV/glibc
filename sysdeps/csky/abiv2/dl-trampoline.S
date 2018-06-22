@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* PLT trampolines.  C-SKY ABIV2 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -27,23 +28,21 @@
      jmp r2
  */
 
-.import _dl_fixup
+#include <sysdep.h>
 
-.text
-.globl _dl_runtime_resolve
-.type  _dl_runtime_resolve,@function
-
-_dl_runtime_resolve:
-	subi sp, 20
-	stm  a0-a3, (sp)
-	stw  lr, (sp, 16)
+	.text
+ENTRY (_dl_runtime_resolve)
+	subi	sp, 20
+	stm	a0-a3, (sp)
+	stw	lr, (sp, 16)
 	# a0 = id, a1 = offset(do it in plt*)
-	ldw  a0,  (gb, 4)
-	movi a1, 12
-	mult a1, t1
-	bsr  _dl_fixup
-	mov  t0, a0
-	ldw  lr, (sp, 16)
-	ldm  a0-a3, (sp)
-	addi sp, 20
-	jmp  t0
+	ldw	a0,  (gb, 4)
+	movi	a1, 12
+	mult	a1, t1
+	bsr	_dl_fixup
+	mov	t0, a0
+	ldw	lr, (sp, 16)
+	ldm	a0-a3, (sp)
+	addi	sp, 20
+	jmp	t0
+END (_dl_runtime_resolve)

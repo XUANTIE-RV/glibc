@@ -28,7 +28,7 @@ __feupdateenv (const fenv_t *envp)
   int temp;
 
   /* Save current exceptions.  */
-  _FPU_GETFPSR(temp);
+  _FPU_GETFPSR (temp);
   temp = (temp >> CAUSE_SHIFT) & FE_ALL_EXCEPT;
   /* Install new environment.  */
   libc_fesetenv_vfp (envp);

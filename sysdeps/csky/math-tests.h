@@ -16,10 +16,7 @@
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
-/* On systems with VFP support, but where glibc is built for
-   soft-float, the libgcc functions used in libc and libm do not
-   support rounding modes, although fesetround succeeds, and do not
-   support exceptions.  */
+/* C-SKY soft float does not support exceptions and rounding modes.  */
 #ifdef __CSKY_SOFT_FLOAT__
 # define ROUNDING_TESTS_float(MODE)	((MODE) == FE_TONEAREST)
 # define ROUNDING_TESTS_double(MODE)	((MODE) == FE_TONEAREST)
@@ -29,7 +26,7 @@
 # define EXCEPTION_TESTS_long_double	0
 #endif
 
-/* Not all VFP implementations support trapping exceptions.  */
+/* Trapping exceptions are not supported on C-SKY.  */
 #define EXCEPTION_ENABLE_SUPPORTED(EXCEPT)	((EXCEPT) == 0)
 
 #include_next <math-tests.h>

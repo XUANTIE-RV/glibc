@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* fpu registers environment.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -26,4 +27,4 @@
 #define	ENABLE_SHIFT	0
 #define CAUSE_SHIFT	8
 
-#endif /* _FENV_LIBC_H */
+#endif /* fenv_libc.h */

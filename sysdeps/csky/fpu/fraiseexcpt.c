@@ -73,7 +73,7 @@ __feraiseexcept (int excepts)
       double x = 4.9406564584124654e-324;
       __asm__ __volatile__ ("fstod %0, %0" : "+v" (x));
     }
-# else /* __csky_fpuv2__ */
+# else
      int tmp = 0;
     /* First: invalid exception.  */
     if (FE_INVALID & excepts)

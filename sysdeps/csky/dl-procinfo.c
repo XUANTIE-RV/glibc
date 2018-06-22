@@ -39,7 +39,7 @@
   */
 
 #ifndef PROCINFO_CLASS
-#define PROCINFO_CLASS
+# define PROCINFO_CLASS
 #endif
 
 #if !defined PROCINFO_DECL && defined SHARED

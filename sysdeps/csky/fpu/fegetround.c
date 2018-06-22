@@ -27,7 +27,7 @@ __fegetround (void)
   /* Get control word.  */
   _FPU_GETCW (cw);
 
-  return cw & FE_ROUND_MASK;
+  return cw & __FE_ROUND_MASK;
 }
 libm_hidden_def (__fegetround)
 weak_alias (__fegetround, fegetround)

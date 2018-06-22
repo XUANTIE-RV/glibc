@@ -1,4 +1,4 @@
-/* Startup code compliant to the ELF C-SKY ABI.
+/* Startup code compliant to the ELF C-SKY ABIV2.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -42,70 +42,69 @@
 #include <sysdep.h>
 
 .text
-	.globl _start
-	.type _start,@function
-_start:
+ENTRY (_start)
 	/* Clear the frame pointer and link register since this is the outermost frame. */
 	movi	lr, 0
 	/* Pop argc off the stack and save a pointer to argv */
-	ldw 	a1, (sp, 0)	/* __libc_start_main(arg1): argc */
-	addi    sp, 4
-	mov 	a2, sp		/* __libc_start_main(arg1): argv */
+	ldw	a1, (sp, 0)	/* __libc_start_main(arg1): argc */
+	addi	sp, 4
+	mov	a2, sp		/* __libc_start_main(arg2): argv */
 
 	subi	sp, 4
 	/* Push stack limit */
-	stw 	a2, (sp, 0)
+	stw	a2, (sp, 0)
 	/* Push rtld_fini */
 	subi	sp, 4
-	stw 	a0, (sp, 0)
+	stw	a0, (sp, 0)
 
 #ifdef SHARED
-	subi sp,8
-	stw lr,(sp,0)
-	stw gb,(sp,4)
-	bsr .Lgetpc
+	subi	sp, 8
+	stw	lr, (sp, 0)
+	stw	gb, (sp, 4)
+	bsr	.Lgetpc
 .Lgetpc:
-	lrw  gb, .Lgetpc@GOTPC
-	addu gb, lr
-	lrw  a3, __libc_csu_fini@GOT
-	addu a3, gb
-	ldw  a3, (a3)
+	lrw	gb, .Lgetpc@GOTPC
+	addu	gb, lr
+	lrw	a3, __libc_csu_fini@GOT
+	addu	a3, gb
+	ldw	a3, (a3)
 
-	subi sp, 4
-	stw  a3, (sp,0)
+	subi	sp, 4
+	stw	a3, (sp, 0)
 
-	lrw  a3, __libc_csu_init@GOT
-	addu a3, gb
-	ldw  a3,(a3,0)
+	lrw	a3, __libc_csu_init@GOT
+	addu	a3, gb
+	ldw	a3, (a3, 0)
 
-	lrw  t0, main@GOT
-	addu t0, gb
-	ldw  a0,(t0,0)
-	lrw  t1,__libc_start_main@PLT
-	addu t1, gb
-	ldw  t1, (t1, 0)
-	jsr  t1
+	lrw	t0, main@GOT
+	addu	t0, gb
+	ldw	a0,(t0,0)
+	lrw	t1,__libc_start_main@PLT
+	addu	t1, gb
+	ldw	t1, (t1, 0)
+	jsr	t1
 
-	ldw  lr,(sp,0)
-	ldw  gb,(sp,4)
-	addi sp, 8
-#else /* !SHARED */
+	ldw	lr,(sp,0)
+	ldw	gb,(sp,4)
+	addi	sp, 8
+#else
 	/* Fetch address of __libc_csu_fini */
-	lrw a0, __libc_csu_fini
+	lrw	a0, __libc_csu_fini
 	/* Push __libc_csu_fini */
-	subi sp,4
-	stw a0, (sp,0)
+	subi	sp,4
+	stw	a0, (sp,0)
 
 	/* Set up the other arguments in registers */
-	lrw a0, main
-	lrw a3, __libc_csu_init
+	lrw	a0, main
+	lrw	a3, __libc_csu_init
 	/* __libc_start_main (main, argc, argv, init, fini, rtld_fini, stack_end) */
 	/* Let the libc call main and exit with its return code.  */
-	jsri __libc_start_main
-#endif /* !SHARED */
+	jsri	__libc_start_main
+#endif	/* !SHARED */
 
 	/* should never get here....*/
-	jsri abort
+	jsri	abort
+END (_start)
 
 /* Define a symbol for the first piece of initialized data.  */
 	.data

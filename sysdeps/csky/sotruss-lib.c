@@ -1,4 +1,4 @@
-/* Override generic sotruss-lib.c to define actual functions for CSKY.
+/* Override generic sotruss-lib.c to define actual functions for C-SKY.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 

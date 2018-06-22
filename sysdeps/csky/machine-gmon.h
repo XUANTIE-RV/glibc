@@ -1,4 +1,4 @@
-/* Machine-dependent definitions for profiling support.  CSKY version.
+/* Machine-dependent definitions for profiling support.  C-SKY version.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -18,7 +18,7 @@
 
 #include <sysdep.h>
 
-/* GCC for the CSKY cannot compile __builtin_return_address(N) for N != 0,
+/* GCC for the C-SKY cannot compile __builtin_return_address (N) for N != 0,
    so we must use an assembly stub.  */
 
 /* We must not pollute the global namespace.  */

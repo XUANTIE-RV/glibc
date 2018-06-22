@@ -1247,6 +1247,7 @@ class Config(object):
         arch_map = {'aarch64': 'arm64',
                     'alpha': 'alpha',
                     'arm': 'arm',
+                    'csky': 'csky',
                     'hppa': 'parisc',
                     'i486': 'x86',
                     'i586': 'x86',

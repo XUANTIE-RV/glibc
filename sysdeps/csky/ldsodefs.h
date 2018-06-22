@@ -28,8 +28,8 @@ struct La_csky_retval;
     Elf32_Addr (*csky_gnu_pltenter) (Elf32_Sym *, unsigned int,		      \
 					 uintptr_t *, uintptr_t *,	      \
 					 struct La_csky_regs *,		      \
-					 unsigned int *, const char *name,    \
-					 long int *framesizep);
+					 unsigned int *, const char *,	      \
+					 long int *);
 
 #define ARCH_PLTEXIT_MEMBERS	\
     unsigned int (*csky_gnu_pltexit) (Elf32_Sym *, unsigned int,	       \

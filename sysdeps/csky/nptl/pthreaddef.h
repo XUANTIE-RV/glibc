@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* pthread machine parameter definitions.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -27,14 +28,5 @@
 /* Alignment requirement for TCB.  */
 #define TCB_ALIGNMENT		8
 
-
-/* Location of current stack frame.
-
-   __builtin_frame_address (0) returns the value of the hard frame
-   pointer, which will point at the location of the saved PC on the
-   stack.  Below this in memory is the remainder of the linkage info,
-   occupying 12 bytes.  Therefore in order to address from
-   CURRENT_STACK_FRAME using "struct layout", we need to have the macro
-   return the hard FP minus 12.  Of course, this makes no sense
-   without the obsolete APCS stack layout...  */
-#define CURRENT_STACK_FRAME	(__builtin_frame_address (0) - 12)
+/* Location of current stack frame.  */
+#define CURRENT_STACK_FRAME	__builtin_frame_address (0)

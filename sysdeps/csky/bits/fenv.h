@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* Floating point environment.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -38,7 +39,7 @@ enum
     FE_INEXACT =
 #define FE_INEXACT	0x10
       FE_INEXACT,
-    __FE_DENORMAL = 0x20,
+    __FE_DENORMAL = 0x20
   };
 
 #define FE_ALL_EXCEPT \
@@ -61,9 +62,7 @@ enum
     FE_DOWNWARD =
 #define FE_DOWNWARD	(0x3 << 24)
       FE_DOWNWARD,
-    FE_ROUND_MASK =
-#define FE_ROUND_MASK	(0x3 << 24)
-      FE_ROUND_MASK
+    __FE_ROUND_MASK = (0x3 << 24)
   };
 
 /* Type representing exception flags.  */
@@ -71,18 +70,17 @@ typedef unsigned int fexcept_t;
 
 /* Type representing floating-point environment. */
 typedef struct
-  {
-    unsigned int __fpcr;
-    unsigned int __fpsr;
-  }
-fenv_t;
+{
+  unsigned int __fpcr;
+  unsigned int __fpsr;
+} fenv_t;
 
 /* If the default argument is used we use this value.  */
 #define FE_DFL_ENV	((const fenv_t *) -1)
 
 #ifdef __USE_GNU
 /* Floating-point environment where none of the exceptions are masked.  */
-# define FE_NOMASK_ENV  ((const fenv_t *) -2)
+# define FE_NOMASK_ENV	((const fenv_t *) -2)
 #endif
 
 #if __GLIBC_USE (IEC_60559_BFP_EXT)

@@ -33,65 +33,65 @@ typedef uintmax_t uatomic_max_t;
 #define USE_ATOMIC_COMPILER_BUILTINS 0
 #define ATOMIC_EXCHANGE_USES_CAS 0
 
-# define __arch_compare_and_exchange_bool_8_int(mem, newval, oldval)	\
+#define __arch_compare_and_exchange_bool_8_int(mem, newval, oldval)	\
   (abort (), 0)
 
-# define __arch_compare_and_exchange_bool_16_int(mem, newval, oldval)	\
+#define __arch_compare_and_exchange_bool_16_int(mem, newval, oldval)	\
   (abort (), 0)
 
-# define __arch_compare_and_exchange_bool_32_int(mem, newval, oldval)	\
+#define __arch_compare_and_exchange_bool_32_int(mem, newval, oldval)	\
   ({ __typeof (mem) _mem = (mem);					\
-    __typeof (oldval) _oldval = oldval;					\
-    __typeof (newval) _newval = newval;					\
-    register int _a0 asm ("a0") = (int)_oldval;				\
-    register int _a1 asm ("a1") = (int)_newval;				\
-    register int _a2 asm ("a2") = (int)_mem;				\
-    __asm__ __volatile__ ("trap   2\n"					\
-     : "+r" (_a0) : "r" (_a1) , "r" (_a2)				\
-     : "a3", "memory");							\
-    (int) _a0; })
+     __typeof (oldval) _oldval = oldval;				\
+     __typeof (newval) _newval = newval;				\
+     register int _a0 asm ("a0") = (int)_oldval;			\
+     register int _a1 asm ("a1") = (int)_newval;			\
+     register int _a2 asm ("a2") = (int)_mem;				\
+     __asm__ __volatile__ ("trap   2"					\
+			   : "+r" (_a0) : "r" (_a1) , "r" (_a2)		\
+			   : "a3", "memory");				\
+     (int) _a0; })
 
-# define __arch_compare_and_exchange_bool_64_int(mem, newval, oldval)	\
+#define __arch_compare_and_exchange_bool_64_int(mem, newval, oldval)	\
   (abort (), 0)
 
-# define __arch_compare_and_exchange_val_8_int(mem, newval, oldval)	\
-	(abort (), (__typeof (*mem))0)
+#define __arch_compare_and_exchange_val_8_int(mem, newval, oldval)	\
+  (abort (), (__typeof (*mem)) 0)
 
-# define __arch_compare_and_exchange_val_16_int(mem, newval, oldval)	\
-	(abort (), (__typeof (*mem))0)
+#define __arch_compare_and_exchange_val_16_int(mem, newval, oldval)	\
+  (abort (), (__typeof (*mem)) 0)
 
-# define __arch_compare_and_exchange_val_32_int(mem, newval, oldval)	\
+#define __arch_compare_and_exchange_val_32_int(mem, newval, oldval)	\
   ({ __typeof (mem) _mem = (mem);					\
-    __typeof (*mem) __gret = *_mem;					\
-    unsigned int _tmp = 0;						\
-    __typeof (oldval) _oldval = oldval;					\
-    __typeof (newval) _newval = newval;					\
-    register int _a0 asm ("a0") = (int)_oldval;				\
-    register int _a1 asm ("a1") = (int)_newval;				\
-    register int _a2 asm ("a2") = (int)_mem;				\
-	__asm__ __volatile__ ("1:\n"					\
-      "ldw      %1, (%4, 0x0)\n"					\
-      "cmpne    %1, %0\n"						\
-      "bt       2f\n"							\
-      "mov      %2, %0\n"						\
-      "trap     2\n"							\
-      "cmpnei   %0, 0\n"						\
-      "mov      %0, %2\n"						\
-      "bt       1b\n"							\
-      "2:         \n"							\
-     :"+r" (_a0), "+r"(__gret), "+r" (_tmp) :"r" (_a1) , "r" (_a2)	\
-     : "a3", "memory");							\
-    __gret; })
+     __typeof (*mem) __gret = *_mem;					\
+     unsigned int _tmp = 0;						\
+     __typeof (oldval) _oldval = oldval;				\
+     __typeof (newval) _newval = newval;				\
+     register int _a0 asm ("a0") = (int)_oldval;			\
+     register int _a1 asm ("a1") = (int)_newval;			\
+     register int _a2 asm ("a2") = (int)_mem;				\
+     __asm__ __volatile__ ("1:\tldw %1, (%4, 0x0)\n\t"			\
+			   "cmpne %1, %0\n\t"				\
+			   "bt 2f\n\t"					\
+			   "mov %2, %0\n\t"				\
+			   "trap 2\n\t"					\
+			   "cmpnei %0, 0\n\t"				\
+			   "mov %0, %2\n\t"				\
+			   "bt 1b\n"					\
+			   "2:"						\
+			   : "+r" (_a0), "+r"(__gret), "+r" (_tmp)	\
+			   : "r" (_a1) , "r" (_a2)			\
+			   : "a3", "memory");				\
+     __gret; })
 
-# define __arch_compare_and_exchange_val_64_int(mem, newval, oldval)	\
-	(abort (), (__typeof (*mem))0)
+#define __arch_compare_and_exchange_val_64_int(mem, newval, oldval)	\
+  (abort (), (__typeof (*mem)) 0)
 
-# define atomic_compare_and_exchange_bool_acq(mem, new, old)		\
+#define atomic_compare_and_exchange_bool_acq(mem, new, old)		\
   __atomic_bool_bysize (__arch_compare_and_exchange_bool, int,		\
-            mem, new, old)
+			mem, new, old)
 
-# define atomic_compare_and_exchange_val_acq(mem, new, old)		\
+#define atomic_compare_and_exchange_val_acq(mem, new, old)		\
   __atomic_val_bysize (__arch_compare_and_exchange_val, int,		\
-               mem, new, old)
+		       mem, new, old)
 
-#endif
+#endif /* atomic-machine.h */

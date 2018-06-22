@@ -62,25 +62,25 @@
 _init:
 	subi	sp, 8
 	stw	lr, (sp, 0)
-	stw     gb, (sp, 4)
-        bsr     .Lgetpc
+	stw	gb, (sp, 4)
+	bsr	.Lgetpc
 .Lgetpc:
-        lrw     gb, .Lgetpc@GOTPC
+	lrw	gb, .Lgetpc@GOTPC
 	add	gb, lr
 #if PREINIT_FUNCTION_WEAK
-        lrw     a2, PREINIT_FUNCTION@GOT
-        addu    a2, gb
-        ldw     a2, (a2)
-        cmpnei  a2, 0
-        bf      1f
-        jsr     a2
+	lrw	a2, PREINIT_FUNCTION@GOT
+	addu	a2, gb
+	ldw	a2, (a2)
+	cmpnei	a2, 0
+	bf	1f
+	jsr	a2
 1:
 #else
 	jsri	PREINIT_FUNCTION
 #endif /* PREINIT_FUNCTION_WEAK */
-	br      2f
+	br	2f
 	.literals
-	.align  4
+	.align 4
 2:
 
 	.section .fini,"ax",@progbits
@@ -90,7 +90,7 @@ _init:
 _fini:
 	subi	sp,8
 	stw	lr, (sp, 0)
-	br      2f
+	br	2f
 	.literals
-	.align  4
+	.align 4
 2:
