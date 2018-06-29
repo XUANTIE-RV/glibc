@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* System call interface.  C-SKY ABIV2 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -43,15 +44,8 @@ ENTRY (syscall)
 
 	lrw	t0, 0xfffff000
 	cmphs	a0, t0
-	bt	do_syscall_error
-	rts
-PSEUDO_END (syscall)
-
-do_syscall_error:
+	bf	1f
 #ifdef __PIC__
-	subi	sp, 8
-	stw	gb, (sp, 0)
-        stw     lr, (sp, 4)
 	grs	gb, .Lgetpc
 .Lgetpc:
 	lrw	t0, .Lgetpc@GOTPC
@@ -59,10 +53,9 @@ do_syscall_error:
 	lrw	t0, __syscall_error@PLT
 	ldr.w	t0, (gb, t0 << 0)
 	jsr	t0
-	ldw	gb, (sp, 0)
-        ldw     lr, (sp, 4)
-	addi	sp, 8
 #else
-	jmpi	__syscall_error
+        jmpi    __syscall_error
 #endif /* __PIC__ */
+1:
 	rts
+PSEUDO_END (syscall)

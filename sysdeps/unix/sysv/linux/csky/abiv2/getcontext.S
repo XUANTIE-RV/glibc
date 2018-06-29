@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* Save current context.  C-SKY ABIV2 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,7 +22,7 @@
 
 /* int getcontext (ucontext_t *ucp) */
 
-ENTRY(__getcontext)
+ENTRY (__getcontext)
 	/* No need to save r2-r7 or a0-a3 */
 	mov	t0, a0
 
@@ -39,7 +40,7 @@ ENTRY(__getcontext)
 	subi	sp, 8
 	stw	t0, (sp, 0)			/* save t0 after "save sp" */
 
-	/* __sigprocmask(SIG_BLOCK, NULL, &(ucontext->uc_sigmask)) */
+	/* __sigprocmask (SIG_BLOCK, NULL, &(ucontext->uc_sigmask)) */
 	movi	a0, SIG_BLOCK
 	movi	a1, 0
 	addi	a2, t0, UCONTEXT_SIGMASK
@@ -58,7 +59,7 @@ ENTRY(__getcontext)
 	ldw	gb, (sp, 0)
 	addi	sp, 8
 #else
-	jsri    __sigprocmask
+	jsri	__sigprocmask
 #endif
 
 	ldw	t0, (sp, 0)
@@ -67,6 +68,6 @@ ENTRY(__getcontext)
 	ldw	r15, (t0, MCONTEXT_CSKY_LR)
 	movi	a0, 0				/* return 0 */
 	jmp	r15
-END(__getcontext)
+END (__getcontext)
 
-weak_alias(__getcontext, getcontext)
+weak_alias (__getcontext, getcontext)

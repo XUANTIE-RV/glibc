@@ -21,7 +21,7 @@
 #include <bits/sigcontext.h>
 #include <sys/ucontext.h>
 
-/* We will print the register dump in this format:
+/* abiv1 register dump in this format:
 
  PSR: XXXXXXXX  PC: XXXXXXXX   SP: XXXXXXXX   LR: XXXXXXXX
  MASK: XXXXXXXX
@@ -31,7 +31,7 @@
  R10: XXXXXXXX  R11: XXXXXXXX  R12: XXXXXXXX  R13: XXXXXXXX
  R14: XXXXXXXX  R1: XXXXXXXX
 
-************************ I am cutter! *********************
+ abiv2 register dump in this format:
 
  PSR: XXXXXXXX  PC: XXXXXXXX   SP: XXXXXXXX   LR: XXXXXXXX
  MASK: XXXXXXXX

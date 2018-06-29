@@ -1397,7 +1397,6 @@ GLIBC_2.28 prlimit64 F
 GLIBC_2.28 process_vm_readv F
 GLIBC_2.28 process_vm_writev F
 GLIBC_2.28 profil F
-GLIBC_2.28 profil_counter F
 GLIBC_2.28 program_invocation_name D 0x4
 GLIBC_2.28 program_invocation_short_name D 0x4
 GLIBC_2.28 pselect F

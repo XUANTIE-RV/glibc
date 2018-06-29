@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* Wrapper around clone system call.  C-SKY ABIV1 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,15 +22,14 @@
 # include <sysdep.h>
 # define _ERRNO_H	1
 # include <bits/errno.h>
-# include <csky_readtp.h>
 
-# define CLONE_VM      8  /* 11 makes btsti easier, 0x00000100 in real */
+# define CLONE_VM      8   /* 11 makes btsti easier, 0x00000100 in real */
 # define CLONE_THREAD  16  /* 0x00010000 in real */
 
 /* int clone(int (*fn)(void *arg), void *child_stack, int flags, void *arg,
 	     pid_t *ptid, struct user_desc *tls, pid_t *ctid); */
 
-        .text
+	.text
 ENTRY(__clone)
 	/* Sanity check arguments. */
 	cmpnei	r2, 0
@@ -50,25 +50,15 @@ ENTRY(__clone)
 	trap	0
 
 	btsti	r2, 31		/* is r2 less than zero? */
-	bt	do_syscall_error
+	bf	__do_syscall_error
 	cmpnei	r2, 0
-	bf	1f
+	bf	__child
 	rts
-PSEUDO_END (__clone)
-
-1:
-	ldw	r2, (sp, 4)	/* restore args from new sp */
-	ldw	r3, (sp, 0)	/* restore args from new sp */
-	addi	sp, 8
-
-	jsr	r3
-	lrw	r1, __NR_exit
-	trap	0
 
 __error_arg:
 	lrw	r2, -EINVAL
 
-do_syscall_error:
+__do_syscall_error:
 # ifdef __PIC__
 	subi	sp, 8
 	stw	gb, (sp, 0)
@@ -85,9 +75,19 @@ do_syscall_error:
 	ldw	r15, (sp, 4)
 	addi	sp, 8
 # else
-	jmpi	 __syscall_error
+	jmpi	__syscall_error
 # endif /* __PIC__ */
 	rts
+PSEUDO_END (__clone)
+
+__child:
+	ldw	r2, (sp, 4)	/* restore args from new sp */
+	ldw	r3, (sp, 0)	/* restore args from new sp */
+	addi	sp, 8
+
+	jsr	r3
+	lrw	r1, __NR_exit
+	trap	0
 
 libc_hidden_def (__clone)
 weak_alias (__clone, clone)

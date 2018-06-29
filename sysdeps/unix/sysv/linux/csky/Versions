@@ -1,6 +1,5 @@
 libc {
   GLIBC_2.28 {
-    # c*
     cacheflush;
   }
 }

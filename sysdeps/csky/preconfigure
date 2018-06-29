@@ -25,4 +25,8 @@ csky*)
 
     base_machine=csky
     machine=csky/$machine
+
+    $as_echo "#define CSKYABI $abi" >>confdefs.h
+    $as_echo "#define CSKY_HARD_FLOAT $float_abi" >>confdefs.h
+    ;;
 esac

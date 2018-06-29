@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* C-SKY cache flushing interface
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -26,9 +27,11 @@
 __BEGIN_DECLS
 
 #ifdef __USE_MISC
-extern int cacheflush (void *__addr, const int __nbytes, const int __op) __THROW;
+extern int cacheflush (void *__addr, const int __nbytes,
+		       const int __op) __THROW;
 #endif
-extern int _flush_cache (char *__addr, const int __nbytes, const int __op) __THROW;
+extern int _flush_cache (char *__addr, const int __nbytes,
+		         const int __op) __THROW;
 
 __END_DECLS
 

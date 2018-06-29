@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* syscall error handlers.  C-SKY ABIV2 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -16,7 +17,6 @@
    <http://www.gnu.org/licenses/>.  */
 
 #include <sysdep.h>
-#include <csky_readtp.h>
 
 /* The syscall stubs jump here when they detect an error.
    The code for Linux is almost identical to the canonical Unix
@@ -26,13 +26,13 @@
 #define CALL_MCOUNT /* Don't insert the profiling call, it clobbers R0.  */
 
 	.text
-ENTRY(__syscall_error)
+ENTRY (__syscall_error)
 	movi	a1, 0
 	rsub	a0, a0, a1
 
 # if !IS_IN (rtld)
 	mov	a1, a0
-        csky_read_tp
+	mov	a0, tls
 
         grs     t1, .Lgetpc1
 .Lgetpc1:

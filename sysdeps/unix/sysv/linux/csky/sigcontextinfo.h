@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* C-SKY definitions for signal handling calling conventions.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -22,7 +23,7 @@
 #define GET_FRAME(ctx)  ((void *) (ctx)->uc_mcontext.gregs.sc_regs[2])
 #define GET_STACK(ctx)  ((void *) (ctx)->uc_mcontext.gregs.sc_usp)
 #define CALL_SIGHANDLER(handler, signo, ctx) \
-  (handler)((signo), SIGCONTEXT_EXTRA_ARGS (ctx))
+  (handler) ((signo), SIGCONTEXT_EXTRA_ARGS (ctx))
 
 /* There is no reliable way to get the sigcontext unless we use a
    three-argument signal handler.  */
@@ -35,4 +36,3 @@
   (act)->sa_flags |= SA_SIGINFO; \
   (sigaction) (sig, act, oact); \
 })
-

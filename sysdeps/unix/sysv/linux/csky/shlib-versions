@@ -1,3 +1,11 @@
 DEFAULT			GLIBC_2.28
 
 ld=ld.so.1
+
+#%if CSKYABI == 2 && CSKY_HARD_FLOAT == 0
+#ld=ld-linux-cskyv2-sfp-le.so.1
+#%elif CSKYABI == 2 && CSKY_HARD_FLOAT == 1
+#ld=ld-linux-cskyv2-hfp-le.so.1
+#%else
+#%error cannot determine ABI
+#%endif

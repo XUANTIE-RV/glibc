@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* ptrace register data format definitions.  C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -32,10 +33,9 @@ struct user_regs {
 #endif
 };
 
-/*
- * When the kernel dumps core, it starts by dumping the user struct -
- * this will be used by gdb to figure out where the data and stack segments
- * are within the file, and what virtual addresses to use.
+/* When the kernel dumps core, it starts by dumping the user struct -
+   this will be used by gdb to figure out where the data and stack segments
+   are within the file, and what virtual addresses to use.
  */
 struct user{
 /* We start with the registers, to mimic the way that "memory" is returned

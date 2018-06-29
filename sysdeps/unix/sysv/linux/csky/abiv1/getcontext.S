@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* Save current context.  C-SKY ABIV1 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,7 +22,7 @@
 
 /* int getcontext (ucontext_t *ucp) */
 
-ENTRY(__getcontext)
+ENTRY (__getcontext)
 	/* No need to save r2-r7 or a0-a3 */
 	mov	r7, r2
 
@@ -97,6 +98,6 @@ ENTRY(__getcontext)
 	ldw	r15, (r2)
 	movi	r2, 0				/* return 0 */
 	jmp	r15
-END(__getcontext)
+END (__getcontext)
 
-weak_alias(__getcontext, getcontext)
+weak_alias (__getcontext, getcontext)

@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* Assembly macros for C-SKY.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,7 +22,7 @@
 /* There is some commonality.  */
 #include <sysdeps/unix/sysv/linux/generic/sysdep.h>
 #include <sysdeps/unix/sysv/linux/sysdep.h>
-#include <sysdeps/unix/csky/sysdep.h>
+#include <sysdeps/csky/sysdep.h>
 
 /* Defines RTLD_PRIVATE_ERRNO and USE_DL_SYSINFO.  */
 #include <dl-sysdep.h>

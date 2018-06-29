@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* System call interface.  C-SKY ABIV1 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -29,27 +30,25 @@ ENTRY (syscall)
 	trap	0
 	lrw	r3, 0xfffff000
 	cmphs	r2, r3
-	bt	do_syscall_error
+        bf      1f
+# ifdef __PIC__
+        subi    sp, 8
+        stw     gb, (sp, 0)
+        stw     r15, (sp, 4)
+        bsr     .Lgetpc
+.Lgetpc:
+        lrw     gb, .Lgetpc@GOTPC
+        addu    gb, r15
+        lrw     r7, __syscall_error@PLT
+        addu    r7, gb
+        ldw     r7, (r7)
+        jsr     r7
+        ldw     gb, (sp, 0)
+        ldw     r15, (sp, 4)
+        addi    sp, 8
+# else
+        jmpi    __syscall_error
+# endif /* __PIC__ */
+1:
 	rts
 PSEUDO_END (syscall)
-
-do_syscall_error:
-# ifdef __PIC__
-	subi	sp, 8
-	stw	gb, (sp, 0)
-	stw	r15, (sp, 4)
-	bsr	.Lgetpc
-.Lgetpc:
-	lrw	gb, .Lgetpc@GOTPC
-	addu	gb, r15
-	lrw	r7, __syscall_error@PLT
-	addu	r7, gb
-	ldw	r7, (r7)
-	jsr	r7
-	ldw	gb, (sp, 0)
-	ldw	r15, (sp, 4)
-	addi	sp, 8
-# else
-	jmpi	__syscall_error
-# endif /* __PIC__ */
-	rts

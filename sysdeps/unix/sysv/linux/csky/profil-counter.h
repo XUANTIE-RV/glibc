@@ -29,6 +29,3 @@ __profil_counter (int signo, const SIGCONTEXT scp)
      the signal context.  */
   asm volatile ("");
 }
-#ifndef __profil_counter
-weak_alias (__profil_counter, profil_counter)
-#endif

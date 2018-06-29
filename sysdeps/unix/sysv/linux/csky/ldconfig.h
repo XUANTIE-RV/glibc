@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* ldconfig default paths and libraries.  Linux/C-SKY version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -19,6 +20,17 @@
 
 #define SYSDEP_KNOWN_INTERPRETER_NAMES \
   { "/lib/ld-linux.so.2", FLAG_ELF_LIBC6 },
-#define SYSDEP_KNOWN_LIBRARY_NAMES \
+//#define LD_SO_PREFIX "/lib/ld-linux-"
+//#define LD_SO_SUFFIX ".so.1"
+//
+//#if __CSKY_HARD_FLOAT__ == 0
+//# define LD_SO_ABI "cskyv2-sfp-le"
+//#else
+//# define LD_SO_ABI "cskyv2-hfp-le"
+//#endif
+//
+//#define SYSDEP_KNOWN_INTERPRETER_NAMES	\
+//  { LD_SO_PREFIX LD_SO_ABI LD_SO_SUFFIX, FLAG_ELF_LIBC6 },
+#define SYSDEP_KNOWN_LIBRARY_NAMES	\
   { "libc.so.6", FLAG_ELF_LIBC6 },	\
   { "libm.so.6", FLAG_ELF_LIBC6 },

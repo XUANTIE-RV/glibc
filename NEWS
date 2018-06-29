@@ -9,7 +9,8 @@ Version 2.29
 
 Major new features:
 
-  [Add new features here]
+* Support for the C-SKY ABIV2 running on Linux has been added.  This port
+  requires at least binutils-2.3x, gcc-7.x.0, and linux-4.1x.
 
 Deprecated and removed features, and other changes affecting compatibility:
 

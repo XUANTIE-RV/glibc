@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* Save and set current context.  C-SKY ABIV1 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,7 +22,7 @@
 
 /* int swapcontext (ucontext_t *oucp, const ucontext_t *ucp) */
 
-ENTRY(swapcontext)
+ENTRY (swapcontext)
 	/* save params and lr */
 	subi	sp, 16
 	stw	a0, (sp, 0)
@@ -84,4 +85,4 @@ ENTRY(swapcontext)
 
 error_exit:
 	jmp	r15
-END(swapcontext)
+END (swapcontext)

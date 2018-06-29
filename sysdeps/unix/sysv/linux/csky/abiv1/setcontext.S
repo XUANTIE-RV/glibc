@@ -1,4 +1,5 @@
-/* Copyright (C) 2018 Free Software Foundation, Inc.
+/* Set saved user context to current context.  C-SKY ABIV1 version.
+   Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -21,7 +22,7 @@
 
 /* int setcontext (const ucontext_t *ucp) */
 
-ENTRY(__setcontext)
+ENTRY (__setcontext)
 	mov	r7, r2
 
 	/* set sigmask */
@@ -92,10 +93,10 @@ ENTRY(__setcontext)
 	addi	sp, 8
 
 	jmp	r1
-END(setcontext)
-weak_alias(__setcontext, setcontext)
+END (setcontext)
+weak_alias (__setcontext, setcontext)
 
-ENTRY(__startcontext)
+ENTRY (__startcontext)
 	mov	a0, r9
 	cmpnei	r9, 0		/* r9 was set in makecontext */
 	bf	1f		/* null, then exit */
@@ -119,5 +120,5 @@ ENTRY(__startcontext)
 1:
 	lrw	r1, __NR_exit
 	trap	0
-END(__startcontext)
+END (__startcontext)
 

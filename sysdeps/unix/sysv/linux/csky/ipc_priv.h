@@ -1,4 +1,4 @@
-/* Old SysV permission definition for Linux.  CSKY version.
+/* Old SysV permission definition for Linux.  C-SKY version.
    Copyright (C) 2017-2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
