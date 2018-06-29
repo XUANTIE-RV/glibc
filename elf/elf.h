@@ -3021,13 +3021,13 @@ enum
 #define R_CKCORE_ADDR32             1	/* direct 32 bit (S + A) */
 #define R_CKCORE_PCRELIMM8BY4       2	/* disp ((S + A - P) >> 2) & 0xff   */
 #define R_CKCORE_PCRELIMM11BY2      3	/* disp ((S + A - P) >> 1) & 0x7ff  */
-#define R_CKCORE_PCREL32            5	/* 32-bit rel (S + A – P)           */
+#define R_CKCORE_PCREL32            5	/* 32-bit rel (S + A - P)           */
 #define R_CKCORE_PCRELJSR_IMM11BY2  6	/* disp ((S + A - P) >>1) & 0x7ff   */
 #define R_CKCORE_RELATIVE           9	/* 32 bit adjust program base(B + A)*/
 #define R_CKCORE_COPY               10	/* 32 bit adjust by program base    */
 #define R_CKCORE_GLOB_DAT           11	/* off between got and sym (S)      */
 #define R_CKCORE_JUMP_SLOT          12	/* PLT entry (S) */
-#define R_CKCORE_GOTOFF             13	/* offset to GOT (S + A – GOT)      */
+#define R_CKCORE_GOTOFF             13	/* offset to GOT (S + A - GOT)      */
 #define R_CKCORE_GOTPC              14	/* PC offset to GOT (GOT + A - P)   */
 #define R_CKCORE_GOT32              15	/* 32 bit GOT entry (G) */
 #define R_CKCORE_PLT32              16	/* 32 bit PLT entry (G) */
