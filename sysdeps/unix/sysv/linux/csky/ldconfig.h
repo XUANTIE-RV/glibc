@@ -29,7 +29,7 @@
 //# define LD_SO_ABI "cskyv2-hfp-le"
 //#endif
 //
-//#define SYSDEP_KNOWN_INTERPRETER_NAMES	\
+//#define SYSDEP_KNOWN_INTERPRETER_NAMES	
 //  { LD_SO_PREFIX LD_SO_ABI LD_SO_SUFFIX, FLAG_ELF_LIBC6 },
 #define SYSDEP_KNOWN_LIBRARY_NAMES	\
   { "libc.so.6", FLAG_ELF_LIBC6 },	\
