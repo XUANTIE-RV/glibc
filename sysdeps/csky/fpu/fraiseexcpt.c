@@ -31,7 +31,7 @@ __feraiseexcept (int excepts)
      time, the overflow/underflow exception follows the divide by zero
      exception.  */
 
-# ifdef __csky_fpuv2__
+# ifndef __csky_fpuv1__
     /* First: invalid exception.  */
     if (FE_INVALID & excepts)
     {
