@@ -311,7 +311,7 @@ __local_syscall_error:                                          \
     UNDOARGS2_##args
 
 /*
- * to be quite different with DO_CALL, DO_CALL_2 need not save r7.
+   to be quite different with DO_CALL, DO_CALL_2 need not save r7.
  */
 #undef  DOARGS2_0
 #define DOARGS2_0

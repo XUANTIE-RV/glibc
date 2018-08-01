@@ -17,13 +17,8 @@
    <http://www.gnu.org/licenses/>.  */
 
 #define SIGCONTEXT siginfo_t *_si, struct ucontext_t *
-#define SIGCONTEXT_EXTRA_ARGS _si,
-#define GET_PC(ctx)     ((void *) (ctx)->uc_mcontext.gregs.pc)
+#define GET_PC(ctx)     ((void *) (ctx)->uc_mcontext.__gregs.__pc)
 /* r8 is fp, make sure it is in the same area in sigcontext.  */
-#define GET_FRAME(ctx)  ((void *) (ctx)->uc_mcontext.gregs.sc_regs[2])
-#define GET_STACK(ctx)  ((void *) (ctx)->uc_mcontext.gregs.sc_usp)
-#define CALL_SIGHANDLER(handler, signo, ctx) \
-  (handler) ((signo), SIGCONTEXT_EXTRA_ARGS (ctx))
 
 /* There is no reliable way to get the sigcontext unless we use a
    three-argument signal handler.  */

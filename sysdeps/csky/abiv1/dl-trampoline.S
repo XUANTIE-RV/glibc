@@ -16,8 +16,8 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-/* This function is not called directly. It is jumped when attempting to use a
-   symbol that has not yet been resolved.
+/* This function is not called directly.  It is jumped when attempting
+   to use a symbol that has not yet been resolved.
 
    .plt*:
      subi r0, 32
@@ -37,26 +37,26 @@ ENTRY (_dl_runtime_resolve)
 	stw	r6, (r0, 16)
 	stw	r7, (r0, 20)
 	stw	r15,(r0, 24)
-	# load the ID of this module
+	/* Load the ID of this module.  */
 	ldw	r2, (gb, 4)
 	mov	r6, r3
 	addu	r6, r6
 	addu	r3, r6
 	lsli	r3, 2
-	# r2 = id, r3 = offset(do it in plt*)
-	# get global offset table address_
+	/* r2 = id, r3 = offset(do it in plt*) */
+	/* Get global offset table address.  */
 	bsr	.L2
 .L2:
 	lrw	r7, .L2@GOTPC
 	add	r7, r15
-	# get the address of function (_dl_fixup) in got table
+	/* Get the address of function (_dl_fixup) in got table.  */
 	lrw	r6, _dl_fixup@GOT
 	add	r6, r7
 	ldw	r5, (r6, 0)
 	jsr	r5
-	# Return from _dl_fixup, the address of function is in r2
+	/* Return from _dl_fixup, the address of function is in r2.  */
 	mov	r1, r2
-	# Restore the registers
+	/* Restore the registers.  */
 	ldw	r2, (r0, 0)
 	ldw	r3, (r0, 4)
 	ldw	r4, (r0, 8)
@@ -64,8 +64,9 @@ ENTRY (_dl_runtime_resolve)
 	ldw	r6, (r0, 16)
 	ldw	r7, (r0, 20)
 	ldw	r15, (r0, 24)
-	# Restore the r0, because r0 is subtracted in PLT table
+	/* Restore the r0, because r0 is subtracted in PLT table.  */
 	addi	r0, 32
-	# The address of function is in r1, call the function without saving pc
+	/* The address of function is in r1, call the function
+           without saving pc.  */
 	jmp	r1
 END (_dl_runtime_resolve)

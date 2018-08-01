@@ -16,9 +16,6 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-/* Don't call mcount when calling mcount...  */
-#undef PROF
-
 #include <sysdep.h>
 
 /* Use an assembly stub with a special ABI.  The calling lr has been

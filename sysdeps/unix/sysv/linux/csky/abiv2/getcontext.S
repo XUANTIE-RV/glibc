@@ -23,7 +23,7 @@
 /* int getcontext (ucontext_t *ucp) */
 
 ENTRY (__getcontext)
-	/* No need to save r2-r7 or a0-a3 */
+	/* No need to save r2-r7 or a0-a3.  */
 	mov	t0, a0
 
 	addi	a0, MCONTEXT_CSKY_R4
@@ -31,11 +31,11 @@ ENTRY (__getcontext)
 	stm	r4-r13, (a0)			/* save r4-r13 */
 	stw	sp, (t0, MCONTEXT_CSKY_SP)	/* save sp */
 	stw	r15, (t0, MCONTEXT_CSKY_LR)	/* save lr */
-	stw	r15, (t0, MCONTEXT_CSKY_PC)	/* Return to PC */
+	stw	r15, (t0, MCONTEXT_CSKY_PC)	/* return to PC */
 	addi	a0, t0, MCONTEXT_CSKY_R16
 	stm	r16-r31, (a0)			/* save r16-r31 */
 	movi	a0, 0
-	stw	a0, (t0, MCONTEXT_CSKY_A0)	/* Return zero */
+	stw	a0, (t0, MCONTEXT_CSKY_A0)	/* return zero */
 
 	subi	sp, 8
 	stw	t0, (sp, 0)			/* save t0 after "save sp" */
@@ -64,7 +64,7 @@ ENTRY (__getcontext)
 
 	ldw	t0, (sp, 0)
 	addi	sp, 8
-	/* restore r15 for sigprocmask changes*/
+	/* restore r15 for sigprocmask changes */
 	ldw	r15, (t0, MCONTEXT_CSKY_LR)
 	movi	a0, 0				/* return 0 */
 	jmp	r15

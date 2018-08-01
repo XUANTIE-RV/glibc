@@ -25,7 +25,7 @@
 #include <sysdep.h>
 #include <dl-tls.h>
 
-/* Return nonzero iff ELF header is compatible with the running host.  */
+/* Return nonzero if ELF header is compatible with the running host.  */
 static inline int
 elf_machine_matches_host (const Elf32_Ehdr *ehdr)
 {
@@ -80,7 +80,6 @@ elf_machine_runtime_setup (struct link_map *l, int lazy, int profile)
 {
   Elf32_Addr *got;
   extern void _dl_runtime_resolve (Elf32_Word);
-  extern void _dl_runtime_profile (Elf32_Word);
 
   if (l->l_info[DT_JMPREL] && lazy)
     {
@@ -101,7 +100,7 @@ elf_machine_runtime_setup (struct link_map *l, int lazy, int profile)
          to intercept the calls to collect information.  In this case we
          don't store the address in the GOT so that all future calls also
          end in this function.  */
-      got[2] = (Elf32_Addr) &_dl_runtime_resolve;
+        got[2] = (Elf32_Addr) &_dl_runtime_resolve;
     }
   return lazy;
 }
@@ -400,7 +399,7 @@ elf_machine_rela (struct link_map *map, const Elf32_Rela *reloc,
             strtab = (const void *) D_PTR (map, l_info[DT_STRTAB]);
 
             _dl_error_printf ("\
-%s:T    he reloc R_CKCORE_PCREL_IMM26BY2 cannot reach the symbol '%s'.\n",
+%s:The reloc R_CKCORE_PCREL_IMM26BY2 cannot reach the symbol '%s'.\n",
               rtld_progname ?: "<program name unknown>",
               strtab + refsym->st_name);
             break;

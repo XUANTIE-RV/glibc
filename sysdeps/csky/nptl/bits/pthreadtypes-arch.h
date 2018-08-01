@@ -31,7 +31,7 @@
 #define __SIZEOF_PTHREAD_BARRIER_T		20
 #define __SIZEOF_PTHREAD_BARRIERATTR_T		4
 
-/* Data structure for mutex handling. */
+/* Data structure for mutex handling.  */
 #define __PTHREAD_COMPAT_PADDING_MID
 #define __PTHREAD_COMPAT_PADDING_END
 #define __PTHREAD_MUTEX_LOCK_ELISION		0

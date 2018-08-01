@@ -17,7 +17,6 @@
    <http://www.gnu.org/licenses/>.  */
 
 #include <sysdep.h>
-#include "macro.S"
 
 ENTRY (strcpy)
 	mov	r6, r2

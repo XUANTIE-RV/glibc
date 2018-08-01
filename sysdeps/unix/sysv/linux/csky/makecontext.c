@@ -56,19 +56,19 @@ __makecontext (ucontext_t *ucp, void (*func) (void), int argc, ...)
   if (argc > NREG_ARGS)
     funcstack -= (argc - NREG_ARGS);
 
-  ucp->uc_mcontext.gregs.usp = (unsigned long) funcstack;
-  ucp->uc_mcontext.gregs.pc = (unsigned long) func;
+  ucp->uc_mcontext.__gregs.__usp = (unsigned long) funcstack;
+  ucp->uc_mcontext.__gregs.__pc = (unsigned long) func;
 
-  /* Exit to startcontext() with the next context in R9 */
+  /* Exit to startcontext() with the next context in R9.  */
 #ifdef __CSKYABIV2__
-  ucp->uc_mcontext.gregs.regs[5] = (unsigned long) ucp->uc_link;
+  ucp->uc_mcontext.__gregs.__regs[5] = (unsigned long) ucp->uc_link;
 #else
-  ucp->uc_mcontext.gregs.regs[3] = (unsigned long) ucp->uc_link;
+  ucp->uc_mcontext.__gregs.__regs[3] = (unsigned long) ucp->uc_link;
 #endif
-  ucp->uc_mcontext.gregs.lr = (unsigned long) __startcontext;
+  ucp->uc_mcontext.__gregs.__lr = (unsigned long) __startcontext;
 
   /* The first four arguments go into registers.  */
-  regptr = &(ucp->uc_mcontext.gregs.a0);
+  regptr = &(ucp->uc_mcontext.__gregs.__a0);
 
   for (reg = 0; (reg < argc) && (reg < NREG_ARGS); reg++)
     *regptr++ = va_arg (vl, unsigned long);

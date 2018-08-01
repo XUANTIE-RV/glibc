@@ -36,7 +36,7 @@
 #include <sysdep.h>
 
 /* crtn.S puts function epilogues in the .init and .fini sections
-   corresponding to the prologues in crti.S. */
+   corresponding to the prologues in crti.S.  */
 
 	.section .init,"ax",@progbits
 	ldw	lr, (sp, 0)

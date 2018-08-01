@@ -35,12 +35,12 @@
 .endm
 
 ENTRY (memcpy)
-	/* If len less than 4 bytes */
+	/* If len less than 4 bytes.  */
 	mov	r7, r2
 	cmplti	r4, 4
 	jbt	.L_copy_by_byte
 
-	/* If dest is not 4 bytes aligned */
+	/* If dest is not 4 bytes aligned.  */
 	mov	r6, r2
 	andi	r6, 3
 	cmpnei	r6, 0
@@ -49,14 +49,14 @@ ENTRY (memcpy)
 	mov	r6, r3
 	andi	r6, 3
 	cmpnei	r6, 0
-	/* If dest is aligned, but src is not aligned */
+	/* If dest is aligned, but src is not aligned.  */
 	jbt	.L_dest_aligned_but_src_not_aligned
 
-	/* If dest and src are all aligned and len less than 16 bytes */
+	/* If dest and src are all aligned and len less than 16 bytes.  */
 	cmplti  r4, 16
 	jbt	.L_aligned_and_len_less_16bytes
 
-	/* src and dst are all aligned, and len > 16 bytes */
+	/* src and dst are all aligned, and len > 16 bytes.  */
 	subi	sp, 8
 	stw	r8, (sp, 0)
 	stw	r9, (sp, 4)
@@ -88,7 +88,7 @@ ENTRY (memcpy)
 	addi	r7, 4
 	jbr	.L_aligned_and_len_less_16bytes
 
-	/* len less than 4 bytes */
+	/* len less than 4 bytes.  */
 .L_copy_by_byte:
 	cmpnei  r4, 0
 	jbf     .L_return
@@ -103,9 +103,9 @@ ENTRY (memcpy)
 	rts
 
 	/* If dest is not aligned, we copy some bytes to make dest align.
-	Then we should judge whether src is aligned. */
+	Then we should judge whether src is aligned.  */
 
-	/* consider overlapped case */
+	/* Consider overlapped case.  */
 .L_dest_not_aligned:
 	mov     r5, r3
 	rsub    r5, r5, r7
@@ -113,7 +113,7 @@ ENTRY (memcpy)
 	cmplt   r5, r4
 	jbt     .L_copy_by_byte
 
-	/* Makes the dest align. */
+	/* Makes the dest align.  */
 .L1:
 	ldb     r1, (r3, 0)
 	stb     r1, (r7, 0)
@@ -125,10 +125,10 @@ ENTRY (memcpy)
 	jbt     .L1
 	cmplti  r4, 4
 	jbt     .L_copy_by_byte
-	/* Judge whether the src is aligned. */
+	/* Judge whether the src is aligned.  */
 	jbf     .L0
 
-	/* consider overlapped case */
+	/* Consider overlapped case.  */
 .L_dest_aligned_but_src_not_aligned:
 	mov     r5, r3
 	rsub    r5, r5, r7
@@ -146,7 +146,7 @@ ENTRY (memcpy)
 	stw     r12, (sp,4)
 	stw     r13, (sp,8)
 	movi    r5, 8
-	/* r6 is used to store tne misaligned bits */
+	/* r6 is used to store tne misaligned bits.  */
 	mult    r5, r6
 	mov     r12, r5
 	rsubi   r5, 31
@@ -166,7 +166,6 @@ ENTRY (memcpy)
 	ldw     r8, (r3, 8)
 	ldw     r9, (r3, 12)
 
-	/* little or big endian? */
 	GET_FRONT_BITS r1 r12
 	mov     r10, r5
 	GET_AFTER_BITS r5 r13
@@ -204,9 +203,9 @@ ENTRY (memcpy)
 .L_not_aligned_and_len_less_16bytes:
 	cmplti  r4, 4
 	jbf     .L2
-	/* r6 is used to stored the misaligned bits */
+	/* r6 is used to stored the misaligned bits.  */
 	rsubi   r6, 4
-	/* initial the position */
+	/* Initial the position.  */
 	subu    r3, r6
 	ldw     r11, (sp, 0)
 	ldw     r12, (sp, 4)

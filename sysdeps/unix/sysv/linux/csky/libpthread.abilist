@@ -4,7 +4,6 @@ GLIBC_2.28 _IO_funlockfile F
 GLIBC_2.28 __close F
 GLIBC_2.28 __connect F
 GLIBC_2.28 __errno_location F
-GLIBC_2.28 __fcntl F
 GLIBC_2.28 __h_errno_location F
 GLIBC_2.28 __libc_allocate_rtsig F
 GLIBC_2.28 __libc_current_sigrtmax F
@@ -53,7 +52,6 @@ GLIBC_2.28 _pthread_cleanup_push_defer F
 GLIBC_2.28 accept F
 GLIBC_2.28 close F
 GLIBC_2.28 connect F
-GLIBC_2.28 fcntl F
 GLIBC_2.28 flockfile F
 GLIBC_2.28 fsync F
 GLIBC_2.28 ftrylockfile F

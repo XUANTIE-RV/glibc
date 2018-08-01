@@ -43,17 +43,18 @@
 
 .text
 ENTRY (_start)
-	/* Clear the frame pointer and link register since this is the outermost frame. */
+	/* Clear the frame pointer and link register since this
+           is the outermost frame.  */
 	movi	lr, 0
-	/* Pop argc off the stack and save a pointer to argv */
+	/* Pop argc off the stack and save a pointer to argv.  */
 	ldw	a1, (sp, 0)	/* __libc_start_main(arg1): argc */
 	addi	sp, 4
 	mov	a2, sp		/* __libc_start_main(arg2): argv */
 
 	subi	sp, 4
-	/* Push stack limit */
+	/* Push stack limit.  */
 	stw	a2, (sp, 0)
-	/* Push rtld_fini */
+	/* Push rtld_fini.  */
 	subi	sp, 4
 	stw	a0, (sp, 0)
 
@@ -88,25 +89,24 @@ ENTRY (_start)
 	ldw	gb,(sp,4)
 	addi	sp, 8
 #else
-	/* Fetch address of __libc_csu_fini */
+	/* Fetch address of __libc_csu_fini.  */
 	lrw	a0, __libc_csu_fini
 	/* Push __libc_csu_fini */
 	subi	sp,4
 	stw	a0, (sp,0)
 
-	/* Set up the other arguments in registers */
+	/* Set up the other arguments in registers.  */
 	lrw	a0, main
 	lrw	a3, __libc_csu_init
-	/* __libc_start_main (main, argc, argv, init, fini, rtld_fini, stack_end) */
 	/* Let the libc call main and exit with its return code.  */
 	jsri	__libc_start_main
 #endif	/* !SHARED */
 
-	/* should never get here....*/
+	/* Should never get here.  */
 	jsri	abort
 END (_start)
 
-/* Define a symbol for the first piece of initialized data.  */
+	/* Define a symbol for the first piece of initialized data.  */
 	.data
 	.globl __data_start
 __data_start:

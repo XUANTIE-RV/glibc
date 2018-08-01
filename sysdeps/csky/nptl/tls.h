@@ -27,7 +27,7 @@
 # include <dl-dtv.h>
 
 # ifdef __CSKYABIV2__
-/* define r31 as thread pointer register. */
+/* Define r31 as thread pointer register.  */
 #  define READ_THREAD_POINTER() \
   ({ void *__result;						\
      __asm__ __volatile__ ("mov %0, r31"			\
@@ -44,7 +44,7 @@
 #else
 # include <tcb-offsets.h>
 # ifdef __CSKYABIV2__
-/* define r31 as thread pointer register. */
+/* Define r31 as thread pointer register.  */
 #  define READ_THREAD_POINTER() \
 	mov r0, r31;
 # else

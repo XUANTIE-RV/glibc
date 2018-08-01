@@ -24,19 +24,13 @@
 #include <bits/types/sigset_t.h>
 #include <bits/types/stack_t.h>
 
-#ifdef __USE_MISC
-# define __ctx(fld) fld
-#else
-# define __ctx(fld) __ ## fld
-#endif
-
 typedef struct
   {
-    unsigned long __ctx(tls);
-    unsigned long __ctx(lr);
-    unsigned long __ctx(pc);
-    unsigned long __ctx(sr);
-    unsigned long __ctx(usp);
+    unsigned long __tls;
+    unsigned long __lr;
+    unsigned long __pc;
+    unsigned long __sr;
+    unsigned long __usp;
 
     /*
      * a0, a1, a2, a3:
@@ -44,49 +38,49 @@ typedef struct
      * abiv2: r0, r1, r2, r3
      */
 
-    unsigned long __ctx(orig_a0);
-    unsigned long __ctx(a0);
-    unsigned long __ctx(a1);
-    unsigned long __ctx(a2);
-    unsigned long __ctx(a3);
+    unsigned long __orig_a0;
+    unsigned long __a0;
+    unsigned long __a1;
+    unsigned long __a2;
+    unsigned long __a3;
 
     /*
      * ABIV2: r4 ~ r13
      * ABIV1: r6 ~ r14, r1
      */
-    unsigned long __ctx(regs)[10];
+    unsigned long __regs[10];
 
 #if defined(__CSKYABIV2__)
     /* r16 ~ r30 */
-    unsigned long __ctx(exregs)[15];
+    unsigned long __exregs[15];
 
-    unsigned long __ctx(rhi);
-    unsigned long __ctx(rlo);
+    unsigned long __rhi;
+    unsigned long __rlo;
     unsigned long __glibc_reserved;
 #endif
   } gregset_t;
 
 typedef struct
   {
-    unsigned long __ctx(vr)[64];
-    unsigned long __ctx(fcr);
-    unsigned long __ctx(fesr);
-    unsigned long __ctx(fid);
+    unsigned long __vr[64];
+    unsigned long __fcr;
+    unsigned long __fesr;
+    unsigned long __fid;
     unsigned long __glibc_reserved;
   } fpregset_t;
 
-/* Context to describe whole processor state. */
+/* Context to describe whole processor state.  */
 typedef struct
   {
-    unsigned long __ctx(mask);
-    gregset_t __ctx(gregs);
-    fpregset_t __ctx(fpregs);
+    unsigned long __mask;
+    gregset_t __gregs;
+    fpregset_t __fpregs;
   } mcontext_t;
 
 /* Userlevel context.  */
 typedef struct ucontext_t
   {
-    unsigned long int __ctx(uc_flags);
+    unsigned long int __uc_flags;
     struct ucontext_t *uc_link;
     stack_t uc_stack;
     mcontext_t uc_mcontext;

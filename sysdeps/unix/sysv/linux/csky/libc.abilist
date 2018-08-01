@@ -750,6 +750,7 @@ GLIBC_2.28 fchownat F
 GLIBC_2.28 fclose F
 GLIBC_2.28 fcloseall F
 GLIBC_2.28 fcntl F
+GLIBC_2.28 fcntl64 F
 GLIBC_2.28 fcvt F
 GLIBC_2.28 fcvt_r F
 GLIBC_2.28 fdatasync F

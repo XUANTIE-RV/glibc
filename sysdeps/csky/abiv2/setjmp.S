@@ -1,4 +1,4 @@
-/* setjmp for C-SKY ABIV2
+/* setjmp for C-SKY ABIV2.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -32,7 +32,7 @@ libc_hidden_def (_setjmp)
 
 ENTRY (__sigsetjmp)
 	mov	a2, a0
-	/* Save registers */
+	/* Save registers.  */
 
 #ifdef PTR_MANGLE
 	PTR_MANGLE (t0, sp, a3)

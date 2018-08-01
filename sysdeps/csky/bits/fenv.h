@@ -68,7 +68,7 @@ enum
 /* Type representing exception flags.  */
 typedef unsigned int fexcept_t;
 
-/* Type representing floating-point environment. */
+/* Type representing floating-point environment.  */
 typedef struct
 {
   unsigned int __fpcr;

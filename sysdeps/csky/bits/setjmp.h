@@ -1,4 +1,4 @@
-/* Define the machine-dependent type `jmp_buf'. C-SKY version
+/* Define the machine-dependent type `jmp_buf'.  C-SKY version
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -24,10 +24,10 @@ typedef struct __jmp_buf_str
     /* Stack pointer.  */
     int __sp;
     int __lr;
-    /* The actual core defines which registers should be saved. The
+    /* The actual core defines which registers should be saved.  The
        buffer contains 32 words, keep space for future growth.
        Callee-saved registers:
-       r4 ~ r11, r16 ~ r17, r26 ~r31 for abiv2; r8 ~ r14 for abiv1. */
+       r4 ~ r11, r16 ~ r17, r26 ~r31 for abiv2; r8 ~ r14 for abiv1.  */
     int __regs[32];
   } __jmp_buf[1];
 

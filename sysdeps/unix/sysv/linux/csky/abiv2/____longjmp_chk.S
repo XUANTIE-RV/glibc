@@ -1,4 +1,4 @@
-/* longjmp with sp check for C-SKY ABIV2
+/* longjmp with sp check for C-SKY ABIV2.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 

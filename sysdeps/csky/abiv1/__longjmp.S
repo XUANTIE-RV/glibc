@@ -1,4 +1,4 @@
-/* longjmp for C-SKY ABIV1
+/* longjmp for C-SKY ABIV1.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -20,10 +20,10 @@
 
 ENTRY (__longjmp)
 	mov	a2, a0
-	mov	a0, a1		/* get the return value in place */
+	mov	a0, a1		/* Get the return value in place.  */
 	cmpnei	a0, 0
 	bt	have_return
-	movi	a0, 1		/* can't let setjmp() return zero! */
+	movi	a0, 1		/* Can't let setjmp() return zero! */
 have_return:
 #ifdef CHECK_SP
 	ldw	r10, (a2, 0)	/* jmpbuf's sp */

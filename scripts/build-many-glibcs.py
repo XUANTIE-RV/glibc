@@ -193,6 +193,7 @@ class Context(object):
                                  '--with-fpu=vfpv3'])
         self.add_config(arch='csky',
                         os_name='linux-gnuabiv2',
+                        variant='soft',
                         gcc_cfg=['--disable-multilib'])
         self.add_config(arch='csky',
                         os_name='linux-gnuabiv2',

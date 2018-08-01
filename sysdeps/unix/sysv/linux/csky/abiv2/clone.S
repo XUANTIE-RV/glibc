@@ -31,12 +31,12 @@ ENTRY (__clone)
 	/* Sanity check arguments.  */
 	cmpnei	a0, 0		/* no NULL function pointers */
 	bf	__error_arg
-	cmpnei	a1, 0		/* no NULL function pointers */
+	cmpnei	a1, 0		/* no NULL stack pointers */
 	bf	__error_arg
 
 	subi	a1, 8
-	stw	a0, (a1, 0)	/* insert the args onto the new stack */
-	stw	a3, (a1, 4)	/* insert the args onto the new stack */
+	stw	a0, (a1, 0)	/* insert the function into the new stack */
+	stw	a3, (a1, 4)	/* insert the args into the new stack */
 
 	mov	t1, r7		/* save r7 */
 	mov	t2, r4		/* save r4 */
@@ -61,6 +61,9 @@ __error_arg:
 
 __do_syscall_error:
 #ifdef __PIC__
+	subi	sp, 8
+	stw	gb, (sp, 0)
+	stw	r15, (sp, 4)
         grs     gb, .Lgetpc
 .Lgetpc:
         lrw     t0, .Lgetpc@GOTPC
@@ -68,6 +71,9 @@ __do_syscall_error:
         lrw     t0, __syscall_error@PLT
         ldr.w   t0, (gb, t0 << 0)
         jsr     t0
+	ldw	gb, (sp, 0)
+	ldw	r15, (sp, 4)
+	addi	sp, 8
 #else
         jmpi    __syscall_error
 #endif /* __PIC__ */

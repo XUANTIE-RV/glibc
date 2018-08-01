@@ -16,8 +16,8 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-/* This function is not called directly. It is jumped when attempting to use a
-   symbol that has not yet been resolved.
+/* This function is not called directly.  It is jumped when attempting to
+   use a symbol that has not yet been resolved.
 
    .plt*:
      subi r0, 32
@@ -35,7 +35,7 @@ ENTRY (_dl_runtime_resolve)
 	subi	sp, 20
 	stm	a0-a3, (sp)
 	stw	lr, (sp, 16)
-	# a0 = id, a1 = offset(do it in plt*)
+	/* a0 = id, a1 = offset(do it in plt*) */
 	ldw	a0,  (gb, 4)
 	movi	a1, 12
 	mult	a1, t1

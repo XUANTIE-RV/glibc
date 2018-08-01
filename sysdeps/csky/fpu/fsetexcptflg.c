@@ -31,7 +31,7 @@ fesetexceptflag (const fexcept_t *flagp, int excepts)
   /* Make sure the flags we want restored are legal.  */
   excepts &= FE_ALL_EXCEPT;
 
-  /* Now clear the bits called for, and copy them in from flagp. Note that
+  /* Now clear the bits called for, and copy them in from flagp.  Note that
      we ignore all non-flag bits from *flagp, so they don't matter.  */
   temp = ((temp >> CAUSE_SHIFT) & ~excepts) | (*flagp & excepts);
   temp = temp << CAUSE_SHIFT;

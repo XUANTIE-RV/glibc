@@ -1,4 +1,4 @@
-/* FPU control word bits. C-SKY version.
+/* FPU control word bits.  C-SKY version.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 

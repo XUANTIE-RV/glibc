@@ -72,42 +72,42 @@ register_dump (int fd, const struct ucontext_t *ctx)
   ++nr
 
   /* Generate strings of register contents.  */
-  hexvalue (ctx->uc_mcontext.gregs.sr, regs[0], 8);
-  hexvalue (ctx->uc_mcontext.gregs.pc, regs[1], 8);
-  hexvalue (ctx->uc_mcontext.gregs.usp, regs[2], 8);
-  hexvalue (ctx->uc_mcontext.gregs.lr, regs[3], 8);
-  hexvalue (ctx->uc_mcontext.mask, regs[4], 8);
-  hexvalue (ctx->uc_mcontext.gregs.a0, regs[5], 8);
-  hexvalue (ctx->uc_mcontext.gregs.a1, regs[6], 8);
-  hexvalue (ctx->uc_mcontext.gregs.a2, regs[7], 8);
-  hexvalue (ctx->uc_mcontext.gregs.a3, regs[8], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[0], regs[9], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[1], regs[10], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[2], regs[11], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[3], regs[12], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[4], regs[13], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[5], regs[14], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[6], regs[15], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[7], regs[16], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[8], regs[17], 8);
-  hexvalue (ctx->uc_mcontext.gregs.regs[9], regs[18], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__sr, regs[0], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__pc, regs[1], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__usp, regs[2], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__lr, regs[3], 8);
+  hexvalue (ctx->uc_mcontext.__mask, regs[4], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__a0, regs[5], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__a1, regs[6], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__a2, regs[7], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__a3, regs[8], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[0], regs[9], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[1], regs[10], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[2], regs[11], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[3], regs[12], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[4], regs[13], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[5], regs[14], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[6], regs[15], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[7], regs[16], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[8], regs[17], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__regs[9], regs[18], 8);
 #ifdef	__CSKYABIV2__
-  hexvalue (ctx->uc_mcontext.gregs.exregs[0], regs[19], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[1], regs[20], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[2], regs[21], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[3], regs[22], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[4], regs[23], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[5], regs[24], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[6], regs[25], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[7], regs[26], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[8], regs[27], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[9], regs[28], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[10], regs[29], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[11], regs[30], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[12], regs[31], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[13], regs[32], 8);
-  hexvalue (ctx->uc_mcontext.gregs.exregs[14], regs[33], 8);
-  hexvalue (ctx->uc_mcontext.gregs.tls, regs[34], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[0], regs[19], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[1], regs[20], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[2], regs[21], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[3], regs[22], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[4], regs[23], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[5], regs[24], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[6], regs[25], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[7], regs[26], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[8], regs[27], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[9], regs[28], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[10], regs[29], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[11], regs[30], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[12], regs[31], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[13], regs[32], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__exregs[14], regs[33], 8);
+  hexvalue (ctx->uc_mcontext.__gregs.__tls, regs[34], 8);
 #endif
 
   /* Generate the output.  */
