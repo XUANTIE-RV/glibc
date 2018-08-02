@@ -783,7 +783,6 @@ extern uintptr_t __pointer_chk_guard_local;
   lrw   guard, 1b@GOTPC;                  	\
   addu  lr, guard;                              \
   lrw   guard, __pointer_chk_guard@GOT;		\
-  ldw   guard, (guard, 0);                      \
   addu  lr, guard;                              \
   ldw   guard, (lr, 0);                         \
   ldw   guard, (guard, 0);                      \
