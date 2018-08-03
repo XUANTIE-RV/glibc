@@ -50,7 +50,7 @@ ENTRY(__clone)
 	trap	0
 
 	btsti	r2, 31		/* is r2 less than zero? */
-	bf	__do_syscall_error
+	bt	__do_syscall_error
 	cmpnei	r2, 0
 	bf	__child
 	rts
