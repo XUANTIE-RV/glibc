@@ -21,11 +21,11 @@
 ENTRY (strcmp)
 	mov	a3, a0
 	/* Check if the s1 addr is aligned.  */
-	andi	t1, a0, 0x3
 	xor	a2, a3, a1
-	bez	t1, 1f
 	andi	a2, 0x3
-        bez	a2, 5f
+        bnez	a2, 7f
+	andi	t1, a0, 0x3
+	bnez	t1, 5f
 
 1:
 	/* If aligned, load word each time.  */
@@ -162,13 +162,23 @@ ENTRY (strcmp)
 	ldb	a0, (a3, 0)
 	ldb	a2, (a1, 0)
 	subu	a0, a2
+	bez	a2, 4b
 	bnez	a0, 4b
 	addi    t1, 1
 	addi	a1, 1
 	addi	a3, 1
-	bez	t1, 1b
-	bnez	a2, 6b
-	br	3b
+	bnez	t1, 6b
+	br	1b
+
+7:
+ 	ldb	a0, (a3, 0)
+ 	addi	a3, 1
+	ldb	a2, (a1, 0)
+ 	addi	a1, 1
+	subu    a0, a2
+	bnez    a0, 4b
+	bnez	a2, 7b
+	jmp	r15
 END (strcmp)
 
 libc_hidden_def (strcmp)
