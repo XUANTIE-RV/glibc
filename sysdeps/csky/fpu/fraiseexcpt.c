@@ -31,7 +31,7 @@ __feraiseexcept (int excepts)
      time, the overflow/underflow exception follows the divide by zero
      exception.  */
 
-# ifndef __csky_fpuv1__
+#ifndef __csky_fpuv1__
     /* First: invalid exception.  */
     if (FE_INVALID & excepts)
     {
@@ -73,7 +73,7 @@ __feraiseexcept (int excepts)
       double x = 4.9406564584124654e-324;
       __asm__ __volatile__ ("fstod %0, %0" : "+v" (x));
     }
-# else
+#else
      int tmp = 0;
     /* First: invalid exception.  */
     if (FE_INVALID & excepts)
@@ -116,7 +116,7 @@ __feraiseexcept (int excepts)
       __asm__ __volatile__ ("fdivs %0, %0, %2, %1"
                     : "+f" (x), "+r"(tmp) : "f" (y));
     }
-# endif /* __csky_fpuv2__ */
+#endif /* __csky_fpuv2__ */
 
     /* Success.  */
     return 0;
