@@ -55,7 +55,7 @@ ENTRY (memcpy)
 	ldw	r3, (r1, 12)
 	addi	r1, 16
 	stw	r3, (r0, 12)
-	addi	r1, 16
+	addi	r0, 16
 #else
 	ldw	r20, (r1, 0)
 	ldw	r21, (r1, 4)
