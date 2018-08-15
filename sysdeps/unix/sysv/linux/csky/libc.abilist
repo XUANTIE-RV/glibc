@@ -1523,6 +1523,7 @@ GLIBC_2.28 removexattr F
 GLIBC_2.28 remque F
 GLIBC_2.28 rename F
 GLIBC_2.28 renameat F
+GLIBC_2.28 renameat2 F
 GLIBC_2.28 revoke F
 GLIBC_2.28 rewind F
 GLIBC_2.28 rewinddir F
@@ -1690,6 +1691,7 @@ GLIBC_2.28 statfs F
 GLIBC_2.28 statfs64 F
 GLIBC_2.28 statvfs F
 GLIBC_2.28 statvfs64 F
+GLIBC_2.28 statx F
 GLIBC_2.28 stderr D 0x4
 GLIBC_2.28 stdin D 0x4
 GLIBC_2.28 stdout D 0x4
@@ -1834,6 +1836,10 @@ GLIBC_2.28 telldir F
 GLIBC_2.28 tempnam F
 GLIBC_2.28 textdomain F
 GLIBC_2.28 tfind F
+GLIBC_2.28 thrd_current F
+GLIBC_2.28 thrd_equal F
+GLIBC_2.28 thrd_sleep F
+GLIBC_2.28 thrd_yield F
 GLIBC_2.28 time F
 GLIBC_2.28 timegm F
 GLIBC_2.28 timelocal F

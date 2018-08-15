@@ -34,26 +34,26 @@ func:
 */
 
 ENTRY (_mcount)
-	subi	sp, 28
-	stw	a0, (sp, 0)
-	stw	a1, (sp, 4)
-	stw	a2, (sp, 8)
-	stw	a3, (sp, 12)
-	stw	a4, (sp, 16)
-	stw	a5, (sp, 20)
-	stw	lr, (sp, 24)
+	subi	sp,28
+	stw	a0,(sp, 0)
+	stw	a1,(sp, 4)
+	stw	a2,(sp, 8)
+	stw	a3,(sp, 12)
+	stw	a4,(sp, 16)
+	stw	a5,(sp, 20)
+	stw	lr,(sp, 24)
 	mov	a1, lr
 	ldw	a0, (sp, 28)
 	jbsr	__mcount_internal
-	ldw	a0, (sp, 0)
-	ldw	a1, (sp, 4)
-	ldw	a2, (sp, 8)
-	ldw	a3, (sp, 12)
-	ldw	a4, (sp, 16)
-	ldw	a5, (sp, 20)
-	ldw	r1, (sp, 24)
-	ldw	lr, (sp, 28)
-	addi	sp, 32
+	ldw	a0,(sp, 0)
+	ldw	a1,(sp, 4)
+	ldw	a2,(sp, 8)
+	ldw	a3,(sp, 12)
+	ldw	a4,(sp, 16)
+	ldw	a5,(sp, 20)
+	ldw	r1,(sp, 24)
+	ldw	lr,(sp, 28)
+	addi	sp,32
 	jmp	r1
 END (_mcount)
 
