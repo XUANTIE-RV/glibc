@@ -81,8 +81,8 @@
 #define _FPU_RC_UP      (0x2 << 24)
 #define _FPU_RC_DOWN    (0x3 << 24)
 
-#define _FPU_RESERVED      0xf4ffffc0  /* Reserved bits in cw */
-#define _FPU_FPSR_RESERVED 0x3fff0000
+#define _FPU_RESERVED      0xf460ffc0  /* Reserved bits in cw */
+#define _FPU_FPSR_RESERVED 0xffff4040
 
 /* The fdlibm code requires strict IEEE double precision arithmetic,
    and no interrupts for exceptions, rounding to nearest.  */

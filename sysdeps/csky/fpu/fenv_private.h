@@ -26,8 +26,7 @@
 static __always_inline void
 libc_feholdexcept_vfp (fenv_t *envp)
 {
-  unsigned int fpsr;
-  unsigned int fpcr;
+  fpu_control_t fpsr, fpcr;
 
   _FPU_GETCW (fpcr);
   envp->__fpcr = fpcr;
@@ -61,8 +60,7 @@ libc_fesetround_vfp (int round)
 static __always_inline void
 libc_feholdexcept_setround_vfp (fenv_t *envp, int round)
 {
-  fpu_control_t fpsr;
-  fpu_control_t fpcr;
+  fpu_control_t fpsr, fpcr;
 
   _FPU_GETCW (fpcr);
   envp->__fpcr = fpcr;
@@ -72,11 +70,11 @@ libc_feholdexcept_setround_vfp (fenv_t *envp, int round)
 
   /* Clear exception flags, set all exceptions to non-stop,
      and set new rounding mode.  */
-  fpcr &= ~(FE_ALL_EXCEPT | FE_DOWNWARD);
-  _FPU_SETCW (fpcr | round);
-
   fpsr &= ~(FE_ALL_EXCEPT << CAUSE_SHIFT);
   _FPU_SETFPSR (fpsr);
+
+  fpcr &= ~(FE_ALL_EXCEPT | FE_DOWNWARD);
+  _FPU_SETCW (fpcr | round);
 }
 
 static __always_inline void
@@ -120,54 +118,43 @@ libc_fetestexcept_vfp (int ex)
 static __always_inline void
 libc_fesetenv_vfp (const fenv_t *envp)
 {
-  unsigned int fpcr;
-  unsigned int fpsr;
+  fpu_control_t fpcr, fpsr, new_fpcr, new_fpsr;
 
   _FPU_GETCW (fpcr);
   _FPU_GETFPSR (fpsr);
 
-  fpcr &= _FPU_RESERVED;
-  fpsr &= _FPU_FPSR_RESERVED;
+  new_fpcr = envp->__fpcr;
+  new_fpsr = envp->__fpsr;
 
-  if (envp == FE_DFL_ENV)
-    {
-      fpcr |= _FPU_DEFAULT;
-      fpsr |= _FPU_FPSR_DEFAULT;
-    }
-  else if (envp == FE_NOMASK_ENV)
-    {
-      fpcr |= _FPU_FPCR_IEEE;
-      fpsr |= _FPU_FPSR_IEEE;
-    }
-  else
-    {
-      fpcr |= envp->__fpcr & ~_FPU_RESERVED;
-      fpsr |= envp->__fpsr & ~_FPU_FPSR_RESERVED;
-    }
+  if (__glibc_unlikely (fpsr ^ new_fpsr) != 0)
+    _FPU_SETFPSR (new_fpsr);
 
-  _FPU_SETFPSR (fpsr);
-
-  _FPU_SETCW (fpcr);
+  if (__glibc_unlikely (fpcr ^ new_fpcr) != 0)
+    _FPU_SETCW (new_fpcr);
 }
 
 static __always_inline int
 libc_feupdateenv_test_vfp (const fenv_t *envp, int ex)
 {
-  fpu_control_t fpsr, new_fpsr;
-  int excepts;
+  fpu_control_t fpcr, fpsr, new_fpcr, new_fpsr, excepts;
 
+  _FPU_GETCW (fpcr);
   _FPU_GETFPSR (fpsr);
 
   /* Merge current exception flags with the saved fenv.  */
   excepts = (fpsr >> CAUSE_SHIFT) & FE_ALL_EXCEPT;
-  new_fpsr = envp->__fpsr | (excepts << CAUSE_SHIFT);
+  new_fpcr = envp->__fpcr;
+  new_fpsr = envp->__fpsr | excepts;
 
-  /* Write new FPSCR if different.  */
-  if (__glibc_unlikely (((fpsr ^ new_fpsr)) != 0))
+  /* Write FCR and FESR if different.  */
+  if (__glibc_unlikely (fpsr ^ new_fpsr) != 0)
     _FPU_SETFPSR (new_fpsr);
 
+  if (__glibc_unlikely (fpcr ^ new_fpcr) != 0)
+    _FPU_SETCW (new_fpcr);
+
   /* Raise the exceptions if enabled in the new FP state.  */
-  if (__glibc_unlikely (excepts & (new_fpsr >> CAUSE_SHIFT)))
+  if (__glibc_unlikely (excepts & new_fpcr))
     __feraiseexcept (excepts);
 
   return excepts & ex;
@@ -182,11 +169,13 @@ libc_feupdateenv_vfp (const fenv_t *envp)
 static __always_inline void
 libc_feholdsetround_vfp_ctx (struct rm_ctx *ctx, int r)
 {
-  fpu_control_t fpcr, round;
+  fpu_control_t fpcr, fpsr, round;
 
   _FPU_GETCW (fpcr);
+  _FPU_GETFPSR (fpsr);
   ctx->updated_status = false;
   ctx->env.__fpcr = fpcr;
+  ctx->env.__fpsr = fpsr;
 
   /* Check whether rounding modes are different.  */
   round = (fpcr ^ r) & FE_DOWNWARD;
@@ -216,13 +205,18 @@ libc_feresetround_vfp_ctx (struct rm_ctx *ctx)
 static __always_inline void
 libc_fesetenv_vfp_ctx (struct rm_ctx *ctx)
 {
-  fpu_control_t fpcr, new_fpcr;
+  fpu_control_t fpcr, fpsr, new_fpcr, new_fpsr;
 
   _FPU_GETCW (fpcr);
-  new_fpcr = ctx->env.__fpcr;
+  _FPU_GETFPSR (fpsr);
 
-  /* Write new FPSCR if different.  */
-  if (__glibc_unlikely (((fpcr ^ new_fpcr)) != 0))
+  new_fpcr = ctx->env.__fpcr;
+  new_fpsr = ctx->env.__fpsr;
+
+  if (__glibc_unlikely (fpsr ^ new_fpsr) != 0)
+    _FPU_SETFPSR (new_fpsr);
+
+  if (__glibc_unlikely (fpcr ^ new_fpcr) != 0)
     _FPU_SETCW (new_fpcr);
 }
 
