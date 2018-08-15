@@ -163,6 +163,6 @@ ENTRY (memcmp)
 	BNEZAD (r13, .L_s1_not_aligned_loop)
 	br	.L_s1_aligned
 END (memcmp)
-
+weak_alias(memcmp, bcmp)
 libc_hidden_def (memcmp)
 .weak memcmp

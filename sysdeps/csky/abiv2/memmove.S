@@ -35,8 +35,7 @@ ENTRY (memmove)
 	andi	r13, r0, 3
 	/* Test if dest is not 4 bytes aligned.  */
 	bnez	r13, .L_dest_not_aligned
-	/* Hardware can handle unaligned access directly.  */
-.L_dest_aligned:
+.L0:
 	/* If dest is aligned, then copy.  */
 	zext	r18, r2, 31, 4
 	/* Test if len less than 16 bytes.  */
@@ -101,7 +100,7 @@ ENTRY (memmove)
 	mov	r0, r12
 	rts
 
-	/* If dest is not aligned, just copy some bytes makes the dest
+	/* If dest is not aligned, just copying some bytes makes the dest
 	   align.  */
 .L_dest_not_aligned:
 	sub	r2, r13
@@ -116,7 +115,7 @@ ENTRY (memmove)
 	cmplti	r2, 4
 	jbt	.L_copy_by_byte
 	/* Check whether the src is aligned.  */
-	jbr	.L_dest_aligned
+	jbr	.L0
 END (memmove)
 
 libc_hidden_builtin_def (memmove)

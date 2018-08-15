@@ -108,7 +108,6 @@ ENTRY (strlen)
 	addi	r0, 1
 	BNEZAD (r2, .L_start_not_aligned_loop)
 	br	.L_start_addr_aligned
-
 END (strlen)
 
 libc_hidden_def (strlen)

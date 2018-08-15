@@ -162,13 +162,13 @@ ENTRY (strcmp)
 	ldb	a0, (a3, 0)
 	ldb	a2, (a1, 0)
 	subu	a0, a2
-	bez	a2, 4b
 	bnez	a0, 4b
 	addi    t1, 1
+	bez	a2, 4b
 	addi	a1, 1
 	addi	a3, 1
-	bnez	t1, 6b
-	br	1b
+	bez	t1, 1b
+	br	6b
 
 7:
  	ldb	a0, (a3, 0)

@@ -29,8 +29,7 @@ ENTRY (memcpy)
 	movi	r19, 4
 	/* Test if dest is not 4 bytes aligned.  */
 	bnez	r13, .L_dest_not_aligned
-	/* Hardware can handle unaligned access directly.  */
-.L_dest_aligned:
+.L0:
 	/* If dest is aligned, then copy.  */
 	zext	r18, r2, 31, 4
 	/* Test if len less than 16 bytes.  */
@@ -103,7 +102,7 @@ ENTRY (memcpy)
 
 .L_dest_not_aligned:
 	sub	r13, r19, r13
-	sub	r2, r13
+	mov	r19, r13
 .L_dest_not_aligned_loop:
 	/* Makes the dest align.  */
 	ldb	r3, (r1, 0)
@@ -112,10 +111,11 @@ ENTRY (memcpy)
 	stb	r3, (r0, 0)
 	addi	r0, 1
 	BNEZAD (r13, .L_dest_not_aligned_loop)
+	sub	r2, r19
 	cmplti	r2, 4
 	jbt	.L_copy_by_byte
 	/* Check whether the src is aligned.  */
-	jbr	.L_dest_aligned
+	jbr	.L0
 END (memcpy)
 
 libc_hidden_builtin_def (memcpy)
