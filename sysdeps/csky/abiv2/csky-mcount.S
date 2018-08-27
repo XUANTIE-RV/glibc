@@ -33,6 +33,9 @@ func:
    <function body>
 */
 
+/* Don't call mcount when calling mcount...  */
+#undef PROF
+
 ENTRY (_mcount)
 	subi	sp, 20
 	stw	a0, (sp, 0)

@@ -29,9 +29,12 @@
    The calling sequence looks something like:
 func:
    push lr
-   jbsr __gnu_mount_nc
+   jbsr _mcount
    <function body>
 */
+
+/* Don't call mcount when calling mcount...  */
+#undef PROF
 
 ENTRY (_mcount)
 	subi	sp, 28

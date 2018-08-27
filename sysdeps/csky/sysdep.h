@@ -21,22 +21,67 @@
 
 #ifdef __ASSEMBLER__
 
-#define ASM_SIZE_DIRECTIVE(name) .size name,.-name
+# define ASM_SIZE_DIRECTIVE(name) .size name,.-name
 
 /* Define an entry point visible from C.  */
-#define ENTRY(name)	\
-  .globl name;		\
-  .type name,@function;	\
-  .align 4;		\
-  name##:;		\
-  cfi_startproc;	\
+# define ENTRY(name)		\
+	.globl name;		\
+	.type name,@function;	\
+	.align 4;		\
+	name##:;		\
+	cfi_startproc;		\
+	CALL_MCOUNT
 
-#undef  END
-#define END(name)	\
-  cfi_endproc;		\
-  ASM_SIZE_DIRECTIVE(name)
+# undef  END
+# define END(name)		\
+	cfi_endproc;		\
+	ASM_SIZE_DIRECTIVE(name)
+
+/* If compiled for profiling, call `mcount' at the start of each function.  */
+# ifdef PROF
+#  ifdef __PIC__
+#   ifdef __CSKYABIV2__
+#    define CALL_MCOUNT				\
+	subi	sp, 4;				\
+	stw	lr, (sp, 0);			\
+	grs	t0, .Lgetpc;			\
+.Lgetpc:					\
+	lrw	gb, .Lgetpc@GOTPC;		\
+	addu	gb, t0;				\
+	lrw	t1, _mcount@PLT;		\
+	ldr.w	t0, (gb, t1 << 0);		\
+	jmp	t0;
+#   else
+#    define CALL_MCOUNT				\
+	subi	sp, 12;				\
+	stw	lr, (sp, 0);			\
+	stw	r6, (sp, 4);			\
+	stw	r7, (sp, 8);			\
+	bsr	.Lgetpc;			\
+.Lgetpc:					\
+	lrw	r7, .Lgetpc@GOTPC;		\
+	addu	r7, lr;				\
+	lrw	r6, _mcount@PLT;		\
+	addu	r7, r6;				\
+	ldw	r7, (r7);			\
+	jsr	r7;				\
+	ldw	r6, (sp, 0);			\
+	ldw	r7, (sp, 4);			\
+	addi	sp, 8
+#   endif
+#  else
+#   define CALL_MCOUNT				\
+	subi	sp, 4;				\
+	stw	lr, (sp, 0);			\
+	jbsr	_mcount;
+#  endif
+# else
+#  define CALL_MCOUNT	/* Do nothing.  */
+# endif
 
 #if defined (__CK860__)
+/* Instruction fetch will be faster when the label is 16 bytes aligned.
+   Filling with nop instruction to avoid extra jump. */
 #define LABLE_ALIGN	\
 	.balignw 16, 0x6c03
 

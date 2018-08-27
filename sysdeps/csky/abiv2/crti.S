@@ -1,4 +1,4 @@
-/* Startup code compliant to the ELF C-SKY ABIV1.
+/* Special .init and .fini section support for C-SKY.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -33,80 +33,62 @@
    License along with the GNU C Library.  If not, see
    <http://www.gnu.org/licenses/>.  */
 
-/* We need to call:
-   __libc_start_main (int (*main) (int, char **, char **), int argc,
-		      char **argv, void (*init) (void), void (*fini) (void),
-		      void (*rtld_fini) (void), void *stack_end)
-*/
+/* crti.S puts a function prologue at the beginning of the .init and
+   .fini sections and defines global symbols for those addresses, so
+   they can be called as functions.  The symbols _init and _fini are
+   magic and cause the linker to emit DT_INIT and DT_FINI.  */
 
+#include <libc-symbols.h>
 #include <sysdep.h>
 
-	.text
-	.globl _start;
-	.type _start,@function;
-	.align 4;
-_start:
-	/* Clear the frame pointer and link register since this is the
-	   outermost frame.  */
-	movi	lr, 0
-	/* Pop argc off the stack and save a pointer to argv.  */
-	ldw	a1, (sp, 0)	/* __libc_start_main arg1: argc */
-	addi	sp, 4
-	mov	a2, sp		/* __libc_start_main arg2: argv */
+#ifndef PREINIT_FUNCTION
+# define PREINIT_FUNCTION __gmon_start__
+#endif
 
+#ifndef PREINIT_FUNCTION_WEAK
+# define PREINIT_FUNCTION_WEAK 1
+#endif
+
+#if PREINIT_FUNCTION_WEAK
+	weak_extern (PREINIT_FUNCTION)
+#else
+	.hidden PREINIT_FUNCTION
+#endif
+
+	.section .init,"ax",@progbits
+	.align 4
+	.globl _init
+	.type _init, @function
+_init:
 	subi	sp, 4
-	/* Push stack limit.  */
-	stw	a2, (sp, 0)
-	mov	r7, a0
-
-#ifdef SHARED
-	subi	sp, 8
 	stw	lr, (sp, 0)
-	stw	gb, (sp, 4)
-	bsr	.Lgetpc
+	grs	t0, .Lgetpc
 .Lgetpc:
 	lrw	gb, .Lgetpc@GOTPC
-	addu	gb, lr
-	lrw	a3, __libc_csu_fini@GOT
-	addu	a3, gb
-	ldw	a3, (a3)
-	mov	a4, a3
+	add	gb, t0
+#if PREINIT_FUNCTION_WEAK
+	lrw	a2, PREINIT_FUNCTION@GOT
+	ldr.w	a2, (gb, a2 << 0)
+	cmpnei	a2, 0
+	bf	1f
+	jsr	a2
+1:
+#else
+	jsri	PREINIT_FUNCTION
+#endif /* PREINIT_FUNCTION_WEAK */
+	br	2f
+	.literals
+	.align 4
+2:
 
-	lrw	a3, __libc_csu_init@GOT
-	addu	a3, gb
-	ldw	a3, (a3, 0)
-
-	lrw	a0, main@GOT
-	addu	a0, gb
-	ldw	a0, (a0, 0)
-	lrw	r13, __libc_start_main@PLT
-	addu	r13, gb
-	ldw	r13, (r13, 0)
-	jsr	r13
-
-	ldw	lr, (sp, 0)
-	ldw	gb, (sp, 4)
-	addi	sp, 8
-#else /* !SHARED */
-	/* Fetch address of __libc_csu_fini.  */
-	lrw	a4, __libc_csu_fini
-
-	/* Set up the other arguments in registers.  */
-	lrw	a0, main
-	lrw	a3, __libc_csu_init
-	/* Let the libc call main and exit with its return code.  */
-	jsri	__libc_start_main
-#endif /* !SHARED */
-
-	/* Should never get here.  */
-	jsri	abort
-	.size _start,.-_start
-
-
-/* Define a symbol for the first piece of initialized data.  */
-	.data
-	.globl __data_start
-__data_start:
-	.long 0
-	.weak data_start
-	data_start = __data_start
+	.section .fini,"ax",@progbits
+	.align 4
+	.globl _fini
+	.type _fini, @function
+_fini:
+	subi	sp, 4
+	stw	lr, (sp, 0)
+	br	2f
+	.literals
+	.align 4
+2:
