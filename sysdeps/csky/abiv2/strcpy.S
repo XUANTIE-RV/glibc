@@ -133,7 +133,7 @@ ENTRY (strcpy)
         addi    a1, a1, 1
         addi    a3, a3, 1
 	bnez	t0, 12b
-	jbr	1b
+	br	1b
 
 END (strcpy)
 

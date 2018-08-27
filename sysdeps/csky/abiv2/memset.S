@@ -23,7 +23,7 @@ ENTRY (memset)
 	/* Test if len less than 4 bytes.  */
 	mov	r12, r0
 	cmplti	r2, 8
-	jbt	.L_set_by_byte
+	bt	.L_set_by_byte
 
 	andi	r13, r0, 3
 	movi	r19, 4
@@ -31,7 +31,8 @@ ENTRY (memset)
 	bnez	r13, .L_dest_not_aligned
 	/* Hardware can handle unaligned access directly.  */
 .L_dest_aligned:
-        zextb   r3, r1
+        zextb   r1, r1
+        mov	r3, r1
         lsli    r1, 8
         or      r1, r3
         lsli    r3, r1, 16
@@ -89,9 +90,9 @@ ENTRY (memset)
 	addi	r0, 1
 	BNEZAD (r13, .L_dest_not_aligned_loop)
 	cmplti	r2, 8
-	jbt	.L_set_by_byte
+	bt	.L_set_by_byte
 	/* Check whether the src is aligned.  */
-	jbr	.L_dest_aligned
+	br	.L_dest_aligned
 END (memset)
 
 libc_hidden_builtin_def (memset)

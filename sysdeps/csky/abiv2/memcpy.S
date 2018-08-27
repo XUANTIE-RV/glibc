@@ -23,7 +23,7 @@ ENTRY (memcpy)
 	/* Test if len less than 4 bytes.  */
 	mov	r12, r0
 	cmplti	r2, 4
-	jbt	.L_copy_by_byte
+	bt	.L_copy_by_byte
 
 	andi	r13, r0, 3
 	movi	r19, 4
@@ -113,9 +113,9 @@ ENTRY (memcpy)
 	BNEZAD (r13, .L_dest_not_aligned_loop)
 	sub	r2, r19
 	cmplti	r2, 4
-	jbt	.L_copy_by_byte
+	bt	.L_copy_by_byte
 	/* Check whether the src is aligned.  */
-	jbr	.L0
+	br	.L0
 END (memcpy)
 
 libc_hidden_builtin_def (memcpy)
