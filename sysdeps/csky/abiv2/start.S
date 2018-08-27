@@ -41,36 +41,30 @@
 
 #include <sysdep.h>
 
-.text
-ENTRY (_start)
-	/* Clear the frame pointer and link register since this
-           is the outermost frame.  */
+	.text
+	.globl _start;
+	.type _start,@function;
+	.align 4;
+_start:
+	subi	sp, 8
+	/* Clear the link register since this is the outermost frame.  */
 	movi	lr, 0
 	/* Pop argc off the stack and save a pointer to argv.  */
-	ldw	a1, (sp, 0)	/* __libc_start_main(arg1): argc */
-	addi	sp, 4
-	mov	a2, sp		/* __libc_start_main(arg2): argv */
+	ldw	a1, (sp, 8)	/* __libc_start_main(arg1): argc */
+	addi	a2, sp, 12	/* __libc_start_main(arg2): argv */
 
-	subi	sp, 4
 	/* Push stack limit.  */
-	stw	a2, (sp, 0)
+	stw	a2, (sp, 8)
 	/* Push rtld_fini.  */
-	subi	sp, 4
-	stw	a0, (sp, 0)
+	stw	a0, (sp, 4)
 
 #ifdef SHARED
-	subi	sp, 8
-	stw	lr, (sp, 0)
-	stw	gb, (sp, 4)
-	bsr	.Lgetpc
+	grs	t0, .Lgetpc
 .Lgetpc:
 	lrw	gb, .Lgetpc@GOTPC
-	addu	gb, lr
+	addu	gb, t0
 	lrw	a3, __libc_csu_fini@GOT
-	addu	a3, gb
-	ldw	a3, (a3)
-
-	subi	sp, 4
+	ldr.w	a3, (gb, a3 << 0)
 	stw	a3, (sp, 0)
 
 	lrw	a3, __libc_csu_init@GOT
@@ -79,21 +73,15 @@ ENTRY (_start)
 
 	lrw	t0, main@GOT
 	addu	t0, gb
-	ldw	a0,(t0,0)
+	ldw	a0, (t0, 0)
 	lrw	t1,__libc_start_main@PLT
-	addu	t1, gb
-	ldw	t1, (t1, 0)
+	ldr.w	t1, (gb, t1 << 0)
 	jsr	t1
-
-	ldw	lr,(sp,0)
-	ldw	gb,(sp,4)
-	addi	sp, 8
 #else
 	/* Fetch address of __libc_csu_fini.  */
 	lrw	a0, __libc_csu_fini
 	/* Push __libc_csu_fini */
-	subi	sp,4
-	stw	a0, (sp,0)
+	stw	a0, (sp, 0)
 
 	/* Set up the other arguments in registers.  */
 	lrw	a0, main
@@ -104,7 +92,8 @@ ENTRY (_start)
 
 	/* Should never get here.  */
 	jsri	abort
-END (_start)
+	.size _start,.-_start
+
 
 	/* Define a symbol for the first piece of initialized data.  */
 	.data

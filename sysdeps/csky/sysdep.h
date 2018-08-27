@@ -36,7 +36,7 @@
   cfi_endproc;		\
   ASM_SIZE_DIRECTIVE(name)
 
-#if defined(__CK860__)
+#if defined (__CK860__)
 #define LABLE_ALIGN	\
 	.balignw 16, 0x6c03
 

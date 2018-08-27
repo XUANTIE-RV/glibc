@@ -36,7 +36,7 @@ ENTRY (_dl_runtime_resolve)
 	stw	r5, (r0, 12)
 	stw	r6, (r0, 16)
 	stw	r7, (r0, 20)
-	stw	r15,(r0, 24)
+	stw	r15, (r0, 24)
 	/* Load the ID of this module.  */
 	ldw	r2, (gb, 4)
 	mov	r6, r3
@@ -67,6 +67,6 @@ ENTRY (_dl_runtime_resolve)
 	/* Restore the r0, because r0 is subtracted in PLT table.  */
 	addi	r0, 32
 	/* The address of function is in r1, call the function
-           without saving pc.  */
+	   without saving pc.  */
 	jmp	r1
 END (_dl_runtime_resolve)

@@ -30,8 +30,10 @@
 
 #include <sysdep.h>
 
-	.text
-ENTRY (_dl_runtime_resolve)
+        .globl _dl_runtime_resolve;
+        .type _dl_runtime_resolve,@function;
+        .align 4;
+_dl_runtime_resolve:
 	subi	sp, 20
 	stm	a0-a3, (sp)
 	stw	lr, (sp, 16)
@@ -45,4 +47,4 @@ ENTRY (_dl_runtime_resolve)
 	ldm	a0-a3, (sp)
 	addi	sp, 20
 	jmp	t0
-END (_dl_runtime_resolve)
+	.size _dl_runtime_resolve,.-_dl_runtime_resolve
