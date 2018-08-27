@@ -23,11 +23,11 @@
    floating-point numbers to integer types failing to raise the
    "invalid" exception, or raising spurious "inexact" or other
    exceptions.  */
-#define FIX_FLT_LONG_CONVERT_OVERFLOW 0
+#define FIX_FLT_LONG_CONVERT_OVERFLOW 1
 #define FIX_FLT_LLONG_CONVERT_OVERFLOW 1
-#define FIX_DBL_LONG_CONVERT_OVERFLOW 0
+#define FIX_DBL_LONG_CONVERT_OVERFLOW 1
 #define FIX_DBL_LLONG_CONVERT_OVERFLOW 1
-#define FIX_LDBL_LONG_CONVERT_OVERFLOW 0
+#define FIX_LDBL_LONG_CONVERT_OVERFLOW 1
 #define FIX_LDBL_LLONG_CONVERT_OVERFLOW 1
 
 #endif /* fix-fp-int-convert-overflow.h */

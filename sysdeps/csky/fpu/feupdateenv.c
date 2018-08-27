@@ -31,7 +31,7 @@ __feupdateenv (const fenv_t *envp)
   _FPU_GETFPSR (temp);
   temp = (temp >> CAUSE_SHIFT) & FE_ALL_EXCEPT;
   /* Install new environment.  */
-  libc_fesetenv_vfp (envp);
+  __fesetenv (envp);
 
   /* Raise the safed exception.  Incidently for us the implementation
      defined format of the values in objects of type fexcept_t is the

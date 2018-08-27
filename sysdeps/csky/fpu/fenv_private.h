@@ -144,7 +144,7 @@ libc_feupdateenv_test_vfp (const fenv_t *envp, int ex)
   /* Merge current exception flags with the saved fenv.  */
   excepts = (fpsr >> CAUSE_SHIFT) & FE_ALL_EXCEPT;
   new_fpcr = envp->__fpcr;
-  new_fpsr = envp->__fpsr | excepts;
+  new_fpsr = envp->__fpsr | (excepts << CAUSE_SHIFT);
 
   /* Write FCR and FESR if different.  */
   if (__glibc_unlikely (fpsr ^ new_fpsr) != 0)
