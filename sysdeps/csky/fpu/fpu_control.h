@@ -107,7 +107,7 @@ typedef unsigned int fpu_control_t;
 # define _FPU_GETCW(cw) __asm__ volatile ("1: cprcr  %0, cpcr2 \n"          \
                                          "   btsti  %0, 31    \n"           \
                                          "   bt     1b        \n"           \
-		                                 "   cprcr  %0, cpcr1\n" : "=b" (cw))
+                                         "   cprcr  %0, cpcr1\n" : "=b" (cw))
 
 # define _FPU_SETCW(cw) __asm__ volatile ("1: cprcr  r7, cpcr2 \n"          \
                                          "   btsti  r7, 31    \n"           \
@@ -130,4 +130,4 @@ typedef unsigned int fpu_control_t;
 /* Default control word set at startup.  */
 extern fpu_control_t __fpu_control;
 
-#endif	/* fpu_control.h */
+#endif /* fpu_control.h */

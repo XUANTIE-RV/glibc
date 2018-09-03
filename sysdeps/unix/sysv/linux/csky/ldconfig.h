@@ -23,11 +23,7 @@
 //#define LD_SO_PREFIX "/lib/ld-linux-"
 //#define LD_SO_SUFFIX ".so.1"
 //
-//#if __CSKY_HARD_FLOAT__ == 0
-//# define LD_SO_ABI "cskyv2-sfp-le"
-//#else
-//# define LD_SO_ABI "cskyv2-hfp-le"
-//#endif
+//# define LD_SO_ABI "cskyv2-le"
 //
 //#define SYSDEP_KNOWN_INTERPRETER_NAMES	
 //  { LD_SO_PREFIX LD_SO_ABI LD_SO_SUFFIX, FLAG_ELF_LIBC6 },

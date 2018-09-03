@@ -71,7 +71,7 @@ ENTRY (__sigsetjmp)
 	jmp	a2
 #else
 	jmpi	__sigjmp_save
-#endif	/* !__PIC__ */
+#endif /* !__PIC__ */
 END (__sigsetjmp)
 
 hidden_def (__sigsetjmp)

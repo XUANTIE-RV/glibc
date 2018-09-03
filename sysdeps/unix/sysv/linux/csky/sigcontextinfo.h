@@ -18,7 +18,6 @@
 
 #define SIGCONTEXT siginfo_t *_si, struct ucontext_t *
 #define GET_PC(ctx)     ((void *) (ctx)->uc_mcontext.__gregs.__pc)
-/* r8 is fp, make sure it is in the same area in sigcontext.  */
 
 /* There is no reliable way to get the sigcontext unless we use a
    three-argument signal handler.  */

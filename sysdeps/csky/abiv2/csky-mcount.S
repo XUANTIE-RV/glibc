@@ -29,7 +29,7 @@
    The calling sequence looks something like:
 func:
    push lr
-   jbsr __gnu_mount_nc
+   jbsr _mount
    <function body>
 */
 

@@ -21,8 +21,8 @@
 ENTRY (strcpy)
 	mov	a3, a0
 	/* Check if the src addr is aligned.  */
-        andi    t0, a1, 3
-        bnez	t0, 11f
+	andi	t0, a1, 3
+	bnez	t0, 11f
 1:
 	/* Check if all the bytes in the word are not zero.  */
 	ldw	a2, (a1)
@@ -68,7 +68,6 @@ ENTRY (strcpy)
 	addi	a3, 32
 	addi	a1, 32
 	br	1b
-
 
 2:
 	addi	a3, 4
@@ -119,19 +118,19 @@ ENTRY (strcpy)
 	st.b	t0, (a3, 2)
 	bez	t0, 10f
 	stw	a2, (a3)
-# endif	/* !__CSKYBE__ */
+# endif /* !__CSKYBE__ */
 10:
 	jmp	lr
 
 11:
-	subi    t0, 4
+	subi	t0, 4
 12:
-        ld.b    a2, (a1)
-        st.b	a2, (a3)
-        bez	a2, 10b
-	addi    t0, 1
-        addi    a1, a1, 1
-        addi    a3, a3, 1
+	ld.b	a2, (a1)
+	st.b	a2, (a3)
+	bez	a2, 10b
+	addi	t0, 1
+	addi	a1, a1, 1
+	addi	a3, a3, 1
 	bnez	t0, 12b
 	br	1b
 

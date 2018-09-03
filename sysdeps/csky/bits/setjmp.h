@@ -1,4 +1,4 @@
-/* Define the machine-dependent type `jmp_buf'.  C-SKY version
+/* Define the machine-dependent type `jmp_buf'.  C-SKY version.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 

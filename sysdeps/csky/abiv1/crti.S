@@ -1,4 +1,4 @@
-/* Special .init and .fini section support for C-SKY.
+/* Special .init and .fini section support for C-SKY ABIV1.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
@@ -58,6 +58,7 @@
 	.section .init,"ax",@progbits
 	.align 4
 	.globl _init
+	.hidden _init
 	.type _init, @function
 _init:
 	subi	sp, 8
@@ -86,6 +87,7 @@ _init:
 	.section .fini,"ax",@progbits
 	.align 4
 	.globl _fini
+	.hidden _fini
 	.type _fini, @function
 _fini:
 	subi	sp,8

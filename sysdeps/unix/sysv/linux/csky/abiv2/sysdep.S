@@ -30,36 +30,36 @@ ENTRY (__syscall_error)
 	movi	a1, 0
 	rsub	a0, a0, a1
 
-# if !IS_IN (rtld)
+#if !IS_IN (rtld)
 	mov	a1, a0
 	mov	a0, tls
 
-        grs     t1, .Lgetpc1
+	grs	t1, .Lgetpc1
 .Lgetpc1:
-        lrw     t0, errno@gottpoff
-        add     t1, t1, t0
-        ldw     t1, (t1)
-        add     t1, a0
-        stw     a1, (t1)
-        bmaski  a0, 0
-        rts
-# elif RTLD_PRIVATE_ERRNO /* !IS_IN (rtld) */
-#  ifdef  __PIC__
-        grs     t1, .Lgetpc2
+	lrw	t0, errno@gottpoff
+	add	t1, t1, t0
+	ldw	t1, (t1)
+	add	t1, a0
+	stw	a1, (t1)
+	bmaski	a0, 0
+	rts
+#elif RTLD_PRIVATE_ERRNO /* !IS_IN (rtld) */
+# ifdef  __PIC__
+	grs	t1, .Lgetpc2
 .Lgetpc2:
-        lrw     t0, .Lgetpc2@GOTPC
-        addu    t1, t1, t0
-        lrw     t0, rtld_errno@PLT
-        ldr.w   t0, (t1, t0 << 0)
-#  else
-        lrw     t0, rtld_errno
-#  endif /* __PIC__ */
-        stw     a0, (t0)
-        bmaski  a0, 0
-        rts
+	lrw	t0, .Lgetpc2@GOTPC
+	addu	t1, t1, t0
+	lrw	t0, rtld_errno@PLT
+	ldr.w	t0, (t1, t0 << 0)
 # else
-#  error "Unsupported non-TLS case"
-# endif /* RTLD_PRIVATE_ERRNO */
+	lrw	t0, rtld_errno
+# endif /* __PIC__ */
+	stw	a0, (t0)
+	bmaski	a0, 0
+	rts
+#else
+# error "Unsupported non-TLS case"
+#endif /* RTLD_PRIVATE_ERRNO */
 
-# undef  __syscall_error
+#undef __syscall_error
 END (__syscall_error)

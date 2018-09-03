@@ -28,7 +28,7 @@ longjmp_msg:
 	.text
 #define __longjmp ____longjmp_chk
 
-#ifdef	__PIC__
+#ifdef __PIC__
 # define CALL_FAIL	\
 	subi	sp, 8;						\
 	stw	gb, (sp, 0);					\
@@ -47,9 +47,9 @@ longjmp_msg:
 # define CALL_FAIL	\
 	lrw	a0, longjmp_msg;				\
 	jsri	HIDDEN_JUMPTARGET (__fortify_fail);
-#endif/* __PIC__ */
+#endif /* __PIC__ */
 
-# define  CHECK_SP(reg)	\
+# define CHECK_SP(reg)	\
 	cmplt	sp, reg;					\
 	bt	.Lok1;						\
 	mov	r9, a0;						\

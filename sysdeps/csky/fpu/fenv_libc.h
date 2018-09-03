@@ -24,7 +24,7 @@
 #define CAUSE_MASK	0x3F000U
 
 /* Shift for FE_* flags to get up to the ENABLE bits and the CAUSE bits.  */
-#define	ENABLE_SHIFT	0
+#define ENABLE_SHIFT	0
 #define CAUSE_SHIFT	8
 
 #endif /* fenv_libc.h */

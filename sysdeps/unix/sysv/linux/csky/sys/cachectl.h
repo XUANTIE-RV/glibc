@@ -1,4 +1,4 @@
-/* C-SKY cache flushing interface
+/* C-SKY cache flushing interface.
    Copyright (C) 2018 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 

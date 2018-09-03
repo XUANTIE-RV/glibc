@@ -48,7 +48,7 @@ ENTRY (syscall)
 #ifdef __PIC__
 	subi	sp, 8
 	stw	gb, (sp, 0)
-	stw     lr, (sp, 4)
+	stw	lr, (sp, 4)
 	grs	gb, .Lgetpc
 .Lgetpc:
 	lrw	t0, .Lgetpc@GOTPC
@@ -57,10 +57,10 @@ ENTRY (syscall)
 	ldr.w	t0, (gb, t0 << 0)
 	jsr	t0
 	ldw	gb, (sp, 0)
-	ldw     lr, (sp, 4)
+	ldw	lr, (sp, 4)
 	addi	sp, 8
 #else
-        jmpi    __syscall_error
+	jmpi	__syscall_error
 #endif /* __PIC__ */
 1:
 	rts

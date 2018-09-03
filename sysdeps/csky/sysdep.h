@@ -79,25 +79,25 @@
 #  define CALL_MCOUNT	/* Do nothing.  */
 # endif
 
-#if defined (__CK860__)
+# if defined (__CK860__)
 /* Instruction fetch will be faster when the label is 16 bytes aligned.
    Filling with nop instruction to avoid extra jump. */
-#define LABLE_ALIGN	\
+#  define LABLE_ALIGN	\
 	.balignw 16, 0x6c03
 
-#define PRE_BNEZAD(R)
+#  define PRE_BNEZAD(R)
 
-#define BNEZAD(R, L)	\
+#  define BNEZAD(R, L)	\
 	bnezad	R, L
-#else
-#define LABLE_ALIGN	\
+# else
+#  define LABLE_ALIGN	\
 	.balignw 8, 0x6c03
 
-#define PRE_BNEZAD(R)	\
+#  define PRE_BNEZAD(R)	\
 	subi	R, 1
 
-#define BNEZAD(R, L)	\
+#  define BNEZAD(R, L)	\
 	bnez	R, L
-#endif
+# endif
 
 #endif

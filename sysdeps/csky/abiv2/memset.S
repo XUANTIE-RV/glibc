@@ -18,7 +18,6 @@
 
 #include <sysdep.h>
 
-
 ENTRY (memset)
 	/* Test if len less than 4 bytes.  */
 	mov	r12, r0
@@ -31,12 +30,12 @@ ENTRY (memset)
 	bnez	r13, .L_dest_not_aligned
 	/* Hardware can handle unaligned access directly.  */
 .L_dest_aligned:
-        zextb   r1, r1
-        mov	r3, r1
-        lsli    r1, 8
-        or      r1, r3
-        lsli    r3, r1, 16
-        or      r3, r1
+	zextb	r1, r1
+	mov	r3, r1
+	lsli	r1, 8
+	or	r1, r3
+	lsli	r3, r1, 16
+	or	r3, r1
 
 	/* If dest is aligned, then copy.  */
 	zext	r18, r2, 31, 4

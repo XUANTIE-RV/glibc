@@ -24,7 +24,7 @@
 #include <bits/errno.h>
 
 /* int clone (int (*fn) (void *arg), void *child_stack, int flags, void *arg,
-	     pid_t *ptid, struct user_desc *tls, pid_t *ctid); */
+	      pid_t *ptid, struct user_desc *tls, pid_t *ctid); */
 
         .text
 ENTRY (__clone)
@@ -64,31 +64,31 @@ __do_syscall_error:
 	subi	sp, 8
 	stw	gb, (sp, 0)
 	stw	r15, (sp, 4)
-        grs     gb, .Lgetpc
+	grs	gb, .Lgetpc
 .Lgetpc:
-        lrw     t0, .Lgetpc@GOTPC
-        addu    gb, gb, t0
-        lrw     t0, __syscall_error@PLT
-        ldr.w   t0, (gb, t0 << 0)
-        jsr     t0
+	lrw	t0, .Lgetpc@GOTPC
+	addu	gb, gb, t0
+	lrw	t0, __syscall_error@PLT
+	ldr.w	t0, (gb, t0 << 0)
+	jsr	t0
 	ldw	gb, (sp, 0)
 	ldw	r15, (sp, 4)
 	addi	sp, 8
 #else
-        jmpi    __syscall_error
+	jmpi	__syscall_error
 #endif /* __PIC__ */
 	rts
 PSEUDO_END (__clone)
 
 __child:
 	ldw	a0, (sp, 4)	/* restore args from new sp */
-	ldw	a1, (sp, 0)	/* restore args from new sp */
+	ldw	a1, (sp, 0)	/* restore function from new sp */
 	addi	sp, 8
 	jsr	a1
 
 	/* exit */
-        lrw     r7, __NR_exit
-        trap    0
+	lrw	r7, __NR_exit
+	trap	0
 
 libc_hidden_def (__clone)
 weak_alias (__clone, clone)

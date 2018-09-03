@@ -120,4 +120,4 @@ typedef struct elf_prpsinfo prpsinfo_t;
 
 __END_DECLS
 
-#endif	/* sys/procfs.h */
+#endif /* sys/procfs.h */

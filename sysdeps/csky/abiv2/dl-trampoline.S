@@ -30,9 +30,9 @@
 
 #include <sysdep.h>
 
-        .globl _dl_runtime_resolve;
-        .type _dl_runtime_resolve,@function;
-        .align 4;
+	.globl _dl_runtime_resolve;
+	.type _dl_runtime_resolve,@function;
+	.align 4;
 _dl_runtime_resolve:
 	subi	sp, 20
 	stm	a0-a3, (sp)

@@ -93,7 +93,7 @@ ENTRY (strlen)
 	xtrb1	r3, r1
 	bez	r3, .L_return
 	addi	r0, 1
-# endif	/* !__CSKYBE__ */
+# endif /* !__CSKYBE__ */
 
 .L_return:
 	rts

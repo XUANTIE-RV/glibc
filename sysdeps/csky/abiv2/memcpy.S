@@ -18,7 +18,6 @@
 
 #include <sysdep.h>
 
-
 ENTRY (memcpy)
 	/* Test if len less than 4 bytes.  */
 	mov	r12, r0
@@ -29,7 +28,7 @@ ENTRY (memcpy)
 	movi	r19, 4
 	/* Test if dest is not 4 bytes aligned.  */
 	bnez	r13, .L_dest_not_aligned
-.L0:
+.L_dest_aligned:
 	/* If dest is aligned, then copy.  */
 	zext	r18, r2, 31, 4
 	/* Test if len less than 16 bytes.  */
@@ -38,13 +37,13 @@ ENTRY (memcpy)
 
 	LABLE_ALIGN
 .L_len_larger_16bytes:
-#if defined(__CSKY_VDSPV2__)
+#if defined (__CSKY_VDSPV2__)
 	vldx.8	vr0, (r1), r19
 	PRE_BNEZAD (r18)
 	addi	r1, 16
 	vstx.8	vr0, (r0), r19
 	addi	r0, 16
-#elif defined(__CK860__)
+#elif defined (__CK860__)
 	ldw	r3, (r1, 0)
 	stw	r3, (r0, 0)
 	ldw	r3, (r1, 4)
@@ -115,7 +114,7 @@ ENTRY (memcpy)
 	cmplti	r2, 4
 	bt	.L_copy_by_byte
 	/* Check whether the src is aligned.  */
-	br	.L0
+	br	.L_dest_aligned
 END (memcpy)
 
 libc_hidden_builtin_def (memcpy)

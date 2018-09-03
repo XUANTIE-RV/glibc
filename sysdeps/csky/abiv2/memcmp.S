@@ -76,70 +76,70 @@ ENTRY (memcmp)
 	addi	r3, 4
 	PRE_BNEZAD (r18)
 	cmpne	r20, r21
-	addi    r1, 4
+	addi	r1, 4
 	bt	.L_byte_check
 	BNEZAD (r18, .L_compare_by_word_loop)
 
 .L_compare_by_byte:
-        zext    r18, r2, 1, 0
-        bez     r18, .L_return
+	zext	r18, r2, 1, 0
+	bez	r18, .L_return
 .L_compare_by_byte_loop:
-        ldb     r0, (r3, 0)
-        ldb     r4, (r1, 0)
-        addi    r3, 1
-        subu    r0, r4
-        PRE_BNEZAD (r18)
-        addi    r1, 1
-        bnez    r0, .L_return
-        BNEZAD (r18, .L_compare_by_byte_loop)
+	ldb	r0, (r3, 0)
+	ldb	r4, (r1, 0)
+	addi	r3, 1
+	subu	r0, r4
+	PRE_BNEZAD (r18)
+	addi	r1, 1
+	bnez	r0, .L_return
+	BNEZAD (r18, .L_compare_by_byte_loop)
 
 .L_return:
-        mov     r4, r12
-        rts
+	mov	r4, r12
+	rts
 
 # ifdef __CSKYBE__
 	/* d[i] != s[i] in word, so we check byte 0.  */
 .L_byte_check:
-        xtrb0   r0, r20
-        xtrb0   r2, r21
-        subu    r0, r2
-        bnez    r0, .L_return
-
-        /* check byte 1 */
-        xtrb1   r0, r20
-        xtrb1   r2, r21
-        subu    r0, r2
-        bnez    r0, .L_return
-
-        /* check byte 2 */
-        xtrb2   r0, r20
-        xtrb2   r2, r21
-        subu    r0, r2
-        bnez    r0, .L_return
-
-        /* check byte 3 */
-        xtrb3   r0, r20
-        xtrb3   r2, r21
-        subu    r0, r2
-# else
-	/* s1[i] != s2[i] in word, so we check byte 3.  */
-.L_byte_check:
-	xtrb3	r0, r20
-	xtrb3	r2, r21
-        subu    r0, r2
-        bnez    r0, .L_return
-
-	/* check byte 2 */
-	xtrb2	r0, r20
-	xtrb2	r2, r21
-        subu    r0, r2
-        bnez    r0, .L_return
+	xtrb0	r0, r20
+	xtrb0	r2, r21
+	subu	r0, r2
+	bnez	r0, .L_return
 
 	/* check byte 1 */
 	xtrb1	r0, r20
 	xtrb1	r2, r21
 	subu	r0, r2
-	bnez    r0, .L_return
+	bnez	r0, .L_return
+
+	/* check byte 2 */
+	xtrb2	r0, r20
+	xtrb2	r2, r21
+	subu	r0, r2
+	bnez	r0, .L_return
+
+	/* check byte 3 */
+	xtrb3	r0, r20
+	xtrb3	r2, r21
+	subu	r0, r2
+# else
+	/* s1[i] != s2[i] in word, so we check byte 3.  */
+.L_byte_check:
+	xtrb3	r0, r20
+	xtrb3	r2, r21
+	subu	r0, r2
+	bnez	r0, .L_return
+
+	/* check byte 2 */
+	xtrb2	r0, r20
+	xtrb2	r2, r21
+	subu	r0, r2
+	bnez	r0, .L_return
+
+	/* check byte 1 */
+	xtrb1	r0, r20
+	xtrb1	r2, r21
+	subu	r0, r2
+	bnez	r0, .L_return
 
 	/* check byte 0 */
 	xtrb0	r0, r20
@@ -163,6 +163,6 @@ ENTRY (memcmp)
 	BNEZAD (r13, .L_s1_not_aligned_loop)
 	br	.L_s1_aligned
 END (memcmp)
-weak_alias(memcmp, bcmp)
+weak_alias (memcmp, bcmp)
 libc_hidden_def (memcmp)
 .weak memcmp

@@ -39,7 +39,7 @@ ENTRY (swapcontext)
 	ldr.w	t0, (t1, t0 << 0)
 	jsr	t0
 #else /* no pic */
-	jsri	 __getcontext
+	jsri	__getcontext
 #endif
 
 	mov	a3, a0	/* save return value */
