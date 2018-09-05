@@ -87,6 +87,12 @@ _start:
 	ldw	lr, (sp, 0)
 	ldw	gb, (sp, 4)
 	addi	sp, 8
+	
+	/* Should never get here.  */
+	lrw	r13, abort@PLT
+	addu	r13, gb
+	ldw	r13, (r13, 0)
+	jsr	r13
 #else /* !SHARED */
 	/* Fetch address of __libc_csu_fini.  */
 	lrw	a4, __libc_csu_fini
@@ -96,10 +102,10 @@ _start:
 	lrw	a3, __libc_csu_init
 	/* Let the libc call main and exit with its return code.  */
 	jsri	__libc_start_main
-#endif /* !SHARED */
 
 	/* Should never get here.  */
 	jsri	abort
+#endif /* !SHARED */
 	.size _start,.-_start
 
 
