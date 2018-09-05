@@ -74,7 +74,11 @@ _start:
 	lrw	t0, main@GOT
 	addu	t0, gb
 	ldw	a0, (t0, 0)
-	lrw	t1,__libc_start_main@PLT
+	lrw	t1, __libc_start_main@PLT
+	ldr.w	t1, (gb, t1 << 0)
+	jsr	t1
+	
+	lrw	t1, abort@PLT
 	ldr.w	t1, (gb, t1 << 0)
 	jsr	t1
 #else
@@ -88,10 +92,10 @@ _start:
 	lrw	a3, __libc_csu_init
 	/* Let the libc call main and exit with its return code.  */
 	jsri	__libc_start_main
-#endif	/* !SHARED */
 
 	/* Should never get here.  */
 	jsri	abort
+#endif	/* !SHARED */
 	.size _start,.-_start
 
 
