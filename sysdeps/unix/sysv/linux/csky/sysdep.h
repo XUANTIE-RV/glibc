@@ -55,38 +55,29 @@
   ENTRY (name);					\
   DO_CALL (syscall_name, args);
 
-# if IS_IN (libc)
-#  ifdef __PIC__
-#   if defined (__CSKYABIV2__)
-#    define PSEUDO_RET			\
-	btsti	a0, 31;			\
-	bf	1f;			\
-	subi	sp, 8;			\
-	st.w	lr, (sp);		\
-	st.w	gb, (sp, 4);		\
+# if defined (__CSKYABIV2__)
+#  define GETGB				\
 	grs	t0, .Lgetpc;		\
 .Lgetpc:				\
 	lrw	gb, .Lgetpc@GOTPC;	\
-	addu	gb, t0;			\
-	lrw	a2, SYSCALL_ERROR@PLT;	\
-	ldr.w	a2, (gb, a2 << 0);	\
-	jsr	a2;			\
-	ld.w lr, (sp);			\
-	ld.w gb, (sp, 4);		\
-	addi sp, 8;			\
-1:					\
-	rts
-#   else
-#    define PSEUDO_RET			\
+	addu	gb, t0;
+# else
+#  define GETGB				\
+	bsr	.Lgetpc;		\
+.Lgetpc:				\
+	lrw	gb, .Lgetpc@GOTPC;	\
+	addu	gb, lr;
+# endif
+
+# if IS_IN (libc)
+#  ifdef __PIC__
+#   define PSEUDO_RET			\
 	btsti	a0, 31;			\
 	bf	1f;			\
 	subi	sp, 8;			\
 	st.w	lr, (sp);		\
 	st.w	gb, (sp, 4);		\
-	bsr	.Lgetpc;		\
-.Lgetpc:				\
-	lrw	gb, .Lgetpc@GOTPC;	\
-	addu	gb, lr;			\
+	GETGB;				\
 	lrw	a2, SYSCALL_ERROR@PLT;	\
 	add	a2, gb;			\
 	ld.w	a2, (a2);		\
@@ -96,7 +87,6 @@
 	addi	sp, 8;			\
 1:					\
 	rts
-#   endif
 #  else
 #   define PSEUDO_RET			\
 	btsti	a0, 31;			\
@@ -106,10 +96,26 @@
 	rts
 #  endif
 # else
-#  define PSEUDO_RET			\
+#  ifdef __PIC__
+#   define PSEUDO_RET			\
+	btsti	a0, 31;			\
+	bf	1f;			\
+	subi	sp, 8;			\
+	st.w	lr, (sp);		\
+	st.w	gb, (sp, 4);		\
+	GETGB;				\
+	bsr	SYSCALL_ERROR;		\
+	ld.w	lr, (sp);		\
+	ld.w	gb, (sp, 4);		\
+	addi	sp, 8;			\
+1:					\
+	rts
+#  else
+#   define PSEUDO_RET			\
 	btsti	a0, 31;			\
 	bt	SYSCALL_ERROR;		\
 	rts
+#  endif
 # endif
 
 # undef ret

@@ -47,7 +47,17 @@ ENTRY (_mcount)
 	stw	lr, (sp, 24)
 	mov	a1, lr
 	ldw	a0, (sp, 28)
-	jbsr	__mcount_internal
+#ifdef __PIC__
+	bsr	.Lgetpc
+.Lgetpc:
+	lrw	a4, .Lgetpc@GOTPC
+	addu	a4, lr
+	lrw	a5, __mcount_internal@PLT
+	ldr.w	a5, (a4, a5 << 0)
+	jsr	a5
+#else
+	jsri	__mcount_internal
+#endif
 	ldw	a0, (sp, 0)
 	ldw	a1, (sp, 4)
 	ldw	a2, (sp, 8)
