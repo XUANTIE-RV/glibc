@@ -755,15 +755,21 @@ idouble: 1
 
 Function: "cos_downward":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "cos_towardzero":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "cos_upward":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "cosh":
 double: 1
@@ -1427,15 +1433,21 @@ idouble: 1
 
 Function: "sin_downward":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "sin_towardzero":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "sin_upward":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "sincos":
 double: 1
@@ -1443,15 +1455,21 @@ idouble: 1
 
 Function: "sincos_downward":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "sincos_towardzero":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "sincos_upward":
 double: 1
+float: 1
 idouble: 1
+ifloat: 1
 
 Function: "sinh":
 double: 2
