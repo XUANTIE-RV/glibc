@@ -53,7 +53,8 @@ ENTRY (_mcount)
 	lrw	a4, .Lgetpc@GOTPC
 	addu	a4, lr
 	lrw	a5, __mcount_internal@PLT
-	ldr.w	a5, (a4, a5 << 0)
+	addu	a4, a5
+	ldw	a5, (a4)
 	jsr	a5
 #else
 	jsri	__mcount_internal
