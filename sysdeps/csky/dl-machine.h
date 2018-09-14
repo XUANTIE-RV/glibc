@@ -333,6 +333,7 @@ elf_machine_rela (struct link_map *map, const Elf32_Rela *reloc,
   const unsigned int r_type = ELF32_R_TYPE (reloc->r_info);
   unsigned short __attribute__ ((unused)) *opcode16_addr;
   Elf32_Addr __attribute__ ((unused)) insn_opcode = 0x0;
+  int rel_value;
 
   if (__builtin_expect (r_type == R_CKCORE_RELATIVE, 0))
     *reloc_addr = map->l_addr + reloc->r_addend;
@@ -369,7 +370,8 @@ elf_machine_rela (struct link_map *map, const Elf32_Rela *reloc,
 	  *reloc_addr = value;
 	  break;
 	case R_CKCORE_ADDR32:
-	  *reloc_addr = value + reloc->r_addend;
+	  rel_value = value + reloc->r_addend;
+	  memcpy (reloc_addr_arg, (void *) &rel_value, sizeof(rel_value));
 	  break;
 	case R_CKCORE_PCREL32:
 	  *reloc_addr = value + reloc->r_addend - (Elf32_Addr) reloc_addr;
