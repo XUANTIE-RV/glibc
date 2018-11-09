@@ -24,8 +24,8 @@ ENTRY (memcpy)
 	cmplti	r2, 4
 	bt	.L_copy_by_byte
 
-	andi	r13, r0, 3
-	movi	r19, 4
+	andi	r13, r0, 7
+	movi	r19, 8
 	/* Test if dest is not 4 bytes aligned.  */
 	bnez	r13, .L_dest_not_aligned
 .L_dest_aligned:
@@ -42,6 +42,14 @@ ENTRY (memcpy)
 	PRE_BNEZAD (r18)
 	addi	r1, 16
 	vstx.8	vr0, (r0), r19
+	addi	r0, 16
+#elif defined (__csky_fpuv2__)
+	fldd	fr4, (r1, 0)
+	PRE_BNEZAD (r18)
+	fstd	fr4, (r0, 0)
+	fldd	fr4, (r1, 8)
+	addi	r1, 16
+	fstd	fr4, (r0, 8)
 	addi	r0, 16
 #elif defined (__CK860__)
 	ldw	r3, (r1, 0)
@@ -134,7 +142,7 @@ ENTRY (memmove)
 	cmplti	r2, 4
 	bt	.L_copy_by_byte_m
 
-	andi	r13, r0, 3
+	andi	r13, r0, 7
 	/* Test if dest is not 4 bytes aligned.  */
 	bnez	r13, .L_dest_not_aligned_m
 .L_dest_aligned_m:
@@ -153,6 +161,14 @@ ENTRY (memmove)
 	vldx.8	vr0, (r1), r19
 	PRE_BNEZAD (r18)
 	vstx.8	vr0, (r0), r19
+#elif defined (__csky_fpuv2__)
+	fldd	fr4, (r1, 8)
+	PRE_BNEZAD (r18)
+	fstd	fr4, (r0, 8)
+	fldd	fr4, (r1, 0)
+	addi	r1, 16
+	fstd	fr4, (r0, 0)
+	addi	r0, 16
 #elif defined (__CK860__)
 	ldw	r3, (r1, 12)
 	stw	r3, (r0, 12)
