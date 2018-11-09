@@ -21,7 +21,7 @@
 ENTRY (memcpy)
 	/* Test if len less than 4 bytes.  */
 	mov	r12, r0
-	cmplti	r2, 4
+	cmplti	r2, 8
 	bt	.L_copy_by_byte
 
 	andi	r13, r0, 7
@@ -80,6 +80,7 @@ ENTRY (memcpy)
 .L_len_less_16bytes:
 	zext	r18, r2, 3, 2
 	bez	r18, .L_copy_by_byte
+	bclri	r2, 2
 .L_len_less_16bytes_loop:
 	ldw	r3, (r1, 0)
 	PRE_BNEZAD (r18)
@@ -90,7 +91,7 @@ ENTRY (memcpy)
 
 	/* Test if len less than 4 bytes.  */
 .L_copy_by_byte:
-	zext	r18, r2, 1, 0
+	zext	r18, r2, 2, 0
 	bez	r18, .L_return
 .L_copy_by_byte_loop:
 	ldb	r3, (r1, 0)
@@ -142,7 +143,7 @@ ENTRY (memmove)
 	cmplti	r2, 4
 	bt	.L_copy_by_byte_m
 
-	andi	r13, r0, 7
+	andi	r13, r0, 3
 	/* Test if dest is not 4 bytes aligned.  */
 	bnez	r13, .L_dest_not_aligned_m
 .L_dest_aligned_m:
@@ -161,14 +162,6 @@ ENTRY (memmove)
 	vldx.8	vr0, (r1), r19
 	PRE_BNEZAD (r18)
 	vstx.8	vr0, (r0), r19
-#elif defined (__csky_fpuv2__)
-	fldd	fr4, (r1, 8)
-	PRE_BNEZAD (r18)
-	fstd	fr4, (r0, 8)
-	fldd	fr4, (r1, 0)
-	addi	r1, 16
-	fstd	fr4, (r0, 0)
-	addi	r0, 16
 #elif defined (__CK860__)
 	ldw	r3, (r1, 12)
 	stw	r3, (r0, 12)
