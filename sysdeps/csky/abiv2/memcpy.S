@@ -162,7 +162,7 @@ ENTRY (memmove)
 	vldx.8	vr0, (r1), r19
 	PRE_BNEZAD (r18)
 	vstx.8	vr0, (r0), r19
-#elif defined (__csky_fpuv2__)
+#elif defined (__csky_fpuv2__) && defined(__CK810__)
 	fldd	fr4, (r1, 8)
 	PRE_BNEZAD (r18)
 	fstd	fr4, (r0, 8)
