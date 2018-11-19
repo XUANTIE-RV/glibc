@@ -43,7 +43,7 @@ ENTRY (memcpy)
 	addi	r1, 16
 	vstx.8	vr0, (r0), r19
 	addi	r0, 16
-#elif defined (__csky_fpuv2__)
+#elif defined (__csky_fpuv2__) && defined(__CK810__)
 	fldd	fr4, (r1, 0)
 	PRE_BNEZAD (r18)
 	fstd	fr4, (r0, 0)
