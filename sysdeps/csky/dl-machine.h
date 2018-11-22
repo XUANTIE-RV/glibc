@@ -29,12 +29,7 @@
 static inline int
 elf_machine_matches_host (const Elf32_Ehdr *ehdr)
 {
-//#ifndef  __CSKYABIV2__
-#if 1  /* FIXME: remove when gen patch */
-  return ehdr->e_machine == EM_RCE;
-#else
-  return ehdr->e_machine == EM_CSKY;
-#endif
+  return (ehdr->e_machine == EM_RCE || ehdr->e_machine == EM_CSKY);
 }
 
 /* Return the link-time address of _DYNAMIC.
