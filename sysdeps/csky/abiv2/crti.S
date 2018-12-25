@@ -76,7 +76,9 @@ _init:
 	jsr	a2
 1:
 #else
-	jsri	PREINIT_FUNCTION
+	lrw	a2, PREINIT_FUNCTION@GOT
+	ldr.w	a2, (gb, a2 << 0)
+	jsr	a2
 #endif /* PREINIT_FUNCTION_WEAK */
 	br	2f
 	.literals
