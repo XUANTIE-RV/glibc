@@ -81,6 +81,9 @@ __do_syscall_error:
 PSEUDO_END (__clone)
 
 __child:
+	cfi_startproc
+	.cfi_label .Ldummy
+	cfi_undefined (lr)
 	ldw	r2, (sp, 4)	/* restore args from new sp */
 	ldw	r3, (sp, 0)	/* restore args from new sp */
 	addi	sp, 8
@@ -88,6 +91,7 @@ __child:
 	jsr	r3
 	lrw	r1, __NR_exit
 	trap	0
+	cfi_endproc
 
 libc_hidden_def (__clone)
 weak_alias (__clone, clone)

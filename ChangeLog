@@ -1,5 +1,14 @@
 2019-01-29  Mao Han  <han_mao@c-sky.com>
 
+	* sysdeps/csky/abiv1/start.S: Mark lr as undefined.
+	* sysdeps/csky/abiv2/start.S: Likewise.
+	* sysdeps/unix/sysv/linux/csky/abiv1/clone.S: Likewise.
+	* sysdeps/unix/sysv/linux/csky/abiv1/setcontext.S: Likewise.
+	* sysdeps/unix/sysv/linux/csky/abiv2/clone.S: Likewise.
+	* sysdeps/unix/sysv/linux/csky/abiv2/setcontext.S: Likewise.
+
+2019-01-29  Mao Han  <han_mao@c-sky.com>
+
 	* sysdeps/unix/sysv/linux/csky/register-dump.h: Adjust offset change.
 	* sysdeps/unix/sysv/linux/csky/sys/ucontext.h: Remove __mask field
 	in mcontext_t
