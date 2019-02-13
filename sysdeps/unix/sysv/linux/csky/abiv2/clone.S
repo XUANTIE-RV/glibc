@@ -53,7 +53,7 @@ ENTRY (__clone)
 	btsti	a0, 31		/* is a0 less than zero? */
 	bt	__do_syscall_error
 	cmpnei	a0, 0
-	bf	__child
+	bf	__thread_start
 	rts
 
 __error_arg:
@@ -80,8 +80,7 @@ __do_syscall_error:
 	rts
 PSEUDO_END (__clone)
 
-__child:
-	cfi_startproc
+ENTRY (__thread_start)
 	.cfi_label .Ldummy
 	cfi_undefined (lr)
 	ldw	a0, (sp, 4)	/* restore args from new sp */
@@ -92,7 +91,7 @@ __child:
 	/* exit */
 	lrw	r7, __NR_exit
 	trap	0
-	cfi_endproc
+END (__thread_start)
 
 libc_hidden_def (__clone)
 weak_alias (__clone, clone)
