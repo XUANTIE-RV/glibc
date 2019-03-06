@@ -63,9 +63,16 @@ ENTRY(strcmp)
       bne   a2, a3, .Lmismatch
 #endif
     .else
+#if defined(__riscv_xcki) && __riscv_xlen == 64
+      bnez  t2, .Lmismatch
+      add   a0, a0, \n*SZREG
+      add   a1, a1, \n*SZREG
+      j     .Lloop
+#else
       add   a0, a0, \n*SZREG
       add   a1, a1, \n*SZREG
       beq   a2, a3, .Lloop
+#endif
       # fall through to .Lmismatch
     .endif
   .endm
