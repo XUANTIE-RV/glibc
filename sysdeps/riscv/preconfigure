@@ -4,6 +4,7 @@ riscv*)
     flen=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_flen \(.*\)/\1/p'`
     float_abi=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_float_abi_\([^ ]*\) .*/\1/p'`
     atomic=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | grep '#define __riscv_atomic' | cut -d' ' -f2`
+    arch_xcki=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_xcki.*/yes/p'`
 
     case "$xlen" in
     32)
@@ -62,10 +63,20 @@ riscv*)
 	;;
     esac
 
+    case "$arch_xcki" in
+    yes)
+    	is_arch_xcki=1
+    	;;
+    *)
+    	is_arch_xcki=0
+    	;;
+    esac
+
     base_machine=riscv
     machine=riscv/rv$xlen/$float_machine
 
     $as_echo "#define RISCV_ABI_XLEN $xlen" >>confdefs.h
     $as_echo "#define RISCV_ABI_FLEN $abi_flen" >>confdefs.h
+    $as_echo "#define RISCV_ARCH_XCKI $is_arch_xcki" >>confdefs.h
     ;;
 esac

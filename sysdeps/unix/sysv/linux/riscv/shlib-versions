@@ -1,9 +1,29 @@
 DEFAULT		GLIBC_2.27
 
-%if RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64
+%if RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XCKI == 1
+ld=ld-linux-riscv64xcki-lp64d.so.1
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XCKI == 0
 ld=ld-linux-riscv64-lp64d.so.1
-%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 32 && RISCV_ARCH_XCKI == 1
+ld=ld-linux-riscv64xcki-lp64f.so.1
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 32 && RISCV_ARCH_XCKI == 0
+ld=ld-linux-riscv64-lp64f.so.1
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XCKI == 1
+ld=ld-linux-riscv64xcki-lp64.so.1
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XCKI == 0
 ld=ld-linux-riscv64-lp64.so.1
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XCKI == 1
+ld=ld-linux-riscv32xcki-ilp32d.so.1
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XCKI == 0
+ld=ld-linux-riscv32-ilp32d.so.1
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 32 && RISCV_ARCH_XCKI == 1
+ld=ld-linux-riscv32xcki-ilp32f.so.1
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 32 && RISCV_ARCH_XCKI == 0
+ld=ld-linux-riscv32-ilp32f.so.1
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XCKI == 1
+ld=ld-linux-riscv32xcki-ilp32.so.1
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XCKI == 0
+ld=ld-linux-riscv32-ilp32.so.1
 %else
 %error cannot determine ABI
 %endif
