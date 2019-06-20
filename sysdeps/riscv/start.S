@@ -43,7 +43,7 @@
    __libc_start_main wants this in a5.  */
 
 ENTRY (ENTRY_POINT)
-	call  load_gp
+	call  __load_gp
 	mv    a5, a0  /* rtld_fini.  */
 	/* main may be in a shared library.  */
 	la   a0, main
@@ -72,7 +72,7 @@ ENTRY(__load_gp)
 END(__load_gp)
 
 	.section .preinit_array,"aw"
-	.dc.a load_gp
+	.dc.a __load_gp
 
 /* Define a symbol for the first piece of initialized data.  */
 	.data
