@@ -41,16 +41,16 @@ ENTRY (memcpy)
 
 .L_len_larger_16bytes:
 #if defined(__riscv_xcki)
-	.long    0xf805c70b
-	.long    0xf805570b
-	.long	 0xf905c78b
-	.long    0xf905578b
-        .long    0xfa05c70b
-        .long    0xfa05570b
-        .long    0xfb05c78b
+	ldd	a4, a5, 0(a1)
+	sdd	a4, a5, 0(a0)
+	ldd	a6, a7, 16(a1)
+	sdd	a6, a7, 16(a0)
+	ldd	a4, a5, 32(a1)
+	sdd	a4, a5, 32(a0)
+	ldd	a6, a7, 48(a1)
 	sub	t4, t4, t3
         addi    a1, a1, 64
-        .long    0xfb05578b
+	sdd	a6, a7, 48(a0)
 #else
         ld      a4, 0(a1)
         sd      a4, 0(a0)
@@ -156,15 +156,15 @@ ENTRY (memmove)
 	sub	a1, a1, t1
 	sub	a0, a0, t1
 #if defined(__riscv_xcki)
-	.long    0xfb05c78b
+	ldd	a6, a7, 48(a1)
 	sub	t4, t4, t3
-	.long    0xfb05578b
-	.long    0xfa05c70b
-	.long    0xfa05570b
-	.long    0xf905c78b
-	.long    0xf905578b
-	.long    0xf805c70b
-	.long    0xf805570b
+	sdd	a6, a7, 48(a0)
+	ldd	a4, a5, 32(a1)
+	sdd	a4, a5, 32(a0)
+	ldd	a6, a7, 16(a1)
+	sdd	a6, a7, 16(a0)
+	ldd	a4, a5, 0(a1)
+	sdd	a4, a5, 0(a0)
 #else
         ld      a7, 56(a1)
         sd      a7, 56(a0)
