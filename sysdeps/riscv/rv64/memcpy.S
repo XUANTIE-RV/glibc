@@ -40,18 +40,6 @@ ENTRY (memcpy)
 	andi    a2, a2, 63
 
 .L_len_larger_16bytes:
-#if defined(__riscv_xcki)
-	ldd	a4, a5, 0(a1)
-	sdd	a4, a5, 0(a0)
-	ldd	a6, a7, 16(a1)
-	sdd	a6, a7, 16(a0)
-	ldd	a4, a5, 32(a1)
-	sdd	a4, a5, 32(a0)
-	ldd	a6, a7, 48(a1)
-	sub	t4, t4, t3
-        addi    a1, a1, 64
-	sdd	a6, a7, 48(a0)
-#else
         ld      a4, 0(a1)
         sd      a4, 0(a0)
         ld      a5, 8(a1)
@@ -70,7 +58,6 @@ ENTRY (memcpy)
         sub     t4, t4, t3
         addi    a1, a1, 64
         sd      a7, 56(a0)
-#endif
         addi    a0, a0, 64
 	bnez	t4, .L_len_larger_16bytes
 
@@ -155,17 +142,6 @@ ENTRY (memmove)
 .L_len_larger_16bytes_m:
 	sub	a1, a1, t1
 	sub	a0, a0, t1
-#if defined(__riscv_xcki)
-	ldd	a6, a7, 48(a1)
-	sub	t4, t4, t3
-	sdd	a6, a7, 48(a0)
-	ldd	a4, a5, 32(a1)
-	sdd	a4, a5, 32(a0)
-	ldd	a6, a7, 16(a1)
-	sdd	a6, a7, 16(a0)
-	ldd	a4, a5, 0(a1)
-	sdd	a4, a5, 0(a0)
-#else
         ld      a7, 56(a1)
         sd      a7, 56(a0)
         ld      a6, 48(a1)
@@ -183,7 +159,6 @@ ENTRY (memmove)
 	ld      a3, 0(a1)
 	sd      a3, 0(a0)
         sub     t4, t4, t3
-#endif
 	bnez	t4,.L_len_larger_16bytes_m
 
 .L_len_less_16bytes_m:
