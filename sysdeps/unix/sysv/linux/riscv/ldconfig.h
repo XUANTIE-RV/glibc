@@ -22,13 +22,25 @@
 #define LD_SO_SUFFIX ".so.1"
 
 #if __riscv_xlen == 64
+#if defined(__riscv_xthead) && defined(__riscv_vector)
+# define LD_SO_ABI "riscv64vxthead-lp64"
+#elif defined(__riscv_xthead)
+# define LD_SO_ABI "riscv64xthead-lp64"
+#else
 # define LD_SO_ABI "riscv64-lp64"
+#endif
+#else
+#if defined(__riscv_xthead)
+# define LD_SO_ABI "riscv32xthead-ilp32"
 #else
 # define LD_SO_ABI "riscv32-ilp32"
 #endif
+#endif
 
 #define SYSDEP_KNOWN_INTERPRETER_NAMES				\
+  { LD_SO_PREFIX LD_SO_ABI "v" LD_SO_SUFFIX, FLAG_ELF_LIBC6 },	\
   { LD_SO_PREFIX LD_SO_ABI "d" LD_SO_SUFFIX, FLAG_ELF_LIBC6 },	\
+  { LD_SO_PREFIX LD_SO_ABI "dv" LD_SO_SUFFIX, FLAG_ELF_LIBC6 },	\
   { LD_SO_PREFIX LD_SO_ABI     LD_SO_SUFFIX, FLAG_ELF_LIBC6 },
 
 #define SYSDEP_KNOWN_LIBRARY_NAMES	\
