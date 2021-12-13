@@ -1,4 +1,51 @@
-%if RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64
+%if RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 1 && RISCV_ARCH_V >= 1000000
+ld=ld-linux-riscv64v_xthead-lp64dv.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 1 && RISCV_ARCH_V != 0
+ld=ld-linux-riscv64v0p7_xthead-lp64dv.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 0 && RISCV_ABI_VECTOR == 1 && RISCV_ARCH_V >= 1000000
+ld=ld-linux-riscv64v-lp64dv.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 0 && RISCV_ABI_VECTOR == 1 && RISCV_ARCH_V != 0
+ld=ld-linux-riscv64v0p7-lp64dv.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 0 && RISCV_ARCH_V >= 1000000
+ld=ld-linux-riscv64v_xthead-lp64d.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 0 && RISCV_ARCH_V != 0
+ld=ld-linux-riscv64v0p7_xthead-lp64d.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 1 && RISCV_ARCH_V >= 1000000
+ld=ld-linux-riscv64v_xthead-lp64v.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 1 && RISCV_ARCH_V != 0
+ld=ld-linux-riscv64v0p7_xthead-lp64v.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 0 && RISCV_ARCH_V >= 1000000
+ld=ld-linux-riscv64v_xthead-lp64.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 0 && RISCV_ARCH_V != 0
+ld=ld-linux-riscv64v0p7_xthead-lp64.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 1
+ld=ld-linux-riscv64xthead-lp64d.so.1
+DEFAULT         GLIBC_2.27
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XTHEAD == 1
+ld=ld-linux-riscv64xthead-lp64.so.1
+DEFAULT         GLIBC_2.27
+
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 1 && RISCV_ABI_VECTOR == 0 && RISCV_ARCH_V >= 1000000
+ld=ld-linux-riscv32v_xthead-ilp32d.so.1
+DEFAULT         GLIBC_2.32
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 64 && RISCV_ARCH_XTHEAD == 1
+ld=ld-linux-riscv32xthead-ilp32d.so.1
+DEFAULT         GLIBC_2.32
+%elif RISCV_ABI_XLEN == 32 && RISCV_ABI_FLEN == 0 && RISCV_ARCH_XTHEAD == 1
+ld=ld-linux-riscv32xthead-ilp32.so.1
+DEFAULT         GLIBC_2.32
+
+%elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 64
 DEFAULT		GLIBC_2.27
 ld=ld-linux-riscv64-lp64d.so.1
 %elif RISCV_ABI_XLEN == 64 && RISCV_ABI_FLEN == 0
