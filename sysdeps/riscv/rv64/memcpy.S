@@ -30,7 +30,7 @@
 #endif
 
 ENTRY (memcpy)
-#if defined(__riscv_vector)
+#if defined(__riscv_vector) && 0
 	mv	a3, a0
 	sltiu	a4, a2, 16
 	bnez	a4, .loop_cpy
@@ -271,7 +271,7 @@ libc_hidden_builtin_def (memcpy)
 .weak memcpy
 
 ENTRY (memmove)
-#if defined(__riscv_vector)
+#if defined(__riscv_vector) && 0
 	sub	a3, a0, a1
 	bgeu	a3, a2, memcpy
 	add	a3, a0, a2
