@@ -133,18 +133,6 @@
 /* RISC-V floating-point ABI for ld.so.  */
 #undef RISCV_ABI_FLEN
 
-/* RISC-V xthead ARCH for ld.so.  */
-#undef RISCV_ARCH_XTHEAD
-
-/* RISC-V vector length ABI for ld.so.  */
-#undef RISCV_ABI_VLEN
-
-/* RISC-V vector ABI for ld.so.  */
-#undef RISCV_ABI_VECTOR
-
-/* RISC-V v-ext version for ld.so.  */
-#undef RISCV_ARCH_V
-
 /* Linux specific: minimum supported kernel version.  */
 #undef	__LINUX_KERNEL_VERSION
 

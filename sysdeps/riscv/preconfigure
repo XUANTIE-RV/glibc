@@ -4,10 +4,6 @@ riscv*)
     flen=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_flen \(.*\)/\1/p'`
     float_abi=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_float_abi_\([^ ]*\) .*/\1/p'`
     atomic=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | grep '#define __riscv_atomic' | cut -d' ' -f2`
-    arch_xthead=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_xtheadc.*/yes/p'`
-    vlen=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_vector \(.*\)/\1/p'`
-    arch_v=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_v \(.*\)/\1/p'`
-    vector_abi=`$CC $CFLAGS $CPPFLAGS -E -dM -xc /dev/null | sed -n 's/^#define __riscv_vector_abi_\([^ ]*\) .*/\1/p'`
 
     case "$xlen" in
     64 | 32)
@@ -62,50 +58,10 @@ riscv*)
 	;;
     esac
 
-    case "$arch_xthead" in
-    yes*)
-        is_arch_xthead=1
-        ;;
-    *)
-        is_arch_xthead=0
-        ;;
-    esac
-
-    case "$vlen" in
-    "")
-        abi_vlen=0
-        ;;
-    *)
-        abi_vlen=$vlen
-        ;;
-    esac
-
-    case "$vector_abi" in
-    v)
-        vector_abi=1
-        ;;
-    *)
-        vector_abi=0
-        ;;
-    esac
-
-    case "$arch_v" in
-    "")
-        arch_v=0
-        ;;
-    *)
-        arch_v=$arch_v
-        ;;
-    esac
-
     base_machine=riscv
     machine=riscv/rv$xlen/$float_machine
 
     $as_echo "#define RISCV_ABI_XLEN $xlen" >>confdefs.h
     $as_echo "#define RISCV_ABI_FLEN $abi_flen" >>confdefs.h
-    $as_echo "#define RISCV_ARCH_XTHEAD $is_arch_xthead" >>confdefs.h
-    $as_echo "#define RISCV_ABI_VLEN $abi_vlen" >>confdefs.h
-    $as_echo "#define RISCV_ARCH_V $arch_v" >>confdefs.h
-    $as_echo "#define RISCV_ABI_VECTOR $vector_abi" >>confdefs.h
     ;;
 esac
