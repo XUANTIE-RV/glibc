@@ -1629,6 +1629,17 @@ dl_main (const ElfW(Phdr) *phdr,
       newname.next = NULL;
       newname.dont_free = 1;
 
+      char *ldso_prefix = "/lib/ld-linux-riscv";
+      if (strncmp (GL(dl_rtld_map).l_libname->name, ldso_prefix, strlen(ldso_prefix)) == 0)
+	{
+	  static struct libname_list ldso_compitiable;
+	  /* Remove the prefix '/lib/'.  */
+	  ldso_compitiable.name = GL(dl_rtld_map).l_libname->name + 5;
+	  ldso_compitiable.next = NULL;
+	  ldso_compitiable.dont_free = 1;
+	  newname.next = &ldso_compitiable;
+	}
+
       assert (GL(dl_rtld_map).l_libname->next == NULL);
       GL(dl_rtld_map).l_libname->next = &newname;
     }
