@@ -267,13 +267,13 @@ ENTRY (memcpy)
 #endif
 END (memcpy)
 
-libc_hidden_builtin_def (memcpy)
+hidden_def (memcpy)
 .weak memcpy
 
 ENTRY (memmove)
 #if defined(__riscv_vector) && 0
 	sub	a3, a0, a1
-	bgeu	a3, a2, memcpy
+	bgeu	a3, a2, HIDDEN_JUMPTARGET(memcpy)
 	add	a3, a0, a2
 	add	a1, a1, a2
 	sltiu	a4, a2, 16
@@ -297,7 +297,7 @@ ENTRY (memmove)
 	ret
 #else
 	sub	a3, a0, a1
-	bgeu	a3, a2, memcpy
+	bgeu	a3, a2, HIDDEN_JUMPTARGET(memcpy)
 
 	mv	t6, a0
 	add	a0, a0, a2
