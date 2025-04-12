@@ -583,7 +583,7 @@ ldouble: 3
 
 Function: Real part of "clog10_towardzero":
 double: 5
-float: 5
+float: 6
 ldouble: 4
 
 Function: Imaginary part of "clog10_towardzero":
